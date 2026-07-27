@@ -42,8 +42,8 @@ class DatabaseSeeder extends Seeder
             'contact_email' => 'hello@storyloom.in',
             'contact_whatsapp' => '919999999999',
             'contact_address' => 'New Delhi, India',
-            'social_instagram' => 'https://instagram.com/storyloom.in',
-            'instagram_username' => 'storyloom.in',
+            'social_instagram' => 'https://www.instagram.com/storyloombooks/',
+            'instagram_username' => 'storyloombooks',
             'copyright_text' => 'Storyloom. Every story belongs to its family.',
             'seo_title' => 'Storyloom — The Story Only You Could Give',
             'seo_description' => 'Storyloom transforms your memories into a hand-illustrated keepsake storybook — a one-of-a-kind gift for the people who shaped your life. Crafted in India, treasured forever.',
@@ -296,7 +296,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Manan',
             'designation' => 'Founder & Creative Lead',
             'photo' => 'assets/img/logo-emblem.png',
-            'social_links' => ['instagram' => 'https://instagram.com/storyloom.in'],
+            'social_links' => ['instagram' => 'https://www.instagram.com/storyloombooks/'],
             'description' => 'I started Storyloom after watching my mother re-read a forty-year-old letter until the folds wore through. We keep almost nothing now. I wanted to build the thing families keep.',
             'status' => 'active'
         ]);
@@ -346,5 +346,91 @@ class DatabaseSeeder extends Seeder
         // 15. Seed Newsletter Subscribers
         NewsletterSubscriber::truncate();
         NewsletterSubscriber::create(['email' => 'newsletter-demo@storyloom.in']);
+
+        // 16. Seed Library Books
+        \App\Models\LibraryBook::truncate();
+        $libraryBooks = [
+            [
+                'title' => 'The First Home',
+                'subtitle' => 'A birthday gift for Mansi',
+                'type' => 'featured',
+                'relation_tag' => 'For a wife',
+                'occasion_tag' => 'Birthday',
+                'spreads_count' => '15 spreads',
+                'read_time' => '8 min read',
+                'synopsis' => 'Their first flat had a leaking tap, one steel cup, and a view of every rooftop in the city. For Mansi\'s birthday, her husband turned their first year in their first home into a painted story — the morning chai, the evening walks, the plate of fries they still argue about.',
+                'caption' => 'the actual cover — printed, bound, gifted',
+                'cover_image' => 'assets/img/book1/cover.webp',
+                'back_image' => 'assets/img/book1/back.webp',
+                'pages_json' => array_map(function($i) {
+                    $num = sprintf('%02d', $i);
+                    return ['src' => "assets/img/book1/s{$num}.webp", 'alt' => "The First Home — spread {$i}"];
+                }, range(1, 15)),
+                'order' => 1,
+                'status' => true,
+            ],
+            [
+                'title' => 'Underwater, Together',
+                'subtitle' => 'A rakhi gift for Chicky Didi',
+                'type' => 'featured',
+                'relation_tag' => 'For a sister',
+                'occasion_tag' => 'Raksha Bandhan',
+                'spreads_count' => '17 spreads',
+                'read_time' => '9 min read',
+                'synopsis' => 'Two kids, one landline, and a swim class neither of them wanted to attend. This Raksha Bandhan, instead of another gift, a brother bound twenty years of schemes, duets and dance routines into a book for his Chicky Didi — proof that some skills only work in pairs.',
+                'caption' => 'the actual cover — a rakhi gift for Chicky Didi',
+                'cover_image' => 'assets/img/book2/cover.webp',
+                'back_image' => 'assets/img/book2/back.webp',
+                'pages_json' => array_map(function($i) {
+                    $num = sprintf('%02d', $i);
+                    return ['src' => "assets/img/book2/s{$num}.webp", 'alt' => "Underwater, Together — spread {$i}"];
+                }, range(1, 17)),
+                'order' => 2,
+                'status' => true,
+            ],
+            [
+                'title' => 'The Moon Protector',
+                'subtitle' => 'For a daughter',
+                'type' => 'shelf',
+                'relation_tag' => 'For a daughter · on the loom',
+                'synopsis' => 'A bedtime adventure for the girl who asked if the moon follows her home.',
+                'cover_image' => 'assets/img/spread-under-stars.webp',
+                'order' => 3,
+                'status' => true,
+            ],
+            [
+                'title' => 'Letters From Grandma',
+                'subtitle' => 'For a grandmother',
+                'type' => 'shelf',
+                'relation_tag' => 'For a grandmother · on the loom',
+                'synopsis' => 'Sixty years of recipes, prayers, and Sunday letters, finally bound.',
+                'cover_image' => 'assets/img/spread-street-morning.webp',
+                'order' => 4,
+                'status' => true,
+            ],
+            [
+                'title' => 'Dad\'s Bicycle',
+                'subtitle' => 'For a father',
+                'type' => 'shelf',
+                'relation_tag' => 'For a father · on the loom',
+                'synopsis' => 'Every route he ever pedalled, retold by the boy on the back seat.',
+                'cover_image' => 'assets/img/spread-alone-bench.webp',
+                'order' => 5,
+                'status' => true,
+            ],
+            [
+                'title' => 'Our Little Explorer',
+                'subtitle' => 'For a son',
+                'type' => 'shelf',
+                'relation_tag' => 'For a son · on the loom',
+                'synopsis' => 'The first five years of a boy who never once sat still.',
+                'cover_image' => 'assets/img/book2-page-dance.webp',
+                'order' => 6,
+                'status' => true,
+            ],
+        ];
+        foreach ($libraryBooks as $lb) {
+            \App\Models\LibraryBook::create($lb);
+        }
     }
 }

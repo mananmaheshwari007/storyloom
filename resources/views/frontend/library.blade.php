@@ -19,9 +19,12 @@
           </span>
         </a>
         @if(isset($featuredBooks) && count($featuredBooks) > 1)
-          @php $b2 = $featuredBooks[1]; @endphp
+          @php
+            $b2 = $featuredBooks[1];
+            $b2Cover = $b2->cover_image ? asset($b2->cover_image) : asset('assets/img/logo-emblem-light.png');
+          @endphp
           <button class="display-card" data-open-book="#open-book-{{ $b2->id }}" type="button">
-            <span class="dc-cover"><img src="{{ asset($b2->cover_image) }}" alt="Front cover of {{ $b2->title }}"></span>
+            <span class="dc-cover"><img src="{{ $b2Cover }}" alt="Front cover of {{ $b2->title }}"></span>
             <span class="dc-body">
               <span class="dc-title">{{ $b2->title }}</span>
               <span class="dc-desc">{{ $b2->subtitle ?: $b2->relation_tag }}</span>
@@ -30,9 +33,12 @@
           </button>
         @endif
         @if(isset($featuredBooks) && count($featuredBooks) > 0)
-          @php $b1 = $featuredBooks[0]; @endphp
+          @php
+            $b1 = $featuredBooks[0];
+            $b1Cover = $b1->cover_image ? asset($b1->cover_image) : asset('assets/img/logo-emblem-light.png');
+          @endphp
           <button class="display-card" data-open-book="#open-book-{{ $b1->id }}" type="button">
-            <span class="dc-cover"><img src="{{ asset($b1->cover_image) }}" alt="Front cover of {{ $b1->title }}"></span>
+            <span class="dc-cover"><img src="{{ $b1Cover }}" alt="Front cover of {{ $b1->title }}"></span>
             <span class="dc-body">
               <span class="dc-title">{{ $b1->title }}</span>
               <span class="dc-desc">{{ $b1->subtitle ?: $b1->relation_tag }}</span>
@@ -48,12 +54,24 @@
   @if(isset($featuredBooks) && count($featuredBooks) > 0)
     @foreach($featuredBooks as $index => $book)
       @php
-        $pagesJson = is_array($book->pages_json) ? json_encode($book->pages_json) : '[]';
+        $rawPages = is_array($book->pages_json) ? $book->pages_json : (is_string($book->pages_json) ? json_decode($book->pages_json, true) : []);
+        $formattedPages = array_map(function($p) {
+            if (is_array($p) && isset($p['src'])) {
+                $src = $p['src'];
+                if (!str_starts_with($src, 'http://') && !str_starts_with($src, 'https://') && !str_starts_with($src, '/')) {
+                    $p['src'] = asset($src);
+                }
+            }
+            return $p;
+        }, $rawPages);
+        $pagesJson = json_encode($formattedPages, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $coverUrl = $book->cover_image ? asset($book->cover_image) : asset('assets/img/logo-emblem-light.png');
+        $backUrl = $book->back_image ? asset($book->back_image) : $coverUrl;
       @endphp
       <section class="section @if($index % 2 === 0) section-tint grain @endif" id="book-{{ $book->id }}">
         <div class="container book-feature @if($index % 2 !== 0) flip @endif">
           <figure class="plate hoverable" data-reveal="@if($index % 2 === 0) left @else right @endif" data-open-book="#open-book-{{ $book->id }}" style="max-width: 400px; justify-self: center; width: 100%; cursor: pointer;" title="Click to read {{ $book->title }}">
-            <img src="{{ asset($book->cover_image) }}" width="900" height="1273" loading="lazy" alt="Front cover of {{ $book->title }}">
+            <img src="{{ $coverUrl }}" width="900" height="1273" loading="lazy" alt="Front cover of {{ $book->title }}">
             <figcaption class="caption">{{ $book->caption ?: 'the actual cover — printed, bound, gifted (tap to read)' }}</figcaption>
           </figure>
           <div class="book-meta" data-reveal="@if($index % 2 === 0) right @else left @endif">
@@ -70,8 +88,8 @@
               <button class="btn btn-primary" id="open-book-{{ $book->id }}"
                 data-book-title="{{ $book->title }}"
                 data-book-sub="{{ $book->subtitle }}"
-                data-book-cover="{{ asset($book->cover_image) }}"
-                data-book-back="{{ asset($book->back_image ?: $book->cover_image) }}"
+                data-book-cover="{{ $coverUrl }}"
+                data-book-back="{{ $backUrl }}"
                 data-book-pages='{{ $pagesJson }}'>
                 Read this book
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
@@ -94,8 +112,32 @@
       <div class="shelf">
         @if(isset($shelfBooks) && count($shelfBooks) > 0)
           @foreach($shelfBooks as $sIndex => $sBook)
-            <div class="shelf-card" data-reveal @if(isset($featuredBooks[0])) data-open-book="#open-book-{{ $featuredBooks[0]->id }}" @endif style="--stagger:{{ $sIndex % 4 }}; cursor:pointer;" tabindex="0" title="Click to read book">
-              <span class="sc-bg" style="background-image:url('{{ asset($sBook->cover_image) }}')" role="img" aria-label="{{ $sBook->title }}"></span>
+            @php
+              $sCover = $sBook->cover_image ? asset($sBook->cover_image) : asset('assets/img/spread-under-stars.webp');
+              $sPages = is_array($sBook->pages_json) ? $sBook->pages_json : (is_string($sBook->pages_json) ? json_decode($sBook->pages_json, true) : []);
+              $sFormattedPages = array_map(function($p) {
+                  if (is_array($p) && isset($p['src'])) {
+                      $src = $p['src'];
+                      if (!str_starts_with($src, 'http://') && !str_starts_with($src, 'https://') && !str_starts_with($src, '/')) {
+                          $p['src'] = asset($src);
+                      }
+                  }
+                  return $p;
+              }, $sPages);
+              $sPagesJson = json_encode($sFormattedPages, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            @endphp
+            <div class="shelf-card" data-reveal
+                 @if(count($sFormattedPages) > 0)
+                   data-book-pages='{{ $sPagesJson }}'
+                   data-book-title="{{ $sBook->title }}"
+                   data-book-sub="{{ $sBook->subtitle }}"
+                   data-book-cover="{{ $sCover }}"
+                   data-book-back="{{ $sBook->back_image ? asset($sBook->back_image) : $sCover }}"
+                 @elseif(isset($featuredBooks[0]))
+                   data-open-book="#open-book-{{ $featuredBooks[0]->id }}"
+                 @endif
+                 style="--stagger:{{ $sIndex % 4 }}; cursor:pointer;" tabindex="0" title="Click to read {{ $sBook->title }}">
+              <span class="sc-bg" style="background-image:url('{{ $sCover }}')" role="img" aria-label="{{ $sBook->title }}"></span>
               <div class="content">
                 <span class="sc-title">{{ $sBook->title }}</span>
                 <span class="sc-copy">{{ $sBook->synopsis }}</span>
@@ -126,3 +168,4 @@
     </div>
   </section>
 @endsection
+

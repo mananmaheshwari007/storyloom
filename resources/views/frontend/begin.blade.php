@@ -54,7 +54,7 @@
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
-            <span><span class="lbl">Instagram</span><a href="{{ setting('social_instagram', 'https://instagram.com/storyloom.in') }}" target="_blank" rel="noopener">@{{ setting('instagram_username', 'storyloom.in') }}</a></span>
+            <span><span class="lbl">Instagram</span><a href="{{ setting('social_instagram', 'https://www.instagram.com/storyloombooks/') }}" target="_blank" rel="noopener">&#64;{{ setting('instagram_username', 'storyloombooks') }}</a></span>
           </li>
         </ul>
         <p class="hand-note" style="margin-top: 26px;">{{ setting('begin_box_note', 'voice notes welcome. rambling encouraged.') }}</p>
@@ -167,7 +167,7 @@
         fetch("{{ route('contact.submit') }}", {
           method: "POST",
           headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')?.content || "{{ csrf_token() }}",
             "Accept": "application/json"
           },
           body: formData

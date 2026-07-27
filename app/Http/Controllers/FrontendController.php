@@ -14,6 +14,7 @@ use App\Models\Faq;
 use App\Models\Testimonial;
 use App\Models\TeamMember;
 use App\Models\Blog;
+use App\Models\LibraryBook;
 use App\Models\ContactMessage;
 use App\Models\NewsletterSubscriber;
 use Illuminate\Support\Facades\Validator;
@@ -77,8 +78,24 @@ class FrontendController extends Controller
      */
     public function library()
     {
-        $featuredBooks = \App\Models\LibraryBook::where('status', true)->where('type', 'featured')->orderBy('order', 'asc')->get();
-        $shelfBooks = \App\Models\LibraryBook::where('status', true)->where('type', 'shelf')->orderBy('order', 'asc')->get();
+        if (LibraryBook::count() === 0) {
+            $this->seedDefaultLibraryBooks();
+        }
+
+        $featuredBooks = LibraryBook::where('status', true)->where('type', 'featured')->orderBy('order', 'asc')->get();
+        $shelfBooks = LibraryBook::where('status', true)->where('type', 'shelf')->orderBy('order', 'asc')->get();
+
+        if ($featuredBooks->isEmpty() && $shelfBooks->isEmpty()) {
+            $featuredBooks = LibraryBook::where('type', 'featured')->orderBy('order', 'asc')->get();
+            $shelfBooks = LibraryBook::where('type', 'shelf')->orderBy('order', 'asc')->get();
+
+            if ($featuredBooks->isEmpty() && $shelfBooks->isEmpty()) {
+                LibraryBook::truncate();
+                $this->seedDefaultLibraryBooks();
+                $featuredBooks = LibraryBook::where('type', 'featured')->orderBy('order', 'asc')->get();
+                $shelfBooks = LibraryBook::where('type', 'shelf')->orderBy('order', 'asc')->get();
+            }
+        }
         
         $seo = [
             'title' => 'Read a Storyloom — Illustrated Keepsake Book Library',
@@ -86,6 +103,101 @@ class FrontendController extends Controller
         ];
 
         return view('frontend.library', compact('featuredBooks', 'shelfBooks', 'seo'));
+    }
+
+    /**
+     * Seed default library books if database table is empty.
+     */
+    private function seedDefaultLibraryBooks()
+    {
+        if (LibraryBook::count() > 0) {
+            return;
+        }
+
+        $books = [
+            [
+                'title' => 'The First Home',
+                'subtitle' => 'A birthday gift for Mansi',
+                'type' => 'featured',
+                'relation_tag' => 'For a wife',
+                'occasion_tag' => 'Birthday',
+                'spreads_count' => '15 spreads',
+                'read_time' => '8 min read',
+                'synopsis' => 'Their first flat had a leaking tap, one steel cup, and a view of every rooftop in the city. For Mansi\'s birthday, her husband turned their first year in their first home into a painted story — the morning chai, the evening walks, the plate of fries they still argue about.',
+                'caption' => 'the actual cover — printed, bound, gifted',
+                'cover_image' => 'assets/img/book1/cover.webp',
+                'back_image' => 'assets/img/book1/back.webp',
+                'pages_json' => array_map(function($i) {
+                    $num = sprintf('%02d', $i);
+                    return ['src' => "assets/img/book1/s{$num}.webp", 'alt' => "The First Home — spread {$i}"];
+                }, range(1, 15)),
+                'order' => 1,
+                'status' => true,
+            ],
+            [
+                'title' => 'Underwater, Together',
+                'subtitle' => 'A rakhi gift for Chicky Didi',
+                'type' => 'featured',
+                'relation_tag' => 'For a sister',
+                'occasion_tag' => 'Raksha Bandhan',
+                'spreads_count' => '17 spreads',
+                'read_time' => '9 min read',
+                'synopsis' => 'Two kids, one landline, and a swim class neither of them wanted to attend. This Raksha Bandhan, instead of another gift, a brother bound twenty years of schemes, duets and dance routines into a book for his Chicky Didi — proof that some skills only work in pairs.',
+                'caption' => 'the actual cover — a rakhi gift for Chicky Didi',
+                'cover_image' => 'assets/img/book2/cover.webp',
+                'back_image' => 'assets/img/book2/back.webp',
+                'pages_json' => array_map(function($i) {
+                    $num = sprintf('%02d', $i);
+                    return ['src' => "assets/img/book2/s{$num}.webp", 'alt' => "Underwater, Together — spread {$i}"];
+                }, range(1, 17)),
+                'order' => 2,
+                'status' => true,
+            ],
+            [
+                'title' => 'The Moon Protector',
+                'subtitle' => 'For a daughter',
+                'type' => 'shelf',
+                'relation_tag' => 'For a daughter · on the loom',
+                'synopsis' => 'A bedtime adventure for the girl who asked if the moon follows her home.',
+                'cover_image' => 'assets/img/spread-under-stars.webp',
+                'order' => 3,
+                'status' => true,
+            ],
+            [
+                'title' => 'Letters From Grandma',
+                'subtitle' => 'For a grandmother',
+                'type' => 'shelf',
+                'relation_tag' => 'For a grandmother · on the loom',
+                'synopsis' => 'Sixty years of recipes, prayers, and Sunday letters, finally bound.',
+                'cover_image' => 'assets/img/spread-street-morning.webp',
+                'order' => 4,
+                'status' => true,
+            ],
+            [
+                'title' => 'Dad\'s Bicycle',
+                'subtitle' => 'For a father',
+                'type' => 'shelf',
+                'relation_tag' => 'For a father · on the loom',
+                'synopsis' => 'Every route he ever pedalled, retold by the boy on the back seat.',
+                'cover_image' => 'assets/img/spread-alone-bench.webp',
+                'order' => 5,
+                'status' => true,
+            ],
+            [
+                'title' => 'Our Little Explorer',
+                'subtitle' => 'For a son',
+                'type' => 'shelf',
+                'relation_tag' => 'For a son · on the loom',
+                'synopsis' => 'The first five years of a boy who never once sat still.',
+                'cover_image' => 'assets/img/book2-page-dance.webp',
+                'order' => 6,
+                'status' => true,
+            ],
+        ];
+
+        foreach ($books as $b) {
+            LibraryBook::create($b);
+        }
     }
 
     /**

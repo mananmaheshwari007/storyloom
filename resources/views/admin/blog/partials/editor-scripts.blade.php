@@ -501,11 +501,18 @@
             if (!file || !uploadTarget) return;
             var fd = new FormData();
             fd.append("file", file);
-            fd.append("_token", document.querySelector('meta[name="csrf-token"]')
+            var token = document.querySelector('meta[name="csrf-token"]')
                 ? document.querySelector('meta[name="csrf-token"]').content
-                : (document.querySelector('input[name="_token"]') || {}).value);
+                : (document.querySelector('input[name="_token"]') || {}).value;
+            fd.append("_token", token);
 
-            fetch("{{ route('admin.blog.upload') }}", { method: "POST", body: fd })
+            fetch("{{ route('admin.blog.upload') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": token
+                },
+                body: fd
+            })
                 .then(function (r) { return r.json(); })
                 .then(function (d) {
                     if (d && d.url) { uploadTarget(d.url); }
