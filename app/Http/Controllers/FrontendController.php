@@ -161,13 +161,14 @@ class FrontendController extends Controller
     public function blog()
     {
         $posts = Blog::where('status', 'published')->orderBy('created_at', 'desc')->paginate(9);
+        $articles = $posts;
 
         $seo = [
             'title' => 'The Storyloom Journal — Reflections on Memory & Keepsakes',
             'description' => 'Essays, family traditions, memory-keeping ideas, and behind-the-scenes stories from the Storyloom writing and art desk.',
         ];
 
-        return view('frontend.blog', compact('posts', 'seo'));
+        return view('frontend.blog', compact('posts', 'articles', 'seo'));
     }
 
     /**

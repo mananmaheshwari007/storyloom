@@ -171,8 +171,8 @@ h1 em, h2 em, h3 em { color: var(--terra); font-weight: 500; }
 .btn-ghost:hover { background: var(--navy); border-color: var(--navy); color: var(--parchment); transform: translateY(-2px); }
 .btn-light { background: var(--parchment); color: var(--navy); }
 .btn-light:hover { background: #fff; transform: translateY(-2px); }
-.btn-ghost-light { border: 1px solid var(--hairline-on-dark); color: var(--cream-on-dark); }
-.btn-ghost-light:hover { background: var(--cream-on-dark); color: var(--navy); border-color: var(--cream-on-dark); transform: translateY(-2px); }
+.btn-ghost-light, .btn-outline-ghost { border: 1px solid var(--hairline-on-dark); color: var(--cream-on-dark) !important; background: transparent; transition: all 0.25s ease; }
+.btn-ghost-light:hover, .btn-outline-ghost:hover { background: var(--cream-on-dark) !important; color: var(--navy) !important; border-color: var(--cream-on-dark) !important; transform: translateY(-2px); }
 .btn-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
 
 .text-link {

@@ -287,7 +287,7 @@
         <a class="btn btn-primary" href="{{ route('begin') }}">Begin Your Story
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-ghost-light" href="{{ route('library') }}">Read a Storyloom</a>
+        <a class="btn btn-outline-ghost" href="{{ route('library') }}">READ A STORYLOOM</a>
       </div>
     </div>
   </section>

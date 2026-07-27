@@ -81,11 +81,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     
-    Route::get('/hero', [HeroController::class, 'index'])->name('hero');
-    Route::put('/hero', [HeroController::class, 'update'])->name('hero.update');
+    Route::get('/hero', function () { return redirect(route('admin.settings') . '#home'); })->name('hero');
+    Route::put('/hero', [SettingController::class, 'update'])->name('hero.update');
     
-    Route::get('/about', [AboutController::class, 'index'])->name('about');
-    Route::put('/about', [AboutController::class, 'update'])->name('about.update');
+    Route::get('/about', function () { return redirect(route('admin.settings') . '#about'); })->name('about');
+    Route::put('/about', [SettingController::class, 'update'])->name('about.update');
 
     // Dynamic modules CRUD resources
     Route::resource('services', ServiceController::class)->except(['show']);

@@ -3,28 +3,37 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
-
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
-
-storage/*.key
-.env
-Homestead.yaml
-Homestead.json
-/.vagrant
-.phpunit.result.cache
-
+# Laravel files
+/public/storage
+/public/hot
 /public/build
+/storage/*.key
 /storage/pail
+.env
 .env.backup
 .env.production
+.env.local
+
+# SQLite Databases
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+database/*.sqlite
+
+# Logs & Caches
+*.log
+.phpunit.result.cache
 .phpactor.json
 auth.json
+
+# Tool & Portable Runtimes
+.claude/
+.php83/
+php83/
+claude/
+
+# IDE & OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
