@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="Gifting Occasions — Keepsakes for Milestones"
+    description="Personalised books for anniversaries, Mother's Day, Father's Day, weddings, retirements, birthdays, and farewelling loved ones."
+    keywords="anniversary gifts, wedding gifts, mother's day gift, milestone gifts, custom storybooks"
+    ogImage="assets/img/spread-cafe-window.webp"
+  />
+@endsection
+
 @section('content')
 
   <section class="page-hero container">

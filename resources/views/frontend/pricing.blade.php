@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="Pricing & Book Formats — Storyloom"
+    description="Compare our Keepsake and Heirloom custom book editions. Clear pricing for handbound, illustrated storytelling."
+    keywords="storyloom pricing, custom book cost, keepsake book editions, heirloom book packages"
+    ogImage="assets/img/spread-shared-fries.webp"
+  />
+@endsection
+
 @section('content')
 
   <section class="page-hero container">

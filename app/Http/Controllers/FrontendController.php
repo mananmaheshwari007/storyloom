@@ -57,6 +57,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'About Storyloom — Our Mission & Craftsmanship',
             'description' => 'Learn how Storyloom weaves family memories into handbound, illustrated keepsake books crafted by master artisans in India.',
+            'og_image' => 'assets/img/spread-room-sunlight.webp',
         ];
 
         return view('frontend.about', compact('about', 'team', 'seo'));
@@ -72,6 +73,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'How It Works — The Journey of a Storyloom',
             'description' => 'From sharing a single memory to reviewing hand-painted spreads, learn the step-by-step process of crafting your keepsake book.',
+            'og_image' => 'assets/img/spread-bench-sunlight.webp',
         ];
 
         return view('frontend.how-it-works', compact('faqs', 'seo'));
@@ -92,6 +94,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Read a Storyloom — Illustrated Keepsake Book Library',
             'description' => 'Explore sample hand-drawn pages, watercolor spreads, and heirloom books created from real family memories.',
+            'og_image' => 'assets/img/spread-flower-street.webp',
         ];
 
         return view('frontend.library', compact('projects', 'featuredBooks', 'shelf', 'seo'));
@@ -107,6 +110,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Gifting Occasions — Keepsakes for Milestones',
             'description' => 'Personalised books for anniversaries, Mother\'s Day, Father\'s Day, weddings, retirements, birthdays, and farewelling loved ones.',
+            'og_image' => 'assets/img/spread-cafe-window.webp',
         ];
 
         return view('frontend.occasions', compact('portfolios', 'seo'));
@@ -122,6 +126,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Pricing & Book Formats — Storyloom',
             'description' => 'Compare our Keepsake and Heirloom custom book editions. Clear pricing for handbound, illustrated storytelling.',
+            'og_image' => 'assets/img/spread-shared-fries.webp',
         ];
 
         return view('frontend.pricing', compact('plans', 'seo'));
@@ -137,6 +142,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Good Questions — FAQ | Storyloom',
             'description' => 'Answers to questions about writing, image references, international shipping, print proof reviews, and pricing packages.',
+            'og_image' => 'assets/img/spread-street-morning.webp',
         ];
 
         return view('frontend.faq', compact('faqs', 'seo'));
@@ -150,6 +156,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Begin Your Story — Start a Storybook | Storyloom',
             'description' => 'Start with one memory. Tell us who the book is for, and we\'ll send a personalized plan, timeline, and quote.',
+            'og_image' => 'assets/img/spread-bench-dusk.webp',
         ];
 
         return view('frontend.begin', compact('seo'));
@@ -166,6 +173,7 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'The Storyloom Journal — Reflections on Memory & Keepsakes',
             'description' => 'Essays, family traditions, memory-keeping ideas, and behind-the-scenes stories from the Storyloom writing and art desk.',
+            'og_image' => 'assets/img/spread-home-morning.webp',
         ];
 
         return view('frontend.blog', compact('posts', 'articles', 'seo'));
@@ -181,8 +189,23 @@ class FrontendController extends Controller
 
         $seo = [
             'title' => ($post->meta_title ?: $post->title) . ' | Storyloom Journal',
-            'description' => $post->meta_description ?: $post->short_description,
+            'description' => $post->meta_description ?: ($post->short_description ?: $post->dek),
             'keywords' => $post->keywords ?? null,
+            'og_image' => $post->featured_image ?: 'assets/img/spread-bench-dusk.webp',
+            'og_type' => 'article',
+            'schema' => [
+                '@context' => 'https://schema.org',
+                '@type' => 'BlogPosting',
+                'headline' => $post->title,
+                'description' => $post->short_description ?: $post->dek,
+                'image' => asset($post->featured_image ?: 'assets/img/spread-bench-dusk.webp'),
+                'datePublished' => $post->created_at ? $post->created_at->toIso8601String() : null,
+                'publisher' => [
+                    '@type' => 'Organization',
+                    'name' => setting('site_name', 'Storyloom'),
+                    'logo' => asset(setting('site_emblem', 'assets/img/logo-emblem.png')),
+                ],
+            ],
         ];
 
         return view('frontend.blog-detail', compact('post', 'related', 'seo'));
@@ -202,7 +225,16 @@ class FrontendController extends Controller
 
         $seo = [
             'title' => $project->title . ' | Storyloom Portfolio',
-            'description' => $project->excerpt ?? $project->title,
+            'description' => $project->description ? \Illuminate\Support\Str::limit(strip_tags($project->description), 160) : $project->title,
+            'og_image' => $project->image ?: 'assets/img/spread-bench-dusk.webp',
+            'og_type' => 'article',
+            'schema' => [
+                '@context' => 'https://schema.org',
+                '@type' => 'CreativeWork',
+                'name' => $project->title,
+                'author' => setting('site_name', 'Storyloom'),
+                'image' => asset($project->image ?: 'assets/img/spread-bench-dusk.webp'),
+            ],
         ];
 
         return view('frontend.project-detail', compact('project', 'seo'));

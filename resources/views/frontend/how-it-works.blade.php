@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="How It Works — The Journey of a Storyloom"
+    description="From sharing a single memory to reviewing hand-painted spreads, learn the step-by-step process of crafting your keepsake book."
+    keywords="how it works, storyloom process, custom book timeline, illustration process, hardbound book creation"
+    ogImage="assets/img/spread-bench-sunlight.webp"
+  />
+@endsection
+
 @section('content')
 
   <section class="page-hero container">

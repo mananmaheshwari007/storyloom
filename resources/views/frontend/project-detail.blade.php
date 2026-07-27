@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    :title="$project->title . ' | Storyloom Portfolio'"
+    :description="$project->description ? \Illuminate\Support\Str::limit(strip_tags($project->description), 160) : $project->title"
+    :ogImage="$project->image ?: 'assets/img/spread-bench-dusk.webp'"
+    ogType="article"
+  />
+@endsection
+
 @section('content')
   <section class="page-hero container">
     <p class="eyebrow eyebrow-center" data-reveal><a href="{{ route('library') }}">Library</a> · Keepsake Book</p>

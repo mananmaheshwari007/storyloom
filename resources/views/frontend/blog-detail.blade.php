@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    :title="($article->meta_title ?: $article->title) . ' | Storyloom Journal'"
+    :description="$article->meta_description ?: ($article->short_description ?: $article->dek)"
+    :keywords="$article->keywords ?? null"
+    :ogImage="$article->featured_image ?: 'assets/img/spread-bench-dusk.webp'"
+    ogType="article"
+  />
+@endsection
+
 @section('content')
   <article>
     <!-- ============ ARTICLE HERO ============ -->

@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="About Storyloom — Our Mission & Craftsmanship"
+    description="Learn how Storyloom weaves family memories into handbound, illustrated keepsake books crafted by master artisans in India."
+    keywords="about storyloom, handmade books, custom illustrations, Indian craftsmanship, memory keeping"
+    ogImage="assets/img/spread-room-sunlight.webp"
+  />
+@endsection
+
 @section('content')
 
   <section class="page-hero container">

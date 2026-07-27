@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    :title="setting('seo_title', 'Storyloom — The Story Only You Could Give')"
+    :description="setting('seo_description', 'We transform your memories into a hand-illustrated keepsake storybook — a one-of-a-kind gift for the people who shaped your life.')"
+    :keywords="setting('seo_keywords', 'keepsake, personalised, illustrated, books, storybooks, India, custom gift')"
+    ogImage="assets/img/spread-bench-dusk.webp"
+  />
+@endsection
+
 @section('content')
 
   <!-- ================= HERO (scroll-morph loom) ================= -->

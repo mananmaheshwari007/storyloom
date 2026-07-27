@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <x-seo-tags :seo="$seo ?? null" />
+  @hasSection('seo')
+    @yield('seo')
+  @else
+    <x-seo-tags :seo="$seo ?? null" />
+  @endif
 
   <link rel="icon" type="image/png" href="{{ asset(setting('site_favicon', 'assets/img/favicon.png')) }}">
   @include('layouts.styles')

@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="The Storyloom Journal — Reflections on Memory & Keepsakes"
+    description="Essays, family traditions, memory-keeping ideas, and behind-the-scenes stories from the Storyloom writing and art desk."
+    keywords="storyloom journal, memory keeping blog, family traditions, keepsake essays"
+    ogImage="assets/img/spread-home-morning.webp"
+  />
+@endsection
+
 @section('content')
   <!-- ============ HERO ============ -->
   <section class="container journal-hero">

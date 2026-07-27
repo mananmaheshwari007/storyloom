@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="Good Questions — FAQ | Storyloom"
+    description="Answers to questions about writing, image references, international shipping, print proof reviews, and pricing packages."
+    keywords="storyloom FAQ, custom book questions, shipping info, memory reference photos"
+    ogImage="assets/img/spread-street-morning.webp"
+  />
+@endsection
+
 @section('content')
 
   <section class="page-hero container">

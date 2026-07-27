@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('seo')
+  <x-seo-tags 
+    title="Begin Your Story — Start a Storybook | Storyloom"
+    description="Start with one memory. Tell us who the book is for, and we'll send a personalized plan, timeline, and quote."
+    keywords="start a storybook, begin storyloom, custom book quote, personalized gift plan"
+    ogImage="assets/img/spread-bench-dusk.webp"
+  />
+@endsection
+
 @section('content')
 
   <section class="page-hero container">
