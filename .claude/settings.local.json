@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm install -g ui-ux-pro-max-cli)",
+      "PowerShell(npm --version)",
+      "PowerShell(node --version)",
+      "PowerShell($paths = @\\(\"$env:ProgramFiles\\\\nodejs\\\\node.exe\",\"$env:ProgramFiles\\(x86\\)\\\\nodejs\\\\node.exe\",\"$env:APPDATA\\\\npm\",\"$env:LOCALAPPDATA\\\\Programs\\\\nodejs\\\\node.exe\",\"$env:USERPROFILE\\\\AppData\\\\Roaming\\\\nvm\"\\); foreach \\($p in $paths\\) { Test-Path $p })",
+      "PowerShell($env:PATH = \"$env:ProgramFiles\\\\nodejs;$env:APPDATA\\\\npm;\" + $env:PATH; node --version; npm --version)",
+      "PowerShell($env:PATH = \"$env:ProgramFiles\\\\nodejs;$env:APPDATA\\\\npm;\" + $env:PATH; npm install -g ui-ux-pro-max-cli)",
+      "PowerShell($env:PATH = \"$env:ProgramFiles\\\\nodejs;$env:APPDATA\\\\npm;\" + $env:PATH; uipro init --ai claude --global)",
+      "PowerShell(Test-Path \"$env:USERPROFILE\\\\.claude\\\\skills\"; Test-Path \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\"; Get-ChildItem \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\" -ErrorAction SilentlyContinue -Recurse | Select-Object FullName)",
+      "PowerShell(Get-Item \"$env:APPDATA\\\\npm\\\\node_modules\\\\ui-ux-pro-max-cli\\\\assets\\\\data\\\\app-interface.csv\" -Force | Format-List Name,Length,Attributes)",
+      "PowerShell(Copy-Item \"$env:APPDATA\\\\npm\\\\node_modules\\\\ui-ux-pro-max-cli\\\\assets\\\\data\\\\app-interface.csv\" \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\data\\\\app-interface.csv\" -Force; Test-Path \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\data\\\\app-interface.csv\")",
+      "PowerShell(\\(Get-Item \"$env:APPDATA\\\\npm\" -Force\\).Attributes; \\(Get-Item \"$env:APPDATA\" -Force\\).Attributes; \\(Get-Item \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\data\" -Force\\).Attributes)",
+      "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.claude\\\\skills\\\\ui-ux-pro-max\" -Recurse | Select-Object -First 20 FullName)",
+      "Bash(python -c ' *)",
+      "Bash(py -m pip install --quiet pillow)",
+      "Bash(PYTHONIOENCODING=utf-8 py -)",
+      "Bash(py -m pip install --quiet pymupdf)",
+      "Bash(PYTHONIOENCODING=utf-8 py -c ' *)"
+    ]
+  }
+}

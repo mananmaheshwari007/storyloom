@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read a Storyloom — The Library | Storyloom</title>
+<meta name="description" content="Step inside the Storyloom library and read real personalised illustrated storybooks — cover to cover, before you begin your own.">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Edu+SA+Hand:wght@400..700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="assets/css/main.css?v=6">
+<style>
+  .shelf { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 2vw, 24px); }
+  .shelf-card {
+    position: relative; overflow: hidden;
+    display: flex; align-items: flex-end;
+    height: clamp(300px, 30vw, 400px);
+    padding: 1.2rem 1rem;
+    text-align: center; color: #F5EFDF;
+    border-radius: 4px;
+    box-shadow: var(--shadow-soft);
+    --d: 700ms; --e: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .shelf-card .sc-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 110%;
+    background-size: cover; background-position: center;
+    transition: transform calc(var(--d) * 1.5) var(--e);
+    pointer-events: none;
+  }
+  .shelf-card::after {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 200%;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom,
+      hsla(222, 40%, 10%, 0) 0%, hsla(222, 40%, 10%, 0.04) 22%,
+      hsla(222, 40%, 10%, 0.2) 45%, hsla(222, 40%, 10%, 0.48) 62%,
+      hsla(222, 40%, 10%, 0.7) 78%, hsla(222, 40%, 10%, 0.84) 100%);
+    transform: translateY(-50%);
+    transition: transform calc(var(--d) * 2) var(--e);
+  }
+  .shelf-card .content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+    width: 100%;
+    transition: transform var(--d) var(--e);
+  }
+  .shelf-card .sc-title { font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; line-height: 1.15; }
+  .shelf-card .sc-copy { font-style: italic; font-size: 0.95rem; line-height: 1.45; color: rgba(245,239,223,.92); max-width: 26ch; }
+  .shelf-card .sc-tag { font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: #EDB58C; border: 1px solid rgba(237,181,140,.5); padding: 4px 12px; border-radius: 999px; }
+  @media (hover: hover) and (min-width: 600px) {
+    .shelf-card::after { transform: translateY(0); }
+    .shelf-card .content { transform: translateY(calc(100% - 2.8rem)); }
+    .shelf-card .content > *:not(.sc-title) {
+      opacity: 0; transform: translateY(1rem);
+      transition: transform var(--d) var(--e), opacity var(--d) var(--e);
+    }
+    .shelf-card:hover::after, .shelf-card:focus-within::after { transform: translateY(-50%); }
+    .shelf-card:hover .sc-bg, .shelf-card:focus-within .sc-bg { transform: translateY(-4%); }
+    .shelf-card:hover .content, .shelf-card:focus-within .content { transform: translateY(0); }
+    .shelf-card:hover .content > *:not(.sc-title), .shelf-card:focus-within .content > *:not(.sc-title) {
+      opacity: 1; transform: translateY(0); transition-delay: calc(var(--d) / 8);
+    }
+  }
+  @media (max-width: 859px) { .shelf { grid-template-columns: 1fr 1fr; } .shelf-card { height: 300px; } }
+  @media (max-width: 560px) { .shelf { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container nav-bar">
+    <a class="brand" href="index.html" aria-label="Storyloom home">
+      <img class="emblem" src="assets/img/logo-emblem.png" alt="" width="46" height="45">
+      <img class="wordmark" src="assets/img/logo-wordmark.png" alt="Storyloom" width="158" height="27">
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="how-it-works.html">How It Works</a>
+      <a href="library.html" aria-current="page">Read a Storyloom</a>
+      <a href="occasions.html">Occasions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="nav-cta"><a class="btn btn-primary" href="begin.html">Begin Your Story</a></div>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <nav aria-label="Mobile">
+    <a class="menu-link" href="how-it-works.html"><span>How It Works</span><span class="no">01</span></a>
+    <a class="menu-link" href="library.html"><span>Read a Storyloom</span><span class="no">02</span></a>
+    <a class="menu-link" href="occasions.html"><span>Occasions</span><span class="no">03</span></a>
+    <a class="menu-link" href="pricing.html"><span>Pricing</span><span class="no">04</span></a>
+    <a class="menu-link" href="about.html"><span>About</span><span class="no">05</span></a>
+    <a class="menu-link" href="faq.html"><span>FAQ</span><span class="no">06</span></a>
+  </nav>
+  <div class="menu-cta"><a class="btn btn-primary" href="begin.html">Begin Your Story</a></div>
+</div>
+
+<main id="main">
+
+  <section class="container library-hero">
+    <div class="page-hero" data-reveal="left">
+      <p class="eyebrow eyebrow-center">The Storyloom Library</p>
+      <h1>Read one. Then imagine <em>yours.</em></h1>
+      <p class="lede">Real books, made for real families, shared with their blessing.
+        Take your time — this room is quiet.</p>
+    </div>
+    <div class="display-stack-wrap" data-reveal="right">
+      <div class="display-stack">
+        <a class="display-card" href="#shelf">
+          <span class="dc-cover placeholder"><img src="assets/img/logo-emblem-light.png" alt=""></span>
+          <span class="dc-body">
+            <span class="dc-title">The Moon Protector</span>
+            <span class="dc-desc">For a daughter — on the loom</span>
+            <span class="dc-meta">New stories join every month</span>
+          </span>
+        </a>
+        <button class="display-card" data-open-book="#open-book-2" type="button">
+          <span class="dc-cover"><img src="assets/img/book2/cover.webp" alt="Front cover of Underwater, Together"></span>
+          <span class="dc-body">
+            <span class="dc-title">Underwater, Together</span>
+            <span class="dc-desc">For a sister — a rakhi gift</span>
+            <span class="dc-meta">17 spreads · 9 min read · tap to open</span>
+          </span>
+        </button>
+        <button class="display-card" data-open-book="#open-book-1" type="button">
+          <span class="dc-cover"><img src="assets/img/book1/cover.webp" alt="Front cover of The First Home"></span>
+          <span class="dc-body">
+            <span class="dc-title">The First Home</span>
+            <span class="dc-desc">For a wife — a birthday gift</span>
+            <span class="dc-meta">15 spreads · 8 min read · tap to open</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED BOOK 1 ============ -->
+  <section class="section section-tint grain">
+    <div class="container book-feature">
+      <figure class="plate hoverable" data-reveal="left" style="max-width: 400px; justify-self: center; width: 100%;">
+        <img src="assets/img/book1/cover.webp" width="900" height="1273" loading="lazy"
+             alt="Front cover of The First Home — a window with white curtains opening onto the city">
+        <figcaption class="caption">the actual cover — printed, bound, gifted</figcaption>
+      </figure>
+      <div class="book-meta" data-reveal="right">
+        <p class="eyebrow">Featured Storyloom</p>
+        <h2>The First <em>Home</em></h2>
+        <div class="book-tags">
+          <span class="book-tag">For a wife</span>
+          <span class="book-tag">Birthday</span>
+          <span class="book-tag">15 spreads</span>
+          <span class="book-tag">8 min read</span>
+        </div>
+        <p class="synopsis">Their first flat had a leaking tap, one steel cup, and a view of
+          every rooftop in the city. For Mansi's birthday, her husband turned their first year
+          in their first home into a painted story — the morning chai, the evening walks, the
+          plate of fries they still argue about.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="open-book-1"
+            data-book-title="The First Home"
+            data-book-sub="A birthday gift for Mansi"
+            data-book-cover="assets/img/book1/cover.webp"
+            data-book-back="assets/img/book1/back.webp"
+            data-book-pages='[{"src": "assets/img/book1/s01.webp", "alt": "The First Home — spread 1"}, {"src": "assets/img/book1/s02.webp", "alt": "The First Home — spread 2"}, {"src": "assets/img/book1/s03.webp", "alt": "The First Home — spread 3"}, {"src": "assets/img/book1/s04.webp", "alt": "The First Home — spread 4"}, {"src": "assets/img/book1/s05.webp", "alt": "The First Home — spread 5"}, {"src": "assets/img/book1/s06.webp", "alt": "The First Home — spread 6"}, {"src": "assets/img/book1/s07.webp", "alt": "The First Home — spread 7"}, {"src": "assets/img/book1/s08.webp", "alt": "The First Home — spread 8"}, {"src": "assets/img/book1/s09.webp", "alt": "The First Home — spread 9"}, {"src": "assets/img/book1/s10.webp", "alt": "The First Home — spread 10"}, {"src": "assets/img/book1/s11.webp", "alt": "The First Home — spread 11"}, {"src": "assets/img/book1/s12.webp", "alt": "The First Home — spread 12"}, {"src": "assets/img/book1/s13.webp", "alt": "The First Home — spread 13"}, {"src": "assets/img/book1/s14.webp", "alt": "The First Home — spread 14"}, {"src": "assets/img/book1/s15.webp", "alt": "The First Home — spread 15"}]'>
+            Read this book
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+          </button>
+          <a class="btn btn-ghost" href="begin.html">Begin one like it</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED BOOK 2 ============ -->
+  <section class="section">
+    <div class="container book-feature flip">
+      <figure class="plate hoverable" data-reveal="right" style="max-width: 400px; justify-self: center; width: 100%;">
+        <img src="assets/img/book2/cover.webp" width="900" height="1273" loading="lazy"
+             alt="Front cover of Underwater, Together — two hands reaching for each other underwater">
+        <figcaption class="caption">the actual cover — a rakhi gift for Chicky Didi</figcaption>
+      </figure>
+      <div class="book-meta" data-reveal="left">
+        <p class="eyebrow">Featured Storyloom</p>
+        <h2>Underwater, <em>Together</em></h2>
+        <div class="book-tags">
+          <span class="book-tag">For a sister</span>
+          <span class="book-tag">Raksha Bandhan</span>
+          <span class="book-tag">17 spreads</span>
+          <span class="book-tag">9 min read</span>
+        </div>
+        <p class="synopsis">Two kids, one landline, and a swim class neither of them wanted to
+          attend. This Raksha Bandhan, instead of another gift, a brother bound twenty years of
+          schemes, duets and dance routines into a book for his Chicky Didi — proof that some
+          skills only work in pairs.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="open-book-2"
+            data-book-title="Underwater, Together"
+            data-book-sub="A rakhi gift for Chicky Didi"
+            data-book-cover="assets/img/book2/cover.webp"
+            data-book-back="assets/img/book2/back.webp"
+            data-book-pages='[{"src": "assets/img/book2/s01.webp", "alt": "Underwater, Together — spread 1"}, {"src": "assets/img/book2/s02.webp", "alt": "Underwater, Together — spread 2"}, {"src": "assets/img/book2/s03.webp", "alt": "Underwater, Together — spread 3"}, {"src": "assets/img/book2/s04.webp", "alt": "Underwater, Together — spread 4"}, {"src": "assets/img/book2/s05.webp", "alt": "Underwater, Together — spread 5"}, {"src": "assets/img/book2/s06.webp", "alt": "Underwater, Together — spread 6"}, {"src": "assets/img/book2/s07.webp", "alt": "Underwater, Together — spread 7"}, {"src": "assets/img/book2/s08.webp", "alt": "Underwater, Together — spread 8"}, {"src": "assets/img/book2/s09.webp", "alt": "Underwater, Together — spread 9"}, {"src": "assets/img/book2/s10.webp", "alt": "Underwater, Together — spread 10"}, {"src": "assets/img/book2/s11.webp", "alt": "Underwater, Together — spread 11"}, {"src": "assets/img/book2/s12.webp", "alt": "Underwater, Together — spread 12"}, {"src": "assets/img/book2/s13.webp", "alt": "Underwater, Together — spread 13"}, {"src": "assets/img/book2/s14.webp", "alt": "Underwater, Together — spread 14"}, {"src": "assets/img/book2/s15.webp", "alt": "Underwater, Together — spread 15"}, {"src": "assets/img/book2/s16.webp", "alt": "Underwater, Together — spread 16"}, {"src": "assets/img/book2/s17.webp", "alt": "Underwater, Together — spread 17"}]'>
+            Read this book
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+          </button>
+          <a class="btn btn-ghost" href="begin.html">Begin one like it</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE SHELF ============ -->
+  <section class="section section-tint grain" id="shelf">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow eyebrow-center">On the shelf</p>
+        <h2>Stories currently on the <em>loom.</em></h2>
+      </div>
+      <div class="shelf">
+        <div class="shelf-card" data-reveal style="--stagger:0" tabindex="0">
+          <span class="sc-bg" style="background-image:url('assets/img/spread-under-stars.webp')" role="img" aria-label="A starry night sky over the city"></span>
+          <div class="content">
+            <span class="sc-title">The Moon Protector</span>
+            <span class="sc-copy">A bedtime adventure for the girl who asked if the moon follows her home.</span>
+            <span class="sc-tag">For a daughter · on the loom</span>
+          </div>
+        </div>
+        <div class="shelf-card" data-reveal style="--stagger:1" tabindex="0">
+          <span class="sc-bg" style="background-image:url('assets/img/spread-street-morning.webp')" role="img" aria-label="A busy Indian street on a bright morning"></span>
+          <div class="content">
+            <span class="sc-title">Letters From Grandma</span>
+            <span class="sc-copy">Sixty years of recipes, prayers, and Sunday letters, finally bound.</span>
+            <span class="sc-tag">For a grandmother · on the loom</span>
+          </div>
+        </div>
+        <div class="shelf-card" data-reveal style="--stagger:2" tabindex="0">
+          <span class="sc-bg" style="background-image:url('assets/img/spread-alone-bench.webp')" role="img" aria-label="A father on a park bench at dusk"></span>
+          <div class="content">
+            <span class="sc-title">Dad's Bicycle</span>
+            <span class="sc-copy">Every route he ever pedalled, retold by the boy on the back seat.</span>
+            <span class="sc-tag">For a father · on the loom</span>
+          </div>
+        </div>
+        <div class="shelf-card" data-reveal style="--stagger:3" tabindex="0">
+          <span class="sc-bg" style="background-image:url('assets/img/book2-page-dance.webp')" role="img" aria-label="Two children inventing a dance in a warm bedroom"></span>
+          <div class="content">
+            <span class="sc-title">Our Little Explorer</span>
+            <span class="sc-copy">The first five years of a boy who never once sat still.</span>
+            <span class="sc-tag">For a son · on the loom</span>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center; margin-top: 44px;" class="hand-note" data-reveal>
+        …the next one could be about your family.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="final-cta">
+    <div class="bg" style="background-image:url('assets/img/spread-bench-dusk.webp')" role="img"
+         aria-label="Illustration of a couple on a bench at dusk, city lights below"></div>
+    <div class="container inner">
+      <h2 data-reveal>Imagine your story <em>here.</em></h2>
+      <p data-reveal>Every book in this library began with someone saying “I don't know where
+        to start.” Start there. We'll take it from that sentence.</p>
+      <div class="btn-row" style="justify-content:center;" data-reveal>
+        <a class="btn btn-primary" href="begin.html">Begin Your Story
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ READER MODAL ============ -->
+<div class="reader-modal" role="dialog" aria-modal="true" aria-label="Storyloom reader">
+  <div class="reader-dialog">
+    <div class="reader-top">
+      <span class="reader-title">Storyloom</span>
+      <button class="reader-close" aria-label="Close reader">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <div class="reader-stage">
+      <div class="reader-book">
+        <div class="half half-left"></div>
+        <div class="half half-right"></div>
+        <div class="leaf" style="display:none">
+          <div class="leaf-front"></div>
+          <div class="leaf-back"></div>
+        </div>
+      </div>
+    </div>
+    <div class="reader-bottom">
+      <span class="reader-caption" aria-live="polite"></span>
+      <div class="reader-nav">
+        <button class="reader-arrow prev" aria-label="Previous page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12H4m0 0 6-6m-6 6 6 6"/></svg>
+        </button>
+        <span class="page-ind">1 / 1</span>
+        <button class="reader-arrow next" aria-label="Next page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/logo-primary-light.png" alt="Storyloom" width="120" height="118">
+        <p>Personalised, hand-illustrated keepsake storybooks. Your memories, woven into
+          a book your family will treasure for generations. Crafted in India, delivered
+          worldwide.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="how-it-works.html">How It Works</a></li>
+          <li><a href="library.html">Read a Storyloom</a></li>
+          <li><a href="occasions.html">Occasions</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Storyloom</h4>
+        <ul>
+          <li><a href="about.html">Our Story</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="faq.html#shipping">Shipping &amp; Delivery</a></li>
+          <li><a href="begin.html">Begin Your Story</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Say hello</h4>
+        <ul class="footer-contact">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+            <a href="mailto:hello@storyloom.in">hello@storyloom.in</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z"/><path d="M9 9.5c.5 2.5 3 5 5.5 5.5l1-1.5 2 1c-.5 1.5-1.5 2-3 2-3.5-.5-6.5-3.5-7-7 0-1.5.5-2.5 2-3l1 2-1.5 1Z" fill="currentColor" stroke="none"/></svg>
+            <a href="https://wa.me/919999999999" rel="noopener">WhatsApp us</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+            <a href="https://instagram.com/storyloom.in" rel="noopener">@storyloom.in</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Storyloom. Every story belongs to its family.</span>
+      <span class="legal-links">
+        <a href="faq.html#shipping">Shipping</a>
+        <a href="faq.html#refunds">Refunds</a>
+        <a href="faq.html">Privacy</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js?v=6" defer></script>
+</body>
+</html>
