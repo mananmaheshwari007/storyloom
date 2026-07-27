@@ -1,143 +1,128 @@
 @extends('layouts.admin')
 
-@section('title', 'Modify Pricing Plan')
-@section('page_title', 'Edit Pricing Plan')
-
-@section('breadcrumbs')
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="{{ route('admin.pricing.index') }}">Pricing Plans</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Edit</li>
-    </ol>
-  </nav>
-@endsection
+@section('title', 'Edit Pricing Plan')
 
 @section('content')
-  <div class="card border-0 bg-white">
-    <div class="card-body p-4">
-      <form action="{{ route('admin.pricing.update', $pricing->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+<div class="page-header">
+    <h1 class="page-title">Edit Pricing Plan</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.pricing.index') }}">Pricing</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Plan</li>
+        </ol>
+    </nav>
+</div>
 
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Plan Name</label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $pricing->name) }}" required>
-            @error('name')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-3">
-            <label class="form-label fw-semibold">Base Price (INR)</label>
-            <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $pricing->price) }}" required min="0">
-            @error('price')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-3">
-            <label class="form-label fw-semibold">Duration Text</label>
-            <input type="text" name="duration" class="form-control @error('duration') is-invalid @enderror" value="{{ old('duration', $pricing->duration) }}" required>
-            @error('duration')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">CTA Button Text (optional)</label>
-            <input type="text" name="button_text" class="form-control @error('button_text') is-invalid @enderror" value="{{ old('button_text', $pricing->button_text) }}">
-            @error('button_text')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">CTA Button URL (optional)</label>
-            <input type="text" name="button_url" class="form-control @error('button_url') is-invalid @enderror" value="{{ old('button_url', $pricing->button_url) }}">
-            @error('button_url')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Popular / Featured Badge</label>
-            <select name="popular" class="form-select @error('popular') is-invalid @enderror" required>
-              <option value="0" {{ old('popular', $pricing->popular ? '1' : '0') === '0' ? 'selected' : '' }}>Standard Plan</option>
-              <option value="1" {{ old('popular', $pricing->popular ? '1' : '0') === '1' ? 'selected' : '' }}>Popular (Highlighted)</option>
-            </select>
-            @error('popular')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Status</label>
-            <select name="status" class="form-select @error('status') is-invalid @enderror" required>
-              <option value="1" {{ old('status', $pricing->status ? '1' : '0') === '1' ? 'selected' : '' }}>Active</option>
-              <option value="0" {{ old('status', $pricing->status ? '1' : '0') === '0' ? 'selected' : '' }}>Inactive</option>
-            </select>
-            @error('status')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <!-- Features Section -->
-          <div class="col-12 mt-4">
-            <h5 class="fw-bold border-bottom pb-2 mb-3">Plan Features</h5>
-            <div id="features-container">
-              @if(!empty($pricing->features))
-                @foreach($pricing->features as $feature)
-                  <div class="row g-2 mb-2 feature-row">
-                    <div class="col-10">
-                      <input type="text" name="features[]" class="form-control form-control-sm" placeholder="Feature text" value="{{ $feature }}" required>
-                    </div>
-                    <div class="col-2">
-                      <button type="button" class="btn btn-sm btn-danger w-100 remove-feature-btn"><i class="bi bi-trash"></i></button>
-                    </div>
-                  </div>
-                @endforeach
-              @endif
+<div class="card shadow-sm max-w-4xl">
+    <div class="card-body">
+        <form action="{{ route('admin.pricing.update', $pricing) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="plan_name" class="form-label">Plan Name</label>
+                    <input type="text" class="form-control @error('plan_name') is-invalid @enderror" id="plan_name" name="plan_name" value="{{ old('plan_name', $pricing->plan_name) }}" required>
+                    @error('plan_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="duration" class="form-label">Duration Label</label>
+                    <input type="text" class="form-control @error('duration') is-invalid @enderror" id="duration" name="duration" value="{{ old('duration', $pricing->duration) }}" required>
+                    @error('duration')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-feature-btn"><i class="bi bi-plus-circle me-1"></i>Add Feature Line</button>
-          </div>
-        </div>
 
-        <div class="mt-4 pt-3 border-top d-flex gap-2">
-          <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Save Changes</button>
-          <a href="{{ route('admin.pricing.index') }}" class="btn btn-outline-secondary">Cancel</a>
-        </div>
-      </form>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $pricing->price) }}" required>
+                    @error('price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
+                        <option value="active" {{ old('status', $pricing->status) === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ old('status', $pricing->status) === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                    @error('status')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="button_text" class="form-label">Button Text</label>
+                    <input type="text" class="form-control @error('button_text') is-invalid @enderror" id="button_text" name="button_text" value="{{ old('button_text', $pricing->button_text) }}">
+                </div>
+                <div class="col-md-6">
+                    <label for="button_url" class="form-label">Button URL / Link</label>
+                    <input type="text" class="form-control @error('button_url') is-invalid @enderror" id="button_url" name="button_url" value="{{ old('button_url', $pricing->button_url) }}">
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="popular_plan" name="popular_plan" value="1" {{ old('popular_plan', $pricing->popular_plan) ? 'checked' : '' }}>
+                <label class="form-check-label fw-semibold" for="popular_plan">Mark this plan as "Popular Plan"</label>
+            </div>
+
+            <!-- Plan Features List -->
+            <div class="mb-4">
+                <label class="form-label fw-bold d-block">Plan Features</label>
+                <div id="features-container">
+                    @forelse($pricing->features ?: [''] as $feat)
+                        <div class="input-group mb-2 feature-item">
+                            <input type="text" class="form-control" name="features[]" value="{{ $feat }}" placeholder="Feature description text" required>
+                            <button type="button" class="btn btn-outline-danger remove-feature"><i class="bi bi-dash"></i></button>
+                        </div>
+                    @empty
+                        <div class="input-group mb-2 feature-item">
+                            <input type="text" class="form-control" name="features[]" placeholder="Feature description text" required>
+                            <button type="button" class="btn btn-outline-danger remove-feature"><i class="bi bi-dash"></i></button>
+                        </div>
+                    @endforelse
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary mt-1" id="add-feature">
+                    <i class="bi bi-plus"></i> Add Feature Line
+                </button>
+            </div>
+
+            <button type="submit" class="btn btn-primary px-4 py-2"><i class="bi bi-save me-1"></i> Update Plan</button>
+            <a href="{{ route('admin.pricing.index') }}" class="btn btn-outline-secondary px-4 py-2 ms-2">Cancel</a>
+        </form>
     </div>
-  </div>
+</div>
 @endsection
 
-@push('scripts')
+@section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Add Feature
-  document.getElementById('add-feature-btn').addEventListener('click', function () {
-    var container = document.getElementById('features-container');
-    var html = `
-      <div class="row g-2 mb-2 feature-row">
-        <div class="col-10">
-          <input type="text" name="features[]" class="form-control form-control-sm" placeholder="Feature detail text" required>
-        </div>
-        <div class="col-2">
-          <button type="button" class="btn btn-sm btn-danger w-100 remove-feature-btn"><i class="bi bi-trash"></i></button>
-        </div>
-      </div>
-    `;
-    container.insertAdjacentHTML('beforeend', html);
-  });
+    document.getElementById('add-feature').addEventListener('click', function() {
+        const container = document.getElementById('features-container');
+        const div = document.createElement('div');
+        div.className = 'input-group mb-2 feature-item';
+        div.innerHTML = `
+            <input type="text" class="form-control" name="features[]" placeholder="Additional feature text" required>
+            <button type="button" class="btn btn-outline-danger remove-feature"><i class="bi bi-dash"></i></button>
+        `;
+        container.appendChild(div);
+    });
 
-  // Remove feature
-  document.addEventListener('click', function (e) {
-    if (e.target.closest('.remove-feature-btn')) {
-      e.target.closest('.feature-row').remove();
-    }
-  });
-});
+    document.getElementById('features-container').addEventListener('click', function(e) {
+        if (e.target.closest('.remove-feature')) {
+            const items = document.querySelectorAll('.feature-item');
+            if (items.length > 1) {
+                e.target.closest('.feature-item').remove();
+            } else {
+                alert('A plan must have at least one feature.');
+            }
+        }
+    });
 </script>
-@endpush
+@endsection

@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\AboutController;
@@ -12,14 +9,15 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\PortfolioController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\PricingController;
+use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ContactMessageController;
-use App\Http\Controllers\Admin\SubscriberController;
-use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\NewsletterController;
+use App\Http\Controllers\Admin\MediaManagerController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,45 +25,34 @@ use Illuminate\Support\Facades\Route;
 | Frontend Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/', [FrontendController::class, 'home'])->name('home');
+Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/how-it-works', [FrontendController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/library', [FrontendController::class, 'library'])->name('library');
 Route::get('/occasions', [FrontendController::class, 'occasions'])->name('occasions');
 Route::get('/pricing', [FrontendController::class, 'pricing'])->name('pricing');
 Route::get('/faq', [FrontendController::class, 'faq'])->name('faq');
+Route::get('/journal', [FrontendController::class, 'blog'])->name('blog.index');
+Route::get('/journal/{slug}', [FrontendController::class, 'blogShow'])->name('blog.show');
+Route::get('/journal-dont-get-me-anything', function () {
+    return redirect()->route('blog.show', 'what-to-give-the-person-who-says-dont-get-me-anything');
+});
+Route::get('/journal-dont-get-me-anything.html', function () {
+    return redirect()->route('blog.show', 'what-to-give-the-person-who-says-dont-get-me-anything');
+});
 Route::get('/begin', [FrontendController::class, 'begin'])->name('begin');
 
-// Blog frontend routes
-Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
-Route::get('/blog/{slug}', [FrontendController::class, 'blogPost'])->name('blog.show');
-Route::get('/projects/{slug}', [FrontendController::class, 'project'])->name('projects.show');
-
-// Contact Form & Newsletter submissions
-Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
-Route::post('/contact/submit', [ContactController::class, 'submit'])->name('contact.submit');
-
-// XML Sitemap & Robots.txt
-Route::get('/sitemap.xml', [FrontendController::class, 'sitemap'])->name('sitemap');
-Route::get('/robots.txt', [FrontendController::class, 'robots'])->name('robots');
-
+Route::post('/contact/submit', [FrontendController::class, 'submitContact'])->name('contact.submit');
+Route::post('/newsletter/subscribe', [FrontendController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
 
 /*
 |--------------------------------------------------------------------------
-| Admin & Breeze Dashboard Redirects
+| Authentication Routes (Breeze)
 |--------------------------------------------------------------------------
 */
-Route::get('/admin/login', function () {
-    return redirect()->route('login');
-});
-
-Route::get('/admin', function () {
-    return redirect()->route('admin.dashboard');
-});
-
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -73,47 +60,66 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin Panel Routes
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
-    // Core settings
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
-    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
-    
-    Route::get('/hero', function () { return redirect(route('admin.settings') . '#home'); })->name('hero');
-    Route::put('/hero', [SettingController::class, 'update'])->name('hero.update');
-    
-    Route::get('/about', function () { return redirect(route('admin.settings') . '#about'); })->name('about');
-    Route::put('/about', [SettingController::class, 'update'])->name('about.update');
+require __DIR__.'/auth.php';
 
-    // Dynamic modules CRUD resources
-    Route::resource('services', ServiceController::class)->except(['show']);
+/*
+|--------------------------------------------------------------------------
+| Admin Panel Routes (Protected by Auth)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Journal writer helpers
+    Route::post('/blog/upload', [BlogController::class, 'upload'])->name('blog.upload');
+    Route::post('/blog/preview', [BlogController::class, 'preview'])->name('blog.preview');
+    Route::get('/blog/default-book', [BlogController::class, 'defaultBook'])->name('blog.defaultBook');
+    Route::post('/blog/default-book', [BlogController::class, 'updateDefaultBook'])->name('blog.defaultBook.update');
+
+    // Website Settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Hero Section
+    Route::get('/hero', [HeroController::class, 'edit'])->name('hero.edit');
+    Route::post('/hero', [HeroController::class, 'update'])->name('hero.update');
+
+    // How It Works Page
+    Route::get('/how-it-works', [\App\Http\Controllers\Admin\HowItWorksController::class, 'edit'])->name('how.edit');
+    Route::post('/how-it-works', [\App\Http\Controllers\Admin\HowItWorksController::class, 'update'])->name('how.update');
+
+    // About Section
+    Route::get('/about', [AboutController::class, 'edit'])->name('about.edit');
+    Route::post('/about', [AboutController::class, 'update'])->name('about.update');
+
+    // Read a Storyloom (Library)
+    Route::post('/library/reorder', [\App\Http\Controllers\Admin\LibraryController::class, 'reorder'])->name('library.reorder');
+    Route::post('/library/settings', [\App\Http\Controllers\Admin\LibraryController::class, 'updateSettings'])->name('library.settings');
+    Route::resource('library', \App\Http\Controllers\Admin\LibraryController::class);
+
+    // Dynamic CRUD Modules
+    Route::resource('services', ServiceController::class);
     Route::resource('projects', ProjectController::class);
-    Route::resource('portfolio', PortfolioController::class)->except(['show']);
+    Route::resource('portfolio', PortfolioController::class);
     Route::resource('products', ProductController::class);
-    Route::resource('pricing', PricingController::class);
-    Route::resource('faqs', FaqController::class)->except(['show']);
-    Route::resource('testimonials', TestimonialController::class)->except(['show']);
-    Route::resource('team', TeamMemberController::class)->except(['show']);
+    Route::resource('pricing', PricingPlanController::class);
+    Route::resource('faqs', FaqController::class);
+    Route::resource('testimonials', TestimonialController::class);
+    Route::resource('team', TeamMemberController::class);
     Route::resource('blog', BlogController::class);
 
-    // Library Manager with reordering
-    Route::post('/library/reorder', [App\Http\Controllers\Admin\LibraryController::class, 'reorder'])->name('library.reorder');
-    Route::resource('library', App\Http\Controllers\Admin\LibraryController::class);
+    // Communications
+    Route::get('/messages', [ContactMessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{message}', [ContactMessageController::class, 'show'])->name('messages.show');
+    Route::delete('/messages/{message}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');
 
-    // Contact messages lead log
-    Route::resource('messages', ContactMessageController::class)->only(['index', 'show', 'destroy']);
-    
-    // Newsletter export & delete list
-    Route::get('/subscribers/export', [SubscriberController::class, 'exportCsv'])->name('subscribers.export');
-    Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
-    Route::delete('/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscribers.destroy');
+    Route::get('/newsletter', [NewsletterController::class, 'index'])->name('newsletter.index');
+    Route::delete('/newsletter/{subscriber}', [NewsletterController::class, 'destroy'])->name('newsletter.destroy');
+    Route::get('/newsletter/export', [NewsletterController::class, 'export'])->name('newsletter.export');
 
     // Media Manager
-    Route::get('/media', [MediaController::class, 'index'])->name('media');
-    Route::post('/media', [MediaController::class, 'store'])->name('media.store');
-    Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+    Route::get('/media', [MediaManagerController::class, 'index'])->name('media.index');
+    Route::post('/media', [MediaManagerController::class, 'store'])->name('media.store');
+    Route::delete('/media', [MediaManagerController::class, 'destroy'])->name('media.destroy');
 });
-
-require __DIR__.'/auth.php';

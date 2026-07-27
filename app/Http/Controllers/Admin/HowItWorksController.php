@@ -53,10 +53,18 @@ class HowItWorksController extends Controller
             'craft_eyebrow',
             'craft_heading',
             'craft_synopsis',
+            'craft_feature_1',
+            'craft_feature_2',
+            'craft_feature_3',
+            'craft_feature_4',
             'craft_artwork_caption',
+            'how_timeline_note',
             'how_cta_heading',
             'how_cta_desc',
             'how_cta_btn1',
+            'how_cta_btn1_link',
+            'how_cta_btn2',
+            'how_cta_btn2_link',
         ]);
 
         if ($request->hasFile('craft_artwork_img_file')) {

@@ -4,27 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/** Controls for the article's "jump around" contents list. */
 return new class extends Migration
 {
     public function up(): void
     {
         Schema::table('blogs', function (Blueprint $table) {
-            if (!Schema::hasColumn('blogs', 'show_toc')) {
-                $table->boolean('show_toc')->default(true);
-            }
-            if (!Schema::hasColumn('blogs', 'toc_label')) {
-                $table->string('toc_label')->nullable();
-            }
+            $table->boolean('show_toc')->default(true)->after('sidebar_promo');
+            $table->string('toc_label')->nullable()->after('show_toc');
         });
     }
 
     public function down(): void
     {
         Schema::table('blogs', function (Blueprint $table) {
-            $cols = array_filter(['show_toc', 'toc_label'], fn($col) => Schema::hasColumn('blogs', $col));
-            if (!empty($cols)) {
-                $table->dropColumn($cols);
-            }
+            $table->dropColumn(['show_toc', 'toc_label']);
         });
     }
 };

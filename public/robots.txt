@@ -1,6 +1,2 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /login
-Disallow: /register
-
-Sitemap: https://storyloom.in/sitemap.xml
+Disallow:

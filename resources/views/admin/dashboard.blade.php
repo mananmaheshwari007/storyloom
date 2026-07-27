@@ -1,229 +1,238 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard')
-@section('page_title', 'Dashboard')
-
-@section('breadcrumbs')
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-    </ol>
-  </nav>
-@endsection
+@section('title', 'Dashboard')
 
 @section('content')
-  <!-- Statistics Cards -->
-  <div class="row g-4 mb-4">
-    <!-- Projects -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-3 me-3">
-          <i class="bi bi-journal-bookmark fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['projects'] }}</h3>
-          <span class="text-muted fs-7">Projects (Books)</span>
-        </div>
-      </div>
-    </div>
-    <!-- Products -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-success bg-opacity-10 text-success p-3 me-3">
-          <i class="bi bi-cart3 fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['products'] }}</h3>
-          <span class="text-muted fs-7">Book Editions</span>
-        </div>
-      </div>
-    </div>
-    <!-- Inquiries -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-danger bg-opacity-10 text-danger p-3 me-3">
-          <i class="bi bi-envelope fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['unread_messages'] }}</h3>
-          <span class="text-muted fs-7">Unread Inquiries</span>
-        </div>
-      </div>
-    </div>
-    <!-- Newsletter -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-warning bg-opacity-10 text-warning p-3 me-3">
-          <i class="bi bi-envelope-check fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['subscribers'] }}</h3>
-          <span class="text-muted fs-7">Newsletter Subs</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="page-header">
+    <h1 class="page-title">Dashboard Overview</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+    </nav>
+</div>
 
-  <div class="row g-4 mb-4">
-    <!-- FAQs -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-info bg-opacity-10 text-info p-3 me-3">
-          <i class="bi bi-question-circle fs-3"></i>
+<!-- Stats Grid -->
+<div class="row g-4 mb-5">
+    <!-- Projects Card -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 p-3 border-start border-primary border-4 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-muted text-uppercase mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Projects</h6>
+                    <h3 class="fw-bold mb-0 text-dark">{{ $stats['total_projects'] }}</h3>
+                </div>
+                <div class="rounded-circle bg-primary-subtle p-3 text-primary d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                    <i class="bi bi-kanban fs-4"></i>
+                </div>
+            </div>
+            <a href="{{ route('admin.projects.index') }}" class="text-decoration-none text-primary mt-3 d-inline-flex align-items-center" style="font-size: 0.85rem;">
+                Manage Projects <i class="bi bi-arrow-right ms-1"></i>
+            </a>
         </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['faqs'] }}</h3>
-          <span class="text-muted fs-7">FAQs</span>
-        </div>
-      </div>
-    </div>
-    <!-- Testimonials -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-secondary bg-opacity-10 text-secondary p-3 me-3">
-          <i class="bi bi-chat-quote fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['testimonials'] }}</h3>
-          <span class="text-muted fs-7">Testimonials</span>
-        </div>
-      </div>
-    </div>
-    <!-- Services -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-dark bg-opacity-10 text-dark p-3 me-3">
-          <i class="bi bi-briefcase fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['services'] }}</h3>
-          <span class="text-muted fs-7">Services</span>
-        </div>
-      </div>
-    </div>
-    <!-- Blog posts -->
-    <div class="col-6 col-lg-3">
-      <div class="card p-3 border-0 bg-white d-flex flex-row align-items-center">
-        <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-3 me-3">
-          <i class="bi bi-newspaper fs-3"></i>
-        </div>
-        <div>
-          <h3 class="m-0 fw-bold">{{ $stats['blog_posts'] }}</h3>
-          <span class="text-muted fs-7">Blog Posts</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recent Activities Lists -->
-  <div class="row g-4">
-    <!-- Messages Inquiries -->
-    <div class="col-12 col-xl-6">
-      <div class="card border-0 bg-white h-100">
-        <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-3 px-4">
-          <h5 class="fw-bold m-0 text-dark">Recent Inquiries</h5>
-          <a href="{{ route('admin.messages.index') }}" class="btn btn-sm btn-outline-primary py-1">View All</a>
-        </div>
-        <div class="card-body px-4 pb-3">
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th>Client</th>
-                  <th>For</th>
-                  <th>Occasion</th>
-                  <th>Channel</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse($recentMessages as $msg)
-                  <tr>
-                    <td>
-                      <div class="fw-semibold">{{ $msg->name }}</div>
-                      <div class="text-muted small" style="font-size: 0.8rem;">{{ $msg->email }}</div>
-                    </td>
-                    <td>{{ $msg->for }}</td>
-                    <td>{{ $msg->occasion ?: '—' }}</td>
-                    <td>
-                      <span class="badge bg-{{ $msg->channel === 'whatsapp' ? 'success' : 'primary' }} text-white text-uppercase" style="font-size: 0.7rem;">
-                        {{ $msg->channel }}
-                      </span>
-                    </td>
-                    <td>
-                      <span class="badge bg-{{ $msg->is_read ? 'secondary' : 'danger' }}" style="font-size: 0.7rem;">
-                        {{ $msg->is_read ? 'Read' : 'Unread' }}
-                      </span>
-                    </td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="5" class="text-center text-muted py-4">No recent inquiries found.</td>
-                  </tr>
-                @endforelse
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- Recent Projects & Quick Links -->
-    <div class="col-12 col-xl-6">
-      <div class="card border-0 bg-white mb-4">
-        <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-3 px-4">
-          <h5 class="fw-bold m-0 text-dark">Recent Projects (Books)</h5>
-          <a href="{{ route('admin.projects.index') }}" class="btn btn-sm btn-outline-primary py-1">View All</a>
+    <!-- Products Card -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 p-3 border-start border-success border-4 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-muted text-uppercase mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Packages</h6>
+                    <h3 class="fw-bold mb-0 text-dark">{{ $stats['total_products'] }}</h3>
+                </div>
+                <div class="rounded-circle bg-success-subtle p-3 text-success d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                    <i class="bi bi-bag fs-4"></i>
+                </div>
+            </div>
+            <a href="{{ route('admin.products.index') }}" class="text-decoration-none text-success mt-3 d-inline-flex align-items-center" style="font-size: 0.85rem;">
+                Manage Packages <i class="bi bi-arrow-right ms-1"></i>
+            </a>
         </div>
-        <div class="card-body px-4 pb-3">
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Client</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse($recentProjects as $project)
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{{ asset($project->image) }}" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;" alt="">
-                        <div class="fw-semibold">{{ $project->title }}</div>
-                      </div>
-                    </td>
-                    <td>{{ $project->client_name ?: '—' }}</td>
-                    <td>
-                      <span class="badge bg-{{ $project->status ? 'success' : 'secondary' }}" style="font-size: 0.7rem;">
-                        {{ $project->status ? 'Active' : 'Inactive' }}
-                      </span>
-                    </td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="3" class="text-center text-muted py-4">No recent projects found.</td>
-                  </tr>
-                @endforelse
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Quick Links Widgets -->
-      <div class="card border-0 bg-white">
-        <div class="card-body p-4">
-          <h5 class="fw-bold text-dark mb-3">Quick Actions</h5>
-          <div class="d-flex flex-wrap gap-2">
-            <a href="{{ route('admin.settings') }}" class="btn btn-light"><i class="bi bi-gear me-2 text-primary"></i>Update Brand Settings</a>
-            <a href="{{ route('admin.media') }}" class="btn btn-light"><i class="bi bi-images me-2 text-success"></i>Browse Media File Library</a>
-            <a href="{{ route('admin.blog.create') }}" class="btn btn-light"><i class="bi bi-pencil-square me-2 text-info"></i>Write Blog Post</a>
-            <a href="{{ route('admin.projects.create') }}" class="btn btn-light"><i class="bi bi-plus-circle me-2 text-danger"></i>Add Keepsake Book</a>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+
+    <!-- FAQs Card -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 p-3 border-start border-info border-4 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-muted text-uppercase mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">FAQs</h6>
+                    <h3 class="fw-bold mb-0 text-dark">{{ $stats['total_faqs'] }}</h3>
+                </div>
+                <div class="rounded-circle bg-info-subtle p-3 text-info d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                    <i class="bi bi-question-circle fs-4"></i>
+                </div>
+            </div>
+            <a href="{{ route('admin.faqs.index') }}" class="text-decoration-none text-info mt-3 d-inline-flex align-items-center" style="font-size: 0.85rem;">
+                Manage FAQs <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Unread Messages Card -->
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 p-3 border-start border-danger border-4 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-muted text-uppercase mb-1" style="font-size: 0.8rem; letter-spacing: 0.5px;">Unread Messages</h6>
+                    <h3 class="fw-bold mb-0 text-dark">{{ $stats['unread_messages'] }}</h3>
+                </div>
+                <div class="rounded-circle bg-danger-subtle p-3 text-danger d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                    <i class="bi bi-envelope-open fs-4"></i>
+                </div>
+            </div>
+            <a href="{{ route('admin.messages.index') }}" class="text-decoration-none text-danger mt-3 d-inline-flex align-items-center" style="font-size: 0.85rem;">
+                View Inbox <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Messages and Projects -->
+    <div class="col-lg-7">
+        <!-- Messages Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-envelope me-2 text-primary"></i> Recent Messages</h5>
+                <a href="{{ route('admin.messages.index') }}" class="btn btn-link text-decoration-none p-0 text-primary" style="font-size: 0.85rem;">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Sender</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th class="text-end pe-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($latest_messages as $message)
+                                <tr @if(!$message->is_read) class="fw-bold bg-light-subtle" @endif>
+                                    <td class="ps-3">
+                                        <div>{{ $message->name }}</div>
+                                        <small class="text-muted text-wrap">{{ $message->email }}</small>
+                                    </td>
+                                    <td>{{ Str::limit($message->subject, 24) }}</td>
+                                    <td>{{ $message->created_at->format('M d, Y') }}</td>
+                                    <td class="text-end pe-3">
+                                        <a href="{{ route('admin.messages.show', $message) }}" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 0.8rem;">
+                                            <i class="bi bi-eye"></i> Read
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No recent messages.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Card -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-kanban me-2 text-success"></i> Recent Projects</h5>
+                <a href="{{ route('admin.projects.index') }}" class="btn btn-link text-decoration-none p-0 text-success" style="font-size: 0.85rem;">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Project Title</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th class="text-end pe-3">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($latest_projects as $project)
+                                <tr>
+                                    <td class="ps-3 fw-medium text-dark">{{ $project->title }}</td>
+                                    <td>{{ $project->category }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-{{ $project->status === 'published' ? 'success' : 'secondary' }}-subtle text-{{ $project->status === 'published' ? 'success' : 'secondary' }} py-1 px-2">
+                                            {{ ucfirst($project->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-3 text-muted" style="font-size: 0.85rem;">{{ $project->created_at->format('M d, Y') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No recent projects.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Blogs and Subscribers -->
+    <div class="col-lg-5">
+        <!-- Blogs Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-newspaper me-2 text-warning"></i> Recent Blog Posts</h5>
+                <a href="{{ route('admin.blog.index') }}" class="btn btn-link text-decoration-none p-0 text-warning" style="font-size: 0.85rem;">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Title</th>
+                                <th>Status</th>
+                                <th class="text-end pe-3">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($latest_blogs as $blog)
+                                <tr>
+                                    <td class="ps-3 fw-medium text-dark">{{ Str::limit($blog->title, 30) }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-{{ $blog->status === 'published' ? 'success' : 'secondary' }}-subtle text-{{ $blog->status === 'published' ? 'success' : 'secondary' }} py-1 px-2">
+                                            {{ ucfirst($blog->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-3 text-muted" style="font-size: 0.85rem;">{{ $blog->created_at->format('M d, Y') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-muted">No blog posts found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Subscribers Card -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-mailbox me-2 text-info"></i> Newsletter Subscribers</h5>
+                <a href="{{ route('admin.newsletter.index') }}" class="btn btn-link text-decoration-none p-0 text-info" style="font-size: 0.85rem;">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    @forelse($latest_subscribers as $subscriber)
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-2.5 px-3">
+                            <span class="text-dark">{{ $subscriber->email }}</span>
+                            <span class="text-muted" style="font-size: 0.82rem;">{{ $subscriber->created_at->format('M d') }}</span>
+                        </li>
+                    @empty
+                        <li class="list-group-item text-center py-4 text-muted">No subscribers yet.</li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -10,18 +10,10 @@ return new class extends Migration
     {
         Schema::table('blogs', function (Blueprint $table) {
             if (!Schema::hasColumn('blogs', 'publish_date_tag')) {
-                if (Schema::hasColumn('blogs', 'read_time')) {
-                    $table->string('publish_date_tag')->nullable()->after('read_time');
-                } else {
-                    $table->string('publish_date_tag')->nullable();
-                }
+                $table->string('publish_date_tag')->nullable()->after('read_time');
             }
             if (!Schema::hasColumn('blogs', 'show_promo')) {
-                if (Schema::hasColumn('blogs', 'promo')) {
-                    $table->boolean('show_promo')->default(true)->after('promo');
-                } else {
-                    $table->boolean('show_promo')->default(true);
-                }
+                $table->boolean('show_promo')->default(true)->after('promo');
             }
         });
     }

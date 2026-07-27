@@ -1,136 +1,96 @@
 @extends('layouts.admin')
 
-@section('title', 'Media File Manager')
-@section('page_title', 'Media Manager')
-
-@section('breadcrumbs')
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Media Manager</li>
-    </ol>
-  </nav>
-@endsection
+@section('title', 'Media Manager')
 
 @section('content')
-  <div class="row g-4">
-    
-    <!-- Folder List Column -->
-    <div class="col-md-3">
-      <div class="card border-0 bg-white shadow-sm mb-4">
-        <div class="card-header bg-transparent border-bottom p-3">
-          <h6 class="fw-bold m-0 text-dark">Directory Folders</h6>
-        </div>
-        <div class="list-group list-group-flush">
-          @foreach($folders as $f)
-            <a href="{{ route('admin.media', ['folder' => $f]) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 px-3 {{ $folder === $f ? 'active' : '' }}">
-              <span><i class="bi bi-folder-fill me-2 {{ $folder === $f ? 'text-white' : 'text-warning' }}"></i>{{ $f }}</span>
-            </a>
-          @endforeach
-        </div>
-      </div>
+<div class="page-header">
+    <h1 class="page-title">Media Manager</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Media</li>
+        </ol>
+    </nav>
+</div>
 
-      <!-- Upload Form Widget -->
-      <div class="card border-0 bg-white shadow-sm">
-        <div class="card-header bg-transparent border-bottom p-3">
-          <h6 class="fw-bold m-0 text-dark">Upload to <code>{{ $folder }}</code></h6>
-        </div>
-        <div class="card-body p-3">
-          <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="folder" value="{{ $folder }}">
-            
-            <div class="mb-3">
-              <label class="form-label small text-muted">Select Image</label>
-              <input type="file" name="file" class="form-control form-control-sm" required>
+<div class="row g-4">
+    <!-- Upload Card -->
+    <div class="col-md-4">
+        <div class="card shadow-sm sticky-top" style="top: 90px; z-index: 10;">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-cloud-upload me-2 text-primary"></i> Upload New Media</h5>
             </div>
-            
-            <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-cloud-arrow-up me-1"></i>Upload &amp; Optimize</button>
-          </form>
+            <div class="card-body">
+                <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Choose Image File</label>
+                        <input class="form-control" type="file" id="file" name="file" accept="image/*" required>
+                        <div class="form-text">Supported formats: JPG, PNG, WEBP, GIF. Max file size: <strong>10 MB</strong>. Recommended dimensions: <strong>1600 × 900 px</strong> or high-resolution source files.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2"><i class="bi bi-upload me-1"></i> Upload File</button>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Media Library Grid Column -->
-    <div class="col-md-9">
-      <div class="card border-0 bg-white shadow-sm">
-        <div class="card-header bg-transparent border-bottom p-3 d-flex justify-content-between align-items-center">
-          <h6 class="fw-bold m-0 text-dark">Folder Content: <code>{{ $folder }}</code></h6>
-          <span class="badge bg-light text-dark border">{{ $mediaFiles->total() }} Files</span>
-        </div>
-        <div class="card-body p-3">
-          
-          <div class="row g-3">
-            @forelse($mediaFiles as $file)
-              <div class="col-6 col-md-4 col-lg-3">
-                <div class="card h-100 border p-2 bg-light position-relative media-card">
-                  <!-- Thumbnail Image -->
-                  <div class="ratio ratio-1x1 border rounded bg-white overflow-hidden mb-2">
-                    <img src="{{ asset($file->filepath) }}" class="object-fit-cover" alt="{{ $file->filename }}" style="width:100%; height:100%; object-fit:cover;">
-                  </div>
-                  
-                  <!-- File Info -->
-                  <div class="small text-truncate text-dark fw-semibold" title="{{ $file->filename }}">{{ $file->filename }}</div>
-                  <div class="text-muted small" style="font-size:0.75rem;">
-                    {{ number_format($file->filesize / 1024, 1) }} KB
-                  </div>
-
-                  <!-- Quick Actions -->
-                  <div class="mt-2 pt-2 border-top d-flex gap-1">
-                    <!-- Copy Link -->
-                    <button type="button" class="btn btn-sm btn-outline-success flex-grow-1 py-0 px-1 copy-link-btn" data-url="{{ asset($file->filepath) }}" title="Copy public URL">
-                      <i class="bi bi-link-45deg small"></i> Link
-                    </button>
-                    
-                    <!-- Delete -->
-                    <form action="{{ route('admin.media.destroy', $file->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this media file?')">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" title="Delete from disk"><i class="bi bi-trash small"></i></button>
-                    </form>
-                  </div>
+    <!-- Media Library List -->
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-images me-2 text-success"></i> Media Library</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    @forelse($mediaList as $media)
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card h-100 border p-2 text-center bg-light-subtle">
+                                <div class="d-flex align-items-center justify-content-center border rounded bg-white overflow-hidden mb-2" style="height: 120px;">
+                                    <img src="{{ asset($media['path']) }}" alt="{{ $media['name'] }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                </div>
+                                <div class="text-truncate fw-medium text-dark small" title="{{ $media['name'] }}">{{ $media['name'] }}</div>
+                                <div class="text-muted small mb-2" style="font-size: 0.75rem;">{{ $media['size'] }}</div>
+                                
+                                <div class="d-grid gap-1">
+                                    <button class="btn btn-sm btn-outline-secondary py-1" onclick="copyPath('{{ $media['path'] }}', this)">
+                                        <i class="bi bi-link-45deg"></i> Copy Path
+                                    </button>
+                                    <form action="{{ route('admin.media.destroy') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this media file?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="path" value="{{ $media['raw_path'] }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger w-100 py-1">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col-12 text-center py-5 text-muted">
+                            <i class="bi bi-image fs-1 d-block mb-2"></i>
+                            No media files found. Upload some assets to begin.
+                        </div>
+                    @endforelse
                 </div>
-              </div>
-            @empty
-              <div class="col-12 py-5 text-center text-muted">
-                <i class="bi bi-images fs-1 d-block mb-2"></i>
-                No optimized media files found in this folder.
-              </div>
-            @endforelse
-          </div>
-
-          <div class="mt-4">
-            {{ $mediaFiles->appends(['folder' => $folder])->links() }}
-          </div>
-
+            </div>
         </div>
-      </div>
     </div>
-
-  </div>
+</div>
 @endsection
 
-@push('scripts')
+@section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Clipboard copy helper
-  document.querySelectorAll('.copy-link-btn').forEach(function (button) {
-    button.addEventListener('click', function () {
-      var url = this.getAttribute('data-url');
-      navigator.clipboard.writeText(url).then(function () {
-        var originalText = button.innerHTML;
-        button.innerHTML = '<i class="bi bi-check2"></i> Copied';
-        button.classList.replace('btn-outline-success', 'btn-success');
-        
-        setTimeout(function () {
-          button.innerHTML = originalText;
-          button.classList.replace('btn-success', 'btn-outline-success');
-        }, 1500);
-      }).catch(function (err) {
-        console.error('Could not copy link: ', err);
-      });
-    });
-  });
-});
+    function copyPath(path, btn) {
+        navigator.clipboard.writeText(path).then(() => {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+            btn.classList.replace('btn-outline-secondary', 'btn-success');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.replace('btn-success', 'btn-outline-secondary');
+            }, 2000);
+        });
+    }
 </script>
-@endpush
+@endsection

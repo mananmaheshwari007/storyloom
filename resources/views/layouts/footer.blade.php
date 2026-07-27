@@ -11,6 +11,7 @@
           <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
           <li><a href="{{ route('library') }}">Read a Storyloom</a></li>
           <li><a href="{{ route('occasions') }}">Occasions</a></li>
+          <li><a href="{{ route('blog.index') }}">Journal</a></li>
           <li><a href="{{ route('pricing') }}">Pricing</a></li>
         </ul>
       </div>
@@ -50,7 +51,7 @@
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
-            <a href="{{ setting('social_instagram', 'https://instagram.com/storyloom.in') }}" rel="noopener">@{{ setting('instagram_username', 'storyloom.in') }}</a>
+            <a href="{{ setting('social_instagram', 'https://instagram.com/storyloombooks') }}" rel="noopener" target="_blank">@<span>{{ setting('instagram_username', 'storyloombooks') }}</span></a>
           </li>
         </ul>
       </div>

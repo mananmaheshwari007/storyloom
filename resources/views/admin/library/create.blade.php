@@ -95,7 +95,7 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Upload Interior Spread Images (Multiple Files)</label>
                         <input type="file" name="pages_files[]" class="form-control" multiple accept="image/*">
-                        <small class="form-text text-muted">Select all spread images for this book (e.g., s01.webp, s02.webp, s03.webp...). They will be ordered sequentially in the 3D book reader.</small>
+                        <small class="form-text text-muted">Select all spread images for this book. Max file size: <strong>5 MB</strong> per file. Recommended dimensions: <strong>1400 × 600 px</strong> or <strong>1600 × 900 px</strong> (Landscape spreads).</small>
                     </div>
 
                     <div class="mb-3">
@@ -116,13 +116,13 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Front Cover Image</label>
                         <input type="file" name="cover_image" class="form-control" accept="image/*">
-                        <small class="form-text text-muted">Portrait cover image (e.g. assets/img/book1/cover.webp).</small>
+                        <small class="form-text text-muted">Max file size: <strong>5 MB</strong>. Recommended dimensions: <strong>900 × 1273 px</strong> (Portrait 1:1.4 aspect ratio).</small>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Back Cover Image (Optional)</label>
                         <input type="file" name="back_image" class="form-control" accept="image/*">
-                        <small class="form-text text-muted">Back cover image for 3D reader closing face.</small>
+                        <small class="form-text text-muted">Max file size: <strong>5 MB</strong>. Recommended dimensions: <strong>900 × 1273 px</strong> (Portrait 1:1.4 aspect ratio).</small>
                     </div>
 
                     <div class="mb-3">

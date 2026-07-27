@@ -23,7 +23,7 @@ class FrontendController extends Controller
     /**
      * Display the Home Page.
      */
-    public function home()
+    public function index()
     {
         $hero = Hero::first();
         $services = Service::where('status', 'active')->orderBy('display_order')->get();
@@ -38,12 +38,7 @@ class FrontendController extends Controller
             'keywords' => setting('seo_keywords'),
         ];
 
-        return view('frontend.home', compact('hero', 'services', 'projects', 'portfolios', 'testimonials', 'faqs', 'seo'));
-    }
-
-    public function index()
-    {
-        return $this->home();
+        return view('frontend.index', compact('hero', 'services', 'projects', 'portfolios', 'testimonials', 'faqs', 'seo'));
     }
 
     /**
@@ -57,7 +52,6 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'About Storyloom — Our Mission & Craftsmanship',
             'description' => 'Learn how Storyloom weaves family memories into handbound, illustrated keepsake books crafted by master artisans in India.',
-            'og_image' => 'assets/img/spread-room-sunlight.webp',
         ];
 
         return view('frontend.about', compact('about', 'team', 'seo'));
@@ -73,7 +67,6 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'How It Works — The Journey of a Storyloom',
             'description' => 'From sharing a single memory to reviewing hand-painted spreads, learn the step-by-step process of crafting your keepsake book.',
-            'og_image' => 'assets/img/spread-bench-sunlight.webp',
         ];
 
         return view('frontend.how-it-works', compact('faqs', 'seo'));
@@ -84,20 +77,15 @@ class FrontendController extends Controller
      */
     public function library()
     {
-        $projects = Project::where('status', 'published')->orderBy('created_at', 'desc')->get();
         $featuredBooks = \App\Models\LibraryBook::where('status', true)->where('type', 'featured')->orderBy('order', 'asc')->get();
-        $shelf = \App\Models\LibraryBook::where('status', true)->where('type', 'shelf')->orderBy('order', 'asc')->get();
-        if ($shelf->isEmpty()) {
-            $shelf = Portfolio::where('status', 'published')->get();
-        }
+        $shelfBooks = \App\Models\LibraryBook::where('status', true)->where('type', 'shelf')->orderBy('order', 'asc')->get();
         
         $seo = [
             'title' => 'Read a Storyloom — Illustrated Keepsake Book Library',
             'description' => 'Explore sample hand-drawn pages, watercolor spreads, and heirloom books created from real family memories.',
-            'og_image' => 'assets/img/spread-flower-street.webp',
         ];
 
-        return view('frontend.library', compact('projects', 'featuredBooks', 'shelf', 'seo'));
+        return view('frontend.library', compact('featuredBooks', 'shelfBooks', 'seo'));
     }
 
     /**
@@ -110,7 +98,6 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Gifting Occasions — Keepsakes for Milestones',
             'description' => 'Personalised books for anniversaries, Mother\'s Day, Father\'s Day, weddings, retirements, birthdays, and farewelling loved ones.',
-            'og_image' => 'assets/img/spread-cafe-window.webp',
         ];
 
         return view('frontend.occasions', compact('portfolios', 'seo'));
@@ -126,7 +113,6 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Pricing & Book Formats — Storyloom',
             'description' => 'Compare our Keepsake and Heirloom custom book editions. Clear pricing for handbound, illustrated storytelling.',
-            'og_image' => 'assets/img/spread-shared-fries.webp',
         ];
 
         return view('frontend.pricing', compact('plans', 'seo'));
@@ -142,7 +128,6 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Good Questions — FAQ | Storyloom',
             'description' => 'Answers to questions about writing, image references, international shipping, print proof reviews, and pricing packages.',
-            'og_image' => 'assets/img/spread-street-morning.webp',
         ];
 
         return view('frontend.faq', compact('faqs', 'seo'));
@@ -156,7 +141,6 @@ class FrontendController extends Controller
         $seo = [
             'title' => 'Begin Your Story — Start a Storybook | Storyloom',
             'description' => 'Start with one memory. Tell us who the book is for, and we\'ll send a personalized plan, timeline, and quote.',
-            'og_image' => 'assets/img/spread-bench-dusk.webp',
         ];
 
         return view('frontend.begin', compact('seo'));
@@ -167,97 +151,31 @@ class FrontendController extends Controller
      */
     public function blog()
     {
-        $posts = Blog::where('status', 'published')->orderBy('created_at', 'desc')->paginate(9);
-        $articles = $posts;
+        $articles = Blog::where('status', 'published')->orderBy('created_at', 'desc')->paginate(9);
 
         $seo = [
             'title' => 'The Storyloom Journal — Reflections on Memory & Keepsakes',
             'description' => 'Essays, family traditions, memory-keeping ideas, and behind-the-scenes stories from the Storyloom writing and art desk.',
-            'og_image' => 'assets/img/spread-home-morning.webp',
         ];
 
-        return view('frontend.blog', compact('posts', 'articles', 'seo'));
+        return view('frontend.blog.index', compact('articles', 'seo'));
     }
 
     /**
      * Display a single Blog Article post.
      */
-    public function blogPost($slug)
-    {
-        $post = Blog::where('slug', $slug)->where('status', 'published')->firstOrFail();
-        $related = Blog::where('status', 'published')->where('id', '!=', $post->id)->take(3)->get();
-
-        $seo = [
-            'title' => ($post->meta_title ?: $post->title) . ' | Storyloom Journal',
-            'description' => $post->meta_description ?: ($post->short_description ?: $post->dek),
-            'keywords' => $post->keywords ?? null,
-            'og_image' => $post->featured_image ?: 'assets/img/spread-bench-dusk.webp',
-            'og_type' => 'article',
-            'schema' => [
-                '@context' => 'https://schema.org',
-                '@type' => 'BlogPosting',
-                'headline' => $post->title,
-                'description' => $post->short_description ?: $post->dek,
-                'image' => asset($post->featured_image ?: 'assets/img/spread-bench-dusk.webp'),
-                'datePublished' => $post->created_at ? $post->created_at->toIso8601String() : null,
-                'publisher' => [
-                    '@type' => 'Organization',
-                    'name' => setting('site_name', 'Storyloom'),
-                    'logo' => asset(setting('site_emblem', 'assets/img/logo-emblem.png')),
-                ],
-            ],
-        ];
-
-        return view('frontend.blog-detail', compact('post', 'related', 'seo'));
-    }
-
     public function blogShow($slug)
     {
-        return $this->blogPost($slug);
-    }
-
-    /**
-     * Display a single Project detail page.
-     */
-    public function project($slug)
-    {
-        $project = Project::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        $article = Blog::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        $related = Blog::where('status', 'published')->where('id', '!=', $article->id)->take(3)->get();
 
         $seo = [
-            'title' => $project->title . ' | Storyloom Portfolio',
-            'description' => $project->description ? \Illuminate\Support\Str::limit(strip_tags($project->description), 160) : $project->title,
-            'og_image' => $project->image ?: 'assets/img/spread-bench-dusk.webp',
-            'og_type' => 'article',
-            'schema' => [
-                '@context' => 'https://schema.org',
-                '@type' => 'CreativeWork',
-                'name' => $project->title,
-                'author' => setting('site_name', 'Storyloom'),
-                'image' => asset($project->image ?: 'assets/img/spread-bench-dusk.webp'),
-            ],
+            'title' => ($article->meta_title ?: $article->title) . ' | Storyloom Journal',
+            'description' => $article->meta_description ?: $article->short_description,
+            'keywords' => $article->keywords,
         ];
 
-        return view('frontend.project-detail', compact('project', 'seo'));
-    }
-
-    /**
-     * Generate XML Sitemap.
-     */
-    public function sitemap()
-    {
-        $posts = Blog::where('status', 'published')->get();
-        $projects = Project::where('status', 'published')->get();
-
-        return response()->view('frontend.sitemap', compact('posts', 'projects'))->header('Content-Type', 'text/xml');
-    }
-
-    /**
-     * Return robots.txt file content.
-     */
-    public function robots()
-    {
-        $content = "User-agent: *\nDisallow:\nSitemap: " . url('/sitemap.xml');
-        return response($content, 200, ['Content-Type' => 'text/plain']);
+        return view('frontend.blog.show', compact('article', 'related', 'seo'));
     }
 
     /**
@@ -280,16 +198,19 @@ class FrontendController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        // Map inputs to ContactMessage
+        $messageText = "For: " . $request->input('for') . "\n"
+                     . "Occasion: " . ($request->input('occasion') ?: 'None') . "\n"
+                     . "Timeline: " . ($request->input('timeline') ?: 'Flexible') . "\n"
+                     . "Preferred channel: " . $request->input('channel') . "\n\n"
+                     . "Story:\n" . $request->input('story');
+
         ContactMessage::create([
             'name' => $request->input('name'),
             'email' => $request->input('email') ?: 'anonymous@storyloom.in',
             'phone' => $request->input('phone'),
             'subject' => 'New Story Started: For ' . $request->input('for'),
-            'message' => $request->input('story'),
-            'for' => $request->input('for'),
-            'occasion' => $request->input('occasion'),
-            'timeline' => $request->input('timeline'),
-            'channel' => $request->input('channel'),
+            'message' => $messageText,
         ]);
 
         return response()->json([

@@ -1,74 +1,81 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Shelf Portfolio')
-@section('page_title', 'Portfolio Items')
-
-@section('breadcrumbs')
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Portfolio Shelf</li>
-    </ol>
-  </nav>
-@endsection
+@section('title', 'Manage Portfolio')
 
 @section('content')
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold m-0 text-dark">Portfolio List</h5>
-    <a href="{{ route('admin.portfolio.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Add Shelf Item</a>
-  </div>
-
-  <div class="card border-0 bg-white">
-    <div class="card-body p-4">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th>Thumbnail</th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Status</th>
-              <th class="text-end">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($portfolios as $item)
-              <tr>
-                <td>
-                  <img src="{{ asset($item->thumbnail) }}" class="rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;" alt="">
-                </td>
-                <td>
-                  <div class="fw-semibold text-dark">{{ $item->title }}</div>
-                  <div class="text-muted small" style="max-width: 300px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ $item->description }}</div>
-                </td>
-                <td><span class="badge bg-light text-dark border">{{ $item->category }}</span></td>
-                <td>
-                  <span class="badge bg-{{ $item->status ? 'success' : 'secondary' }}">
-                    {{ $item->status ? 'Active' : 'Inactive' }}
-                  </span>
-                </td>
-                <td class="text-end">
-                  <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.portfolio.edit', $item->id) }}" class="btn btn-sm btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i></a>
-                    <form action="{{ route('admin.portfolio.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this portfolio shelf item?')">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
-            @empty
-              <tr>
-                <td colspan="5" class="text-center text-muted py-4">No portfolio shelf items found.</td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
-      <div class="mt-3">
-        {{ $portfolios->links() }}
-      </div>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="page-title">Portfolio Cards</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Portfolio</li>
+            </ol>
+        </nav>
     </div>
-  </div>
+    <a href="{{ route('admin.portfolio.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Add Portfolio Item
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3" style="width: 100px;">Thumbnail</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th class="text-end pe-3" style="width: 150px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($portfolios as $portfolio)
+                        <tr>
+                            <td class="ps-3">
+                                <div class="border rounded bg-white overflow-hidden text-center" style="width: 60px; height: 45px;">
+                                    @if($portfolio->thumbnail)
+                                        <img src="{{ asset($portfolio->thumbnail) }}" alt="Thumbnail" style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                                    @else
+                                        <i class="bi bi-image text-muted fs-4"></i>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="fw-semibold text-dark">{{ $portfolio->title }}</td>
+                            <td>{{ $portfolio->category }}</td>
+                            <td>
+                                <span class="badge rounded-pill bg-{{ $portfolio->status === 'published' ? 'success' : 'secondary' }}-subtle text-{{ $portfolio->status === 'published' ? 'success' : 'secondary' }} py-1 px-2.5">
+                                    {{ ucfirst($portfolio->status) }}
+                                </span>
+                            </td>
+                            <td class="text-end pe-3">
+                                <a href="{{ route('admin.portfolio.edit', $portfolio) }}" class="btn btn-sm btn-outline-secondary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ route('admin.portfolio.destroy', $portfolio) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this portfolio item?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">No portfolio items found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @if($portfolios->hasPages())
+        <div class="card-footer bg-white border-0 py-3">
+            {{ $portfolios->links() }}
+        </div>
+    @endif
+</div>
 @endsection

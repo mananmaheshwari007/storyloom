@@ -143,21 +143,10 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('title_html')->nullable();
             $table->string('slug')->unique();
-            $table->string('category')->nullable();
             $table->string('featured_image')->nullable();
             $table->text('short_description')->nullable();
-            $table->string('dek')->nullable();
-            $table->unsignedSmallInteger('read_time')->nullable();
-            $table->string('publish_date_tag')->nullable();
-            $table->longText('content')->nullable();
-            $table->json('blocks')->nullable();
-            $table->json('promo')->nullable();
-            $table->json('sidebar_promo')->nullable();
-            $table->boolean('show_promo')->default(true);
-            $table->boolean('show_toc')->default(true);
-            $table->string('toc_label')->nullable();
+            $table->longText('content');
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->string('keywords')->nullable();

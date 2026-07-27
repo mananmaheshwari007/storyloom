@@ -21,9 +21,10 @@
     <a class="menu-link {{ request()->routeIs('how-it-works') ? 'active' : '' }}" href="{{ route('how-it-works') }}"><span>How It Works</span><span class="no">01</span></a>
     <a class="menu-link {{ request()->routeIs('library') ? 'active' : '' }}" href="{{ route('library') }}"><span>Read a Storyloom</span><span class="no">02</span></a>
     <a class="menu-link {{ request()->routeIs('occasions') ? 'active' : '' }}" href="{{ route('occasions') }}"><span>Occasions</span><span class="no">03</span></a>
-    <a class="menu-link {{ request()->routeIs('pricing') ? 'active' : '' }}" href="{{ route('pricing') }}"><span>Pricing</span><span class="no">04</span></a>
-    <a class="menu-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}"><span>About</span><span class="no">05</span></a>
-    <a class="menu-link {{ request()->routeIs('faq') ? 'active' : '' }}" href="{{ route('faq') }}"><span>FAQ</span><span class="no">06</span></a>
+    <a class="menu-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.index') }}"><span>Journal</span><span class="no">04</span></a>
+    <a class="menu-link {{ request()->routeIs('pricing') ? 'active' : '' }}" href="{{ route('pricing') }}"><span>Pricing</span><span class="no">05</span></a>
+    <a class="menu-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}"><span>About</span><span class="no">06</span></a>
+    <a class="menu-link {{ request()->routeIs('faq') ? 'active' : '' }}" href="{{ route('faq') }}"><span>FAQ</span><span class="no">07</span></a>
   </nav>
   <div class="menu-cta">
     <a class="btn btn-primary" href="{{ route('begin') }}">Begin Your Story</a>

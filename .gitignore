@@ -1,39 +1,28 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# Laravel files
-/public/storage
-/public/hot
-/public/build
-/storage/*.key
-/storage/pail
+*.log
+.DS_Store
 .env
 .env.backup
 .env.production
-.env.local
-
-# SQLite Databases
-*.sqlite
-*.sqlite-journal
-*.sqlite-wal
-database/*.sqlite
-
-# Logs & Caches
-*.log
-.phpunit.result.cache
 .phpactor.json
-auth.json
-
-# Tool & Portable Runtimes
-.claude/
-.php83/
-php83/
-claude/
-
-# IDE & OS
-.idea/
-.vscode/
-.DS_Store
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.php83
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+Homestead.json
+Homestead.yaml
 Thumbs.db

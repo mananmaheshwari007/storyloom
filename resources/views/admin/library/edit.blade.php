@@ -109,7 +109,7 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Replace / Upload New Interior Spread Images (Multiple Files)</label>
                         <input type="file" name="pages_files[]" class="form-control" multiple accept="image/*">
-                        <small class="form-text text-muted">Uploading files will replace the existing interior pages with the new uploaded sequence.</small>
+                        <small class="form-text text-muted">Uploading files will replace existing interior pages. Max file size: <strong>5 MB</strong> per file. Recommended dimensions: <strong>1400 × 600 px</strong> or <strong>1600 × 900 px</strong> (Landscape spreads).</small>
                     </div>
 
                     <div class="mb-3">
@@ -135,6 +135,7 @@
                             </div>
                         @endif
                         <input type="file" name="cover_image" class="form-control" accept="image/*">
+                        <small class="form-text text-muted">Max file size: <strong>5 MB</strong>. Recommended dimensions: <strong>900 × 1273 px</strong> (Portrait 1:1.4 aspect ratio).</small>
                     </div>
 
                     <div class="mb-3">
@@ -145,6 +146,7 @@
                             </div>
                         @endif
                         <input type="file" name="back_image" class="form-control" accept="image/*">
+                        <small class="form-text text-muted">Max file size: <strong>5 MB</strong>. Recommended dimensions: <strong>900 × 1273 px</strong> (Portrait 1:1.4 aspect ratio).</small>
                     </div>
 
                     <div class="mb-3">

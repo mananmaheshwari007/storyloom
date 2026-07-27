@@ -1,55 +1,63 @@
 @extends('layouts.app')
 
-@section('seo')
-  <x-seo-tags 
-    title="Pricing & Book Formats — Storyloom"
-    description="Compare our Keepsake and Heirloom custom book editions. Clear pricing for handbound, illustrated storytelling."
-    keywords="storyloom pricing, custom book cost, keepsake book editions, heirloom book packages"
-    ogImage="assets/img/spread-shared-fries.webp"
-  />
-@endsection
-
 @section('content')
-
+  <!-- ================= HERO ================= -->
   <section class="page-hero container">
-    <p class="eyebrow eyebrow-center" data-reveal>Pricing</p>
-    <h1 data-reveal>What a one-of-one book <em>includes.</em></h1>
-    <p class="lede" data-reveal>Every Storyloom — whichever edition — is written from scratch, illustrated from scratch, and reviewed by you before printing. You're not buying a book off a shelf; you're commissioning the only copy that will ever exist.</p>
+    <p class="eyebrow eyebrow-center" data-reveal>{{ setting('pricing_hero_eyebrow', 'Pricing') }}</p>
+    <h1 data-reveal>{!! setting('pricing_hero_title', 'What a one-of-one book <em>includes.</em>') !!}</h1>
+    <p class="lede" data-reveal>{{ setting('pricing_hero_lede', 'Every Storyloom — whichever edition — is written from scratch, illustrated from scratch, and reviewed by you before printing. You\'re not buying a book off a shelf; you\'re commissioning the only copy that will ever exist.') }}</p>
   </section>
 
+  <!-- ================= CARDS & GRID ================= -->
   <section class="section grain" style="padding-top: clamp(16px, 3vh, 40px);">
     <div class="container">
       <div class="stats-strip" data-reveal style="margin-bottom: clamp(48px, 8vh, 80px);">
-        <div class="stat"><div class="num">60+</div><div class="lbl">hours of writing &amp; illustration</div></div>
-        <div class="stat"><div class="num">100%</div><div class="lbl">original story &amp; art — no templates</div></div>
-        <div class="stat"><div class="num">∞</div><div class="lbl">times it will be read aloud</div></div>
+        <div class="stat"><div class="num">{{ setting('pricing_stat1_num', '60+') }}</div><div class="lbl">{{ setting('pricing_stat1_lbl', 'hours of writing & illustration') }}</div></div>
+        <div class="stat"><div class="num">{{ setting('pricing_stat2_num', '100%') }}</div><div class="lbl">{{ setting('pricing_stat2_lbl', 'original story & art — no templates') }}</div></div>
+        <div class="stat"><div class="num">{{ setting('pricing_stat3_num', '∞') }}</div><div class="lbl">{{ setting('pricing_stat3_lbl', 'times it will be read aloud') }}</div></div>
       </div>
 
       <div class="pricing-grid">
-        @foreach($plans as $plan)
-          <div class="card price-card {{ $plan->popular ? 'featured' : '' }}" data-reveal style="--stagger:{{ $loop->index }}">
-            <span class="tier-tag">{{ $plan->popular ? 'Most loved' : ($plan->name === 'Heirloom Edition' ? 'The Heirloom' : 'The Storyloom') }}</span>
-            <h3>{{ str_replace(' Edition', '', $plan->name) }}</h3>
-            <p style="color:var(--ink-soft); font-size:.95rem;">
-              @if($plan->name === 'Classic Edition')
-                The complete Storyloom experience.
-              @elseif($plan->name === 'Deluxe Edition')
-                A longer story, a richer world.
-              @else
-                Made to be handed down.
-              @endif
-            </p>
-            <div class="price">₹{{ number_format($plan->price, 0) }}<small> {{ $plan->duration ?? 'onwards' }}</small></div>
-            <ul style="list-style:none; padding:0;">
-              @foreach($plan->features as $feature)
-                <li style="display:flex; gap:10px; align-items:flex-start; margin-bottom:8px;">
-                  <svg style="flex:none; width:16px; height:16px; margin-top:5px; color:var(--grove);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12.5l5 5L20 6.5"/></svg>
-                  <span>{{ $feature }}</span>
-                </li>
-              @endforeach
-            </ul>
+        @forelse($plans as $index => $plan)
+          @php
+            // Resolve tags and taglines dynamically based on standard static definitions
+            $tierTag = 'The Storyloom';
+            $tagline = 'A customized storybook experience.';
+            
+            if (Str::lower($plan->plan_name) === 'classic') {
+                $tierTag = 'The Storyloom';
+                $tagline = 'The complete Storyloom experience.';
+            } elseif (Str::lower($plan->plan_name) === 'deluxe') {
+                $tierTag = 'Most loved';
+                $tagline = 'A longer story, a richer world.';
+            } elseif (Str::lower($plan->plan_name) === 'heirloom') {
+                $tierTag = 'The Heirloom';
+                $tagline = 'Made to be handed down.';
+            } elseif ($plan->popular_plan) {
+                $tierTag = 'Most loved';
+            }
+          @endphp
+          
+          <div class="card price-card @if($plan->popular_plan) featured @endif" data-reveal style="--stagger:{{ $index }}">
+            <span class="tier-tag">{{ $tierTag }}</span>
+            <h3>{{ $plan->plan_name }}</h3>
+            <p style="color:var(--ink-soft); font-size:.95rem;">{{ $tagline }}</p>
+            <div class="price">₹{{ number_format($plan->price) }}<small> {{ $plan->duration }}</small></div>
+            
+            @if($plan->features)
+              <ul>
+                @foreach($plan->features as $feat)
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+                    {{ $feat }}
+                  </li>
+                @endforeach
+              </ul>
+            @endif
           </div>
-        @endforeach
+        @empty
+          <div class="text-center py-5 text-muted w-100 col-span-full">No pricing plans found.</div>
+        @endforelse
       </div>
 
       <div style="text-align:center; margin-top: clamp(40px, 6vh, 56px);" data-reveal>
@@ -63,31 +71,31 @@
     </div>
   </section>
 
+  <!-- ================= A NOTE ON PRICE ================= -->
   <section class="section section-tint">
     <div class="container-narrow">
       <div class="section-head center" data-reveal>
-        <p class="eyebrow eyebrow-center">A note on price</p>
-        <h2>Why a book can cost more than a <em>phone cover.</em></h2>
+        <p class="eyebrow eyebrow-center">{{ setting('price_note_eyebrow', 'A note on price') }}</p>
+        <h2>{!! setting('price_note_heading', 'Why a book can cost more than a <em>phone cover.</em>') !!}</h2>
       </div>
       <div class="prose" data-reveal style="color:var(--ink-soft); max-width:60ch; margin-inline:auto;">
-        <p class="drop">A Storyloom is not printed-on-demand merchandise. It is a commission — weeks of a writer's and an illustrator's full attention on one family's story. Every spread is composed for you: your faces, your streets, your weather, your light.</p>
-        <p>Divide the price by the years it will sit on a bedside table, be read at bedtimes, survive house moves, and eventually be handed to someone not yet born — and it becomes the least expensive thing you'll ever give.</p>
+        <p class="drop">{{ setting('price_note_p1', 'A Storyloom is not printed-on-demand merchandise. It is a commission — weeks of a writer\'s and an illustrator\'s full attention on one family\'s story. Every spread is composed for you: your faces, your streets, your weather, your light.') }}</p>
+        <p>{{ setting('price_note_p2', 'Divide the price by the years it will sit on a bedside table, be read at bedtimes, survive house moves, and eventually be handed to someone not yet born — and it becomes the least expensive thing you\'ll ever give.') }}</p>
       </div>
     </div>
   </section>
 
+  <!-- ================= FINAL CTA ================= -->
   <section class="final-cta">
-    <div class="bg" style="background-image:url('{{ asset('assets/img/spread-under-stars.webp') }}')" role="img"
-         aria-label="Illustration of a couple beneath a starry night sky"></div>
+    <div class="bg" style="background-image:url('{{ asset(setting('cta_bg_image', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a couple beneath a starry night sky"></div>
     <div class="container inner">
-      <h2 data-reveal>Begin with a conversation, not a <em>payment.</em></h2>
-      <p data-reveal>Tell us your story first. You'll get a plan, a timeline, and a quote — and you decide only when you can already picture the book.</p>
+      <h2 data-reveal>{!! setting('cta_heading', 'Begin with a conversation, not a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: #E88B52;">payment.</em>') !!}</h2>
+      <p data-reveal style="max-width: 620px; width: 100%; margin-inline: auto; font-size: 1.05rem; line-height: 1.65; color: rgba(255, 255, 255, 0.78);">{{ setting('cta_desc', 'Tell us your story first. You\'ll get a plan, a timeline, and a quote — and you decide only when you can already picture the book.') }}</p>
       <div class="btn-row" style="justify-content:center;" data-reveal>
-        <a class="btn btn-primary" href="{{ route('begin') }}">Begin Your Story
+        <a class="btn btn-primary" href="{{ setting('cta_btn1_link', route('begin')) }}">{{ setting('cta_btn1_text', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
         </a>
       </div>
     </div>
   </section>
-
 @endsection

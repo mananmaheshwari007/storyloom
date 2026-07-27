@@ -59,6 +59,15 @@ class Blog extends Model
             : 'Journal';
     }
 
+    public function getPublishDateTagAttribute($value): string
+    {
+        if (!empty($value)) {
+            return $value;
+        }
+        $date = $this->created_at ?? now();
+        return 'PUBLISHED ' . strtoupper($date->format('F Y'));
+    }
+
     /** The promotional book card for this article, or the house default. */
     public function getPromoCardAttribute(): array
     {

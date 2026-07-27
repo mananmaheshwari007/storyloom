@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+  @if($isPreview ?? false)
+    <div style="position:sticky; top:0; z-index:500; background:#1D2A44; color:#EFE8D8; text-align:center; padding:10px 16px; font-size:.9rem;">
+      <strong style="color:#D98A5A; letter-spacing:.12em; text-transform:uppercase; font-size:.74rem;">Preview</strong>
+      &nbsp; This is how the article will look once published. Nothing has been saved.
+    </div>
+  @endif
   <article>
     <!-- ============ ARTICLE HERO ============ -->
     <section class="container article-hero">
@@ -10,7 +16,7 @@
           The Journal
         </a>
       </p>
-      <h1>{!! preg_replace('/(\w+)$/', '<em>$1</em>', e($article->title)) !!}</h1>
+      <h1>{!! $article->headline !!}</h1>
       @if($article->short_description)
         <p class="dek">{{ $article->short_description }}</p>
       @endif
@@ -45,8 +51,8 @@
           <!-- INLINE CONVERSION CARD -->
           @php
             $promo = $article->promo_card;
-            $rawCta = trim($promo['cta_url'] ?? '');
-            if ($rawCta === '' || $rawCta === 'library' || $rawCta === 'library.html' || $rawCta === '/library') {
+            $rawCta = preg_replace('/\.html$/i', '', trim($promo['cta_url'] ?? ''));
+            if ($rawCta === '' || $rawCta === 'library' || $rawCta === '/library') {
                 $rawCta = 'library?book=1';
             }
             $targetUrl = str_starts_with($rawCta, 'http') ? $rawCta : url($rawCta);
@@ -92,16 +98,23 @@
 
         <!-- STICKY SIDEBAR -->
         <aside class="article-aside">
-          <nav class="toc" aria-label="On this page">
-            <p class="toc-label">On this page</p>
-            <ul></ul>
-          </nav>
+          @php $toc = ($article->show_toc ?? true) ? $article->table_of_contents : []; @endphp
+          @if(count($toc))
+            <nav class="toc" aria-label="{{ $article->toc_label ?: 'On this page' }}">
+              <p class="toc-label">{{ $article->toc_label ?: 'On this page' }}</p>
+              <ul>
+                @foreach($toc as $item)
+                  <li><a href="#{{ $item['id'] }}">{{ $item['text'] }}</a></li>
+                @endforeach
+              </ul>
+            </nav>
+          @endif
 
           @php $sidebar = $article->sidebar_card; @endphp
           @if(($sidebar['enabled'] ?? true))
             @php
-              $sbUrl = trim($sidebar['cta_url'] ?? '');
-              if ($sbUrl === '' || $sbUrl === 'library' || $sbUrl === 'library.html' || $sbUrl === '/library') {
+              $sbUrl = preg_replace('/\.html$/i', '', trim($sidebar['cta_url'] ?? ''));
+              if ($sbUrl === '' || $sbUrl === 'library' || $sbUrl === '/library') {
                   $sbUrl = 'library?book=2';
               }
               $sbTargetUrl = str_starts_with($sbUrl, 'http') ? $sbUrl : url($sbUrl);

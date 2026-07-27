@@ -52,6 +52,139 @@
     window.setTimeout(heroReady, 800); // fallback when rAF is throttled (hidden/background tab)
   }
 
+  /* ---------- Arc Carousel Controller ---------- */
+  var arcStage = document.getElementById("heroArcCarousel");
+  if (arcStage && !arcStage.getAttribute("data-initialized")) {
+    arcStage.setAttribute("data-initialized", "true");
+    var cards = Array.prototype.slice.call(arcStage.querySelectorAll(".arc-card"));
+    if (cards.length > 0) {
+      var total = cards.length;
+      var currentIndex = 0;
+      var timer = null;
+      var rawSpeed = parseFloat(arcStage.getAttribute("data-speed"));
+      var intervalTime = 3000;
+
+      if (!isNaN(rawSpeed) && rawSpeed > 0) {
+        if (rawSpeed < 100) {
+          intervalTime = rawSpeed * 1000;
+        } else {
+          intervalTime = rawSpeed;
+        }
+      }
+
+      // Safety guard: Never allow rotation faster than 1.5 seconds per card
+      if (intervalTime < 1500) {
+        intervalTime = 1500;
+      }
+
+      var isAnimating = false;
+
+      var updatePositions = function () {
+        cards.forEach(function (card, i) {
+          var diff = i - currentIndex;
+          if (diff > total / 2) diff -= total;
+          if (diff < -total / 2) diff += total;
+
+          if (diff === 0) {
+            card.setAttribute("data-pos", "0");
+          } else if (diff === -1) {
+            card.setAttribute("data-pos", "-1");
+          } else if (diff === 1) {
+            card.setAttribute("data-pos", "1");
+          } else if (diff === -2) {
+            card.setAttribute("data-pos", "-2");
+          } else if (diff === 2) {
+            card.setAttribute("data-pos", "2");
+          } else if (diff < -2) {
+            card.setAttribute("data-pos", "hidden-left");
+          } else {
+            card.setAttribute("data-pos", "hidden-right");
+          }
+        });
+      };
+
+      var goToIndex = function (targetIndex) {
+        if (isAnimating) return;
+        isAnimating = true;
+        currentIndex = (targetIndex + total) % total;
+        updatePositions();
+        window.setTimeout(function () {
+          isAnimating = false;
+        }, 380);
+      };
+
+      var next = function () {
+        goToIndex(currentIndex + 1);
+      };
+
+      var prev = function () {
+        goToIndex(currentIndex - 1);
+      };
+
+      var startAutoplay = function () {
+        stopAutoplay();
+        timer = window.setInterval(function () {
+          next();
+        }, intervalTime);
+      };
+
+      var stopAutoplay = function () {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      cards.forEach(function (card, index) {
+        card.addEventListener("click", function () {
+          goToIndex(index);
+          startAutoplay();
+        });
+      });
+
+      var prevBtn = arcStage.querySelector(".arc-prev");
+      var nextBtn = arcStage.querySelector(".arc-next");
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          prev();
+          startAutoplay();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          next();
+          startAutoplay();
+        });
+      }
+
+      arcStage.addEventListener("mouseenter", stopAutoplay);
+      arcStage.addEventListener("mouseleave", startAutoplay);
+
+      var startX = 0;
+      arcStage.addEventListener("touchstart", function (e) {
+        startX = e.touches[0].clientX;
+        stopAutoplay();
+      }, { passive: true });
+
+      arcStage.addEventListener("touchend", function (e) {
+        var endX = e.changedTouches[0].clientX;
+        var diffX = startX - endX;
+        if (Math.abs(diffX) > 40) {
+          if (diffX > 0) next();
+          else prev();
+        }
+        startAutoplay();
+      }, { passive: true });
+
+      updatePositions();
+      startAutoplay();
+    }
+  }
+
   /* ---------- Scroll reveals ---------- */
   var revealables = document.querySelectorAll("[data-reveal], .thread-divider");
   if ("IntersectionObserver" in window && revealables.length) {
@@ -387,9 +520,9 @@
   };
   checkAutoOpenBook();
 
-  /* ---------- Image Protection (Anti-Right-Click, Anti-Drag, Anti-Save) ---------- */
+  /* ---------- Image Protection (Anti-Right-Click & Anti-Drag) ---------- */
   document.addEventListener("contextmenu", function (e) {
-    if (e.target.tagName === "IMG" || e.target.closest("img, picture, .reader-modal, .plate, .dc-cover, .aside-card, .inline-cta, .shelf-card")) {
+    if (e.target.tagName === "IMG") {
       e.preventDefault();
       return false;
     }
@@ -397,13 +530,6 @@
 
   document.addEventListener("dragstart", function (e) {
     if (e.target.tagName === "IMG") {
-      e.preventDefault();
-      return false;
-    }
-  });
-
-  document.addEventListener("keydown", function (e) {
-    if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S")) {
       e.preventDefault();
       return false;
     }

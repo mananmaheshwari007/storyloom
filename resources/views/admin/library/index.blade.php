@@ -137,9 +137,8 @@
                 <h5 class="card-title mb-0 font-weight-bold text-dark"><i class="bi bi-sliders me-2 text-primary"></i> Library Page Copy Controls</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.settings.update') }}" method="POST">
+                <form action="{{ route('admin.library.settings') }}" method="POST">
                     @csrf
-                    @method('PUT')
 
                     <!-- Hero Section Text -->
                     <h6 class="text-uppercase text-muted fw-bold mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">Hero Section Text</h6>

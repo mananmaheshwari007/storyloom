@@ -1,77 +1,76 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Inquiries')
-@section('page_title', 'Customer Inquiries')
-
-@section('breadcrumbs')
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Inquiries</li>
-    </ol>
-  </nav>
-@endsection
+@section('title', 'Inbox')
 
 @section('content')
-  <div class="card border-0 bg-white">
-    <div class="card-body p-4">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th>Client Contact</th>
-              <th>Story For</th>
-              <th>Occasion</th>
-              <th>Timeline</th>
-              <th>Channel Choice</th>
-              <th>Status</th>
-              <th class="text-end">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($messages as $msg)
-              <tr class="{{ $msg->is_read ? 'text-muted' : 'table-light fw-bold text-dark' }}">
-                <td>
-                  <div>{{ $msg->name }}</div>
-                  <div class="text-muted small" style="font-size:0.8rem;">
-                    {{ $msg->email }} @if($msg->phone) · {{ $msg->phone }} @endif
-                  </div>
-                </td>
-                <td>{{ $msg->for }}</td>
-                <td>{{ $msg->occasion ?: '—' }}</td>
-                <td>{{ $msg->timeline ?: 'Flexible' }}</td>
-                <td>
-                  <span class="badge bg-{{ $msg->channel === 'whatsapp' ? 'success' : 'primary' }} text-white text-uppercase" style="font-size:0.7rem;">
-                    {{ $msg->channel }}
-                  </span>
-                </td>
-                <td>
-                  <span class="badge bg-{{ $msg->is_read ? 'secondary' : 'danger' }}" style="font-size:0.7rem;">
-                    {{ $msg->is_read ? 'Read' : 'Unread' }}
-                  </span>
-                </td>
-                <td class="text-end">
-                  <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.messages.show', $msg->id) }}" class="btn btn-sm btn-outline-primary" title="View Story"><i class="bi bi-eye"></i></a>
-                    <form action="{{ route('admin.messages.destroy', $msg->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this log?')">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
-            @empty
-              <tr>
-                <td colspan="7" class="text-center text-muted py-4">No inquiries found.</td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
-      <div class="mt-3">
-        {{ $messages->links() }}
-      </div>
+<div class="page-header">
+    <h1 class="page-title">Contact Messages</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Inbox</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3" style="width: 200px;">Sender</th>
+                        <th>Subject</th>
+                        <th>Message Preview</th>
+                        <th>Received Date</th>
+                        <th class="text-center" style="width: 100px;">Status</th>
+                        <th class="text-end pe-3" style="width: 130px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($messages as $msg)
+                        <tr @if(!$msg->is_read) class="fw-bold bg-light-subtle" @endif>
+                            <td class="ps-3">
+                                <div class="text-dark">{{ $msg->name }}</div>
+                                <small class="text-muted">{{ $msg->email }}</small>
+                                @if($msg->phone)
+                                    <div><small class="text-muted"><i class="bi bi-telephone"></i> {{ $msg->phone }}</small></div>
+                                @endif
+                            </td>
+                            <td>{{ $msg->subject }}</td>
+                            <td class="text-muted">{{ Str::limit($msg->message, 80) }}</td>
+                            <td>{{ $msg->created_at->format('M d, Y H:i') }}</td>
+                            <td class="text-center">
+                                <span class="badge rounded-pill bg-{{ $msg->is_read ? 'success' : 'danger' }}-subtle text-{{ $msg->is_read ? 'success' : 'danger' }} py-1 px-2">
+                                    {{ $msg->is_read ? 'Read' : 'Unread' }}
+                                </span>
+                            </td>
+                            <td class="text-end pe-3">
+                                <a href="{{ route('admin.messages.show', $msg) }}" class="btn btn-sm btn-outline-secondary me-1">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <form action="{{ route('admin.messages.destroy', $msg) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">No messages found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
+    @if($messages->hasPages())
+        <div class="card-footer bg-white border-0 py-3">
+            {{ $messages->links() }}
+        </div>
+    @endif
+</div>
 @endsection

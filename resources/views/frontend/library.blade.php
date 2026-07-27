@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-@section('seo')
-  <x-seo-tags 
-    title="Read a Storyloom — Illustrated Keepsake Book Library"
-    description="Explore sample hand-drawn pages, watercolor spreads, and heirloom books created from real family memories."
-    keywords="storyloom library, sample keepsake books, watercolor spreads, illustrated book examples"
-    ogImage="assets/img/spread-flower-street.webp"
-  />
-@endsection
-
 @section('content')
   <!-- ============ HERO & DISPLAY STACK ============ -->
   <section class="container library-hero">

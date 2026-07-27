@@ -1,106 +1,117 @@
 @extends('layouts.admin')
 
-@section('title', 'Add New Product')
-@section('page_title', 'Create Product')
-
-@section('breadcrumbs')
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Create</li>
-    </ol>
-  </nav>
-@endsection
+@section('title', 'Add Product')
 
 @section('content')
-  <div class="card border-0 bg-white">
-    <div class="card-body p-4">
-      <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+<div class="page-header">
+    <h1 class="page-title">Add Product</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+        </ol>
+    </nav>
+</div>
 
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Edition Name</label>
-            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="e.g. Classic Edition, Deluxe Edition" required>
-            @error('name')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+<div class="card shadow-sm max-w-4xl">
+    <div class="card-body">
+        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Product / Package Name</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="slug" class="form-label">Slug</label>
+                    <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" value="{{ old('slug') }}" required>
+                    @error('slug')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Slug (leave blank to auto-generate)</label>
-            <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror" value="{{ old('slug') }}">
-            @error('slug')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}" required>
+                    @error('price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-4">
+                    <label for="discount_price" class="form-label">Discount Price (₹, Optional)</label>
+                    <input type="number" step="0.01" class="form-control @error('discount_price') is-invalid @enderror" id="discount_price" name="discount_price" value="{{ old('discount_price') }}">
+                    @error('discount_price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control @error('category') is-invalid @enderror" id="category" name="category" value="{{ old('category') }}">
+                    @error('category')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
 
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Base Price (INR)</label>
-            <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" step="0.01" required min="0">
-            @error('price')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+                @error('description')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Discounted Price (INR, optional)</label>
-            <input type="number" name="discount_price" class="form-control @error('discount_price') is-invalid @enderror" value="{{ old('discount_price') }}" step="0.01" min="0">
-            @error('discount_price')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="mb-3">
+                <label for="main_image_file" class="form-label">Upload Cover Image</label>
+                <input type="file" class="form-control @error('main_image_file') is-invalid @enderror" id="main_image_file" name="main_image_file" accept="image/*">
+                <div class="form-text">Max file size: <strong>3 MB</strong>. Recommended dimensions: <strong>1200 × 1200 px</strong> or <strong>1600 × 900 px</strong>.</div>
+                @error('main_image_file')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Product Category</label>
-            <input type="text" name="category" class="form-control @error('category') is-invalid @enderror" value="{{ old('category') }}" placeholder="e.g. Keepsake Books">
-            @error('category')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="mb-3">
+                <label for="gallery_files" class="form-label">Upload Gallery Images (Select Multiple)</label>
+                <input type="file" class="form-control @error('gallery_files') is-invalid @enderror" id="gallery_files" name="gallery_files[]" accept="image/*" multiple>
+                <div class="form-text">Max file size: <strong>3 MB</strong> per file. Recommended dimensions: <strong>1600 × 900 px</strong> or <strong>1200 × 1200 px</strong>.</div>
+                @error('gallery_files')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Main Image (Cover/Display)</label>
-            <input type="file" name="main_image" class="form-control @error('main_image') is-invalid @enderror" required>
-            @error('main_image')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+            <div class="mb-4">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
+                    <option value="draft" {{ old('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                    <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>Published</option>
+                </select>
+                @error('status')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Gallery Images (Select multiple)</label>
-            <input type="file" name="gallery_images[]" class="form-control @error('gallery_images') is-invalid @enderror" multiple>
-            @error('gallery_images')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-9">
-            <label class="form-label fw-semibold">Short Description / Subtitle</label>
-            <input type="text" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
-            @error('description')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="col-md-3">
-            <label class="form-label fw-semibold">Status</label>
-            <select name="status" class="form-select @error('status') is-invalid @enderror" required>
-              <option value="1" {{ old('status', '1') === '1' ? 'selected' : '' }}>Active</option>
-              <option value="0" {{ old('status') === '0' ? 'selected' : '' }}>Inactive</option>
-            </select>
-            @error('status')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-        </div>
-
-        <div class="mt-4 pt-3 border-top d-flex gap-2">
-          <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Create Product</button>
-          <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">Cancel</a>
-        </div>
-      </form>
+            <button type="submit" class="btn btn-primary px-4 py-2"><i class="bi bi-save me-1"></i> Save Product</button>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary px-4 py-2 ms-2">Cancel</a>
+        </form>
     </div>
-  </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('name').addEventListener('input', function() {
+        const name = this.value;
+        const slug = name.toLowerCase()
+            .replace(/[^\w ]+/g, '')
+            .replace(/ +/g, '-');
+        document.getElementById('slug').value = slug;
+    });
+</script>
 @endsection
