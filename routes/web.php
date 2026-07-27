@@ -55,9 +55,17 @@ Route::get('/robots.txt', [FrontendController::class, 'robots'])->name('robots')
 | Admin & Breeze Dashboard Redirects
 |--------------------------------------------------------------------------
 */
+Route::get('/admin/login', function () {
+    return redirect()->route('login');
+});
+
+Route::get('/admin', function () {
+    return redirect()->route('admin.dashboard');
+});
+
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
