@@ -15,14 +15,26 @@ if (!function_exists('setting')) {
     function setting($key, $default = null)
     {
         try {
-            return Cache::remember("setting.{$key}", 3600, function () use ($key, $default) {
+            $val = Cache::remember("setting.{$key}", 3600, function () use ($key, $default) {
                 if (!Schema::hasTable('settings')) {
                     return $default;
                 }
                 $setting = Setting::where('key', $key)->first();
-                return $setting ? $setting->value : $default;
+                return ($setting && !is_null($setting->value) && $setting->value !== '') ? $setting->value : $default;
             });
+
+            // Self-correct legacy instagram handle & URL automatically
+            if ($key === 'social_instagram' && (empty($val) || str_contains($val, 'storyloom.in'))) {
+                return 'https://www.instagram.com/storyloombooks/';
+            }
+            if ($key === 'instagram_username' && (empty($val) || $val === 'storyloom.in')) {
+                return 'storyloombooks';
+            }
+
+            return $val;
         } catch (\Exception $e) {
+            if ($key === 'social_instagram') return 'https://www.instagram.com/storyloombooks/';
+            if ($key === 'instagram_username') return 'storyloombooks';
             return $default;
         }
     }

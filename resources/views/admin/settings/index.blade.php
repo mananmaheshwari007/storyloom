@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="social_instagram" class="form-label">Instagram Profile URL</label>
-                                    <input type="url" class="form-control" id="social_instagram" name="social_instagram" value="{{ setting('social_instagram', 'https://instagram.com/storyloombooks') }}">
+                                    <input type="url" class="form-control" id="social_instagram" name="social_instagram" value="{{ setting('social_instagram', 'https://www.instagram.com/storyloombooks/') }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="instagram_username" class="form-label">Instagram Username (without @)</label>
