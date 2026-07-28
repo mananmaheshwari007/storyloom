@@ -280,7 +280,24 @@ class FrontendController extends Controller
     public function blogShow($slug)
     {
         $article = Blog::where('slug', $slug)->where('status', 'published')->firstOrFail();
-        $related = Blog::where('status', 'published')->where('id', '!=', $article->id)->take(3)->get();
+
+        // Prefer articles from the same category, backfilling with latest published articles if < 3
+        $related = Blog::published()
+            ->where('id', '!=', $article->id)
+            ->where('category', $article->category)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        if ($related->count() < 3) {
+            $existingIds = $related->pluck('id')->push($article->id)->toArray();
+            $more = Blog::published()
+                ->whereNotIn('id', $existingIds)
+                ->latest()
+                ->take(3 - $related->count())
+                ->get();
+            $related = $related->concat($more);
+        }
 
         $seo = [
             'title' => ($article->meta_title ?: $article->title) . ' | Storyloom Journal',

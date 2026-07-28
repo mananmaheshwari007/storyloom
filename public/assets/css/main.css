@@ -3310,13 +3310,20 @@ html:not(.js) .loom-hint,
 .post-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   font-size: 0.76rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--terra);
   font-weight: 700;
   margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.post-meta .cat {
+  color: var(--terra);
+  font-weight: 700;
 }
 
 .post-meta .dot {
@@ -3325,6 +3332,8 @@ html:not(.js) .loom-hint,
   border-radius: 50%;
   background: var(--terra);
   display: inline-block;
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 .post-meta .read-time {
@@ -3332,7 +3341,8 @@ html:not(.js) .loom-hint,
   align-items: center;
   gap: 4px;
   color: var(--ink-faint);
-  font-weight: 400;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .post-meta .read-time svg {
@@ -3445,6 +3455,10 @@ html:not(.js) .loom-hint,
   line-height: 1.28;
   margin-bottom: 10px;
   color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .post-card .pc-excerpt {
@@ -3452,6 +3466,10 @@ html:not(.js) .loom-hint,
   line-height: 1.6;
   color: var(--ink-soft);
   margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .post-card .pc-more {
@@ -4059,7 +4077,17 @@ html:not(.js) .loom-hint,
 .related-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  gap: clamp(24px, 3vw, 36px);
+  justify-content: center;
+}
+
+/* Dynamically center single or double cards cleanly */
+.related-grid:has(> :nth-child(1):last-child) {
+  grid-template-columns: minmax(auto, 380px);
+}
+
+.related-grid:has(> :nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(280px, 380px));
 }
 
 @media (max-width: 940px) {
@@ -4071,8 +4099,10 @@ html:not(.js) .loom-hint,
     position: static;
   }
 
-  .related-grid {
-    grid-template-columns: 1fr;
+  .related-grid,
+  .related-grid:has(> :nth-child(1):last-child),
+  .related-grid:has(> :nth-child(2):last-child) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
   .inline-cta {

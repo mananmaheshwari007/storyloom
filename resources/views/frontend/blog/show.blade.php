@@ -144,17 +144,27 @@
         </div>
         <div class="related-grid">
           @foreach($related as $rIndex => $rel)
+            @php
+              $rCatLabel = $rel->category_label;
+              $rReadTime = $rel->read_time 
+                ? (is_numeric($rel->read_time) ? $rel->read_time . ' min read' : $rel->read_time) 
+                : '5 min read';
+              $rExcerpt = $rel->dek ?: ($rel->short_description ?: Str::limit(strip_tags($rel->content), 100));
+            @endphp
             <a class="post-card" href="{{ route('blog.show', $rel->slug) }}" data-reveal style="--stagger:{{ $rIndex % 3 }}">
               <span class="pc-media">
                 <img src="{{ asset($rel->featured_image ?: 'assets/img/spread-home-morning.webp') }}" width="1100" height="1469" loading="lazy" alt="{{ $rel->title }}">
               </span>
               <span class="pc-body">
                 <span class="post-meta">
-                  <span class="cat">{{ $rel->keywords ?: 'Gift Guides' }}</span>
+                  <span class="cat">{{ $rCatLabel }}</span>
                   <span class="dot" aria-hidden="true"></span>
-                  <span class="read-time">5 min</span>
+                  <span class="read-time">{{ $rReadTime }}</span>
                 </span>
-                <h3>{{ $rel->title }}</h3>
+                <h3>{!! $rel->headline !!}</h3>
+                @if($rExcerpt)
+                  <span class="pc-excerpt">{{ $rExcerpt }}</span>
+                @endif
                 <span class="pc-more">Read
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
                 </span>
