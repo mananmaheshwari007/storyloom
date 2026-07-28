@@ -85,6 +85,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Hero Section
     Route::get('/hero', [HeroController::class, 'edit'])->name('hero.edit');
     Route::post('/hero', [HeroController::class, 'update'])->name('hero.update');
+    Route::post('/hero/upload-image', [HeroController::class, 'uploadImage'])->name('hero.uploadImage');
 
     // How It Works Page
     Route::get('/how-it-works', [\App\Http\Controllers\Admin\HowItWorksController::class, 'edit'])->name('how.edit');

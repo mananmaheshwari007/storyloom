@@ -7,6 +7,7 @@ use App\Models\Hero;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class HeroController extends Controller
 {
@@ -47,6 +48,7 @@ class HeroController extends Controller
             'description' => 'nullable|string',
             'button_text' => 'nullable|string',
             'button_link' => 'nullable|string',
+            'hero_cards_file.*' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:2048',
         ]);
 
         $hero = Hero::first();
@@ -79,10 +81,24 @@ class HeroController extends Controller
         // Process Carousel Cards Array
         if ($request->has('hero_cards')) {
             $cards = [];
-            foreach ($request->input('hero_cards') as $cardData) {
-                if (!empty($cardData['title']) || !empty($cardData['image'])) {
+            foreach ($request->input('hero_cards') as $index => $cardData) {
+                $imagePath = $cardData['image'] ?? 'assets/img/hero-reading-hilltop.webp';
+
+                // Check if a direct file was uploaded for this card
+                if ($request->hasFile("hero_cards_file.{$index}")) {
+                    $file = $request->file("hero_cards_file.{$index}");
+                    $filename = 'hero_card_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+                    $destinationPath = public_path('assets/img/hero');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+                    $file->move($destinationPath, $filename);
+                    $imagePath = 'assets/img/hero/' . $filename;
+                }
+
+                if (!empty($cardData['title']) || !empty($imagePath)) {
                     $cards[] = [
-                        'image' => $cardData['image'] ?? 'assets/img/hero-reading-hilltop.webp',
+                        'image' => $imagePath,
                         'title' => $cardData['title'] ?? '',
                         'caption' => $cardData['caption'] ?? '',
                     ];
@@ -98,5 +114,36 @@ class HeroController extends Controller
         Cache::forget('home_hero');
 
         return back()->with('success', 'Hero Arc Carousel section updated successfully.');
+    }
+
+    /**
+     * Upload an image for a Hero Arc Carousel card via AJAX.
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,jpg,png,webp,avif|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = 'hero_card_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('assets/img/hero');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $file->move($destinationPath, $filename);
+            $relativePath = 'assets/img/hero/' . $filename;
+
+            return response()->json([
+                'success' => true,
+                'url' => $relativePath,
+                'asset_url' => asset($relativePath)
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No file uploaded.'], 400);
     }
 }

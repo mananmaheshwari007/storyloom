@@ -23,7 +23,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.hero.update') }}" method="POST">
+<form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row g-4">
         <!-- Left Column: Copy & Buttons -->
@@ -106,7 +106,19 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <p class="text-muted small mb-4">These cards rotate fanned along a 3D arc above the hero headline on the homepage. Edit images, titles, and sub-captions below:</p>
+                    <p class="text-muted small mb-3">These cards rotate fanned along a 3D arc above the hero headline on the homepage. Upload or edit images, titles, and sub-captions below:</p>
+
+                    <!-- Image Guidelines Box -->
+                    <div class="alert alert-info border-0 shadow-sm py-2.5 px-3 mb-4 small d-flex align-items-start gap-2.5 rounded" style="background-color: #f0f7ff; border-left: 4px solid #0d6efd !important;">
+                        <i class="bi bi-info-circle-fill text-primary fs-5 mt-0.5"></i>
+                        <div>
+                            <div class="fw-bold text-dark mb-0.5">Hero Card Image Guidelines:</div>
+                            <div class="text-muted">
+                                &bull; <strong>Recommended Resolution:</strong> <code>800 &times; 1100 px</code> (Portrait 3:4 aspect ratio)<br>
+                                &bull; <strong>Max File Size:</strong> <code>2 MB</code> &nbsp;|&nbsp; <strong>Formats:</strong> WebP, JPG, PNG, AVIF
+                            </div>
+                        </div>
+                    </div>
 
                     <div id="carouselCardsContainer">
                         @foreach($carouselCards as $index => $card)
@@ -117,12 +129,21 @@
                                     </button>
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-3 text-center">
-                                            <img src="{{ asset($card['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}" alt="Preview" class="img-fluid rounded border card-preview-img" style="max-height: 100px; object-fit: cover;">
+                                            <img src="{{ asset($card['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}" alt="Preview" class="img-fluid rounded border card-preview-img shadow-sm" style="max-height: 110px; width: 80px; object-fit: cover;">
                                         </div>
                                         <div class="col-md-9">
                                             <div class="mb-2">
-                                                <label class="form-label form-label-sm font-weight-bold mb-1">Image Path</label>
-                                                <input type="text" class="form-control form-control-sm card-img-input" name="hero_cards[{{ $index }}][image]" value="{{ $card['image'] ?? '' }}" required>
+                                                <label class="form-label form-label-sm font-weight-bold mb-1">Image Path / Upload</label>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control card-img-input" name="hero_cards[{{ $index }}][image]" value="{{ $card['image'] ?? '' }}" placeholder="assets/img/spread-name.webp" required>
+                                                    <button type="button" class="btn btn-outline-primary upload-card-img-btn">
+                                                        <i class="bi bi-cloud-upload me-1"></i> Upload Image
+                                                    </button>
+                                                    <input type="file" class="d-none card-file-input" name="hero_cards_file[{{ $index }}]" accept="image/webp,image/jpeg,image/png,image/avif">
+                                                </div>
+                                                <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                                    <i class="bi bi-aspect-ratio me-1"></i> Rec. resolution: <strong>800 &times; 1100 px</strong> (3:4 portrait) &bull; Max <strong>2 MB</strong>
+                                                </small>
                                             </div>
                                             <div class="row g-2">
                                                 <div class="col-md-6">
@@ -163,12 +184,21 @@ document.addEventListener("DOMContentLoaded", function() {
                         </button>
                         <div class="row g-3 align-items-center">
                             <div class="col-md-3 text-center">
-                                <img src="{{ asset('assets/img/spread-home-morning.webp') }}" alt="Preview" class="img-fluid rounded border card-preview-img" style="max-height: 100px; object-fit: cover;">
+                                <img src="{{ asset('assets/img/spread-home-morning.webp') }}" alt="Preview" class="img-fluid rounded border card-preview-img shadow-sm" style="max-height: 110px; width: 80px; object-fit: cover;">
                             </div>
                             <div class="col-md-9">
                                 <div class="mb-2">
-                                    <label class="form-label form-label-sm font-weight-bold mb-1">Image Path</label>
-                                    <input type="text" class="form-control form-control-sm card-img-input" name="hero_cards[${newIndex}][image]" value="assets/img/spread-home-morning.webp" required>
+                                    <label class="form-label form-label-sm font-weight-bold mb-1">Image Path / Upload</label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control card-img-input" name="hero_cards[${newIndex}][image]" value="assets/img/spread-home-morning.webp" placeholder="assets/img/spread-name.webp" required>
+                                        <button type="button" class="btn btn-outline-primary upload-card-img-btn">
+                                            <i class="bi bi-cloud-upload me-1"></i> Upload Image
+                                        </button>
+                                        <input type="file" class="d-none card-file-input" name="hero_cards_file[${newIndex}]" accept="image/webp,image/jpeg,image/png,image/avif">
+                                    </div>
+                                    <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                        <i class="bi bi-aspect-ratio me-1"></i> Rec. resolution: <strong>800 &times; 1100 px</strong> (3:4 portrait) &bull; Max <strong>2 MB</strong>
+                                    </small>
                                 </div>
                                 <div class="row g-2">
                                     <div class="col-md-6">
@@ -188,7 +218,9 @@ document.addEventListener("DOMContentLoaded", function() {
             container.insertAdjacentHTML("beforeend", cardHtml);
         });
 
+        // Delegate Click to Remove Button and Upload Image Button
         container.addEventListener("click", function(e) {
+            // Remove Card
             var removeBtn = e.target.closest(".remove-card-btn");
             if (removeBtn) {
                 var row = removeBtn.closest(".card-item-row");
@@ -199,6 +231,80 @@ document.addEventListener("DOMContentLoaded", function() {
                         alert("The carousel must have at least 1 card.");
                     }
                 }
+                return;
+            }
+
+            // Upload Image Button Click
+            var uploadBtn = e.target.closest(".upload-card-img-btn");
+            if (uploadBtn) {
+                var row = uploadBtn.closest(".card-item-row");
+                if (row) {
+                    var fileInput = row.querySelector(".card-file-input");
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                }
+            }
+        });
+
+        // Delegate File Input Change Event for Instant AJAX Upload
+        container.addEventListener("change", function(e) {
+            if (e.target && e.target.classList.contains("card-file-input")) {
+                var fileInput = e.target;
+                if (!fileInput.files || fileInput.files.length === 0) return;
+
+                var file = fileInput.files[0];
+
+                // Validate File Size (Max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("Selected file exceeds the maximum allowed size of 2 MB. Please choose a smaller image.");
+                    fileInput.value = "";
+                    return;
+                }
+
+                var row = fileInput.closest(".card-item-row");
+                var uploadBtn = row.querySelector(".upload-card-img-btn");
+                var imgInput = row.querySelector(".card-img-input");
+                var previewImg = row.querySelector(".card-preview-img");
+
+                var originalBtnHtml = uploadBtn.innerHTML;
+                uploadBtn.disabled = true;
+                uploadBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status"></span> Uploading...`;
+
+                var formData = new FormData();
+                formData.append("image", file);
+
+                var csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                fetch("{{ route('admin.hero.uploadImage') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken || "",
+                        "Accept": "application/json"
+                    },
+                    body: formData
+                })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(data) {
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = originalBtnHtml;
+
+                    if (data.success) {
+                        imgInput.value = data.url;
+                        if (previewImg) {
+                            previewImg.src = data.asset_url || ("/" + data.url);
+                        }
+                    } else {
+                        alert(data.message || "Failed to upload image.");
+                    }
+                })
+                .catch(function(err) {
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = originalBtnHtml;
+                    alert("Error uploading image file: " + err.message);
+                });
             }
         });
     }
