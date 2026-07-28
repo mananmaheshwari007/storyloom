@@ -918,40 +918,48 @@ h3 em {
   }
 }
 
-/* Hero entrance (only hidden when JS is available to reveal it) */
+/* Hero entrance.
+   Driven purely by CSS: the animation starts the moment this stylesheet
+   applies. It used to be gated on an .is-ready class added by main.js,
+   which is deferred — that kept the hero (and therefore the LCP element)
+   invisible until the script had downloaded and run, costing ~3s of LCP. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .js .hero [data-hero] {
-  opacity: 0;
-  transform: translateY(26px);
+  animation: hero-rise 0.45s var(--ease-out) both;
 }
 
-.hero.is-ready [data-hero] {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+.js .hero [data-hero="1"] {
+  animation-delay: 0.03s;
 }
 
-.hero.is-ready [data-hero="1"] {
-  transition-delay: 0.05s;
+.js .hero [data-hero="2"] {
+  animation-delay: 0.08s;
 }
 
-.hero.is-ready [data-hero="2"] {
-  transition-delay: 0.16s;
+.js .hero [data-hero="3"] {
+  animation-delay: 0.14s;
 }
 
-.hero.is-ready [data-hero="3"] {
-  transition-delay: 0.28s;
+.js .hero [data-hero="4"] {
+  animation-delay: 0.2s;
 }
 
-.hero.is-ready [data-hero="4"] {
-  transition-delay: 0.4s;
+.js .hero [data-hero="5"] {
+  animation-delay: 0.26s;
 }
 
-.hero.is-ready [data-hero="5"] {
-  transition-delay: 0.52s;
-}
-
-.hero.is-ready .hero-plate-wrap[data-hero] {
-  transition-duration: 1.15s;
+.js .hero .hero-plate-wrap[data-hero] {
+  animation-duration: 0.6s;
 }
 
 /* ---------- Scroll reveal (gated on .js so content survives without JS) ---------- */

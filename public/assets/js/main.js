@@ -42,14 +42,23 @@
     });
   }
 
-  /* ---------- Hero entrance ---------- */
-  var hero = document.querySelector(".hero");
-  if (hero) {
-    var heroReady = function () { hero.classList.add("is-ready"); };
-    requestAnimationFrame(function () {
-      requestAnimationFrame(heroReady);
-    });
-    window.setTimeout(heroReady, 800); // fallback when rAF is throttled (hidden/background tab)
+  /* ---------- Hero entrance ----------
+     The reveal itself is pure CSS (@keyframes hero-rise) so the hero — and
+     the LCP element — paints as soon as the stylesheet lands, rather than
+     waiting on this deferred script. This is only a safety net: if those
+     animations never advanced (a tab backgrounded for the whole load), snap
+     them to the end so the copy can't sit invisible. It can only ever
+     reveal content, never hide it. */
+  var heroBits = document.querySelectorAll(".hero [data-hero]");
+  if (heroBits.length) {
+    window.setTimeout(function () {
+      Array.prototype.forEach.call(heroBits, function (el) {
+        if (!el.getAnimations) return;
+        el.getAnimations().forEach(function (a) {
+          if (a.playState !== "finished" && !a.currentTime) a.finish();
+        });
+      });
+    }, 1500);
   }
 
   /* ---------- Arc Carousel Controller ---------- */
@@ -180,8 +189,13 @@
         startAutoplay();
       }, { passive: true });
 
+      // The opening positions are already rendered server-side, so this just
+      // re-asserts them before handing over to the rotation.
       updatePositions();
-      startAutoplay();
+      // Hold the first card still for a beat: rotating while the page is still
+      // loading swaps which image counts as the largest paint, which made LCP
+      // jump around between loads.
+      window.setTimeout(startAutoplay, 2500);
     }
   }
 

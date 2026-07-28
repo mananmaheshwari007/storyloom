@@ -25,9 +25,26 @@
       <div class="arc-carousel-stage" id="heroArcCarousel" data-speed="{{ setting('hero_carousel_speed', '3.5') }}">
         <div class="arc-track">
           @foreach($carouselCards as $index => $card)
-            <div class="arc-card" data-index="{{ $index }}">
+            @php
+              // Mirror updatePositions() in main.js for the opening frame, so the arc
+              // is laid out by CSS on first paint. Without this every card stacks in
+              // one spot until the deferred script runs and then slides into place,
+              // which was pushing the LCP image's render out by ~1.7s.
+              $arcTotal = count($carouselCards);
+              $arcDiff  = $index;
+              if ($arcDiff > $arcTotal / 2)  { $arcDiff -= $arcTotal; }
+              if ($arcDiff < -$arcTotal / 2) { $arcDiff += $arcTotal; }
+              $arcPos = abs($arcDiff) <= 2
+                  ? (string) $arcDiff
+                  : ($arcDiff < -2 ? 'hidden-left' : 'hidden-right');
+            @endphp
+            <div class="arc-card" data-index="{{ $index }}" data-pos="{{ $arcPos }}">
               <div class="arc-card-inner">
-                <img src="{{ asset($card['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}" alt="{{ $card['title'] ?? '' }}">
+                {{-- Card 0 opens in the centre slot, so it is the LCP element on
+                     mobile — let the browser fetch it ahead of the other art. --}}
+                <img src="{{ asset($card['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}"
+                     alt="{{ $card['title'] ?? '' }}"
+                     @if($index === 0) fetchpriority="high" @endif>
                 <div class="arc-card-caption">
                   <strong>{{ $card['title'] ?? '' }}</strong>
                   <span>{{ $card['caption'] ?? '' }}</span>
@@ -117,15 +134,15 @@
         @empty
           <!-- Fallback plates if database empty -->
           <figure class="plate hoverable" data-reveal style="--stagger:0">
-            <img src="{{ asset('assets/img/spread-home-morning.webp') }}" loading="lazy" alt="Illustrated living room">
+            <img src="{{ asset('assets/img/spread-home-morning.webp') }}" loading="lazy" width="600" height="338" alt="Illustrated living room">
             <figcaption class="caption">the flat where it all began</figcaption>
           </figure>
           <figure class="plate hoverable" data-reveal style="--stagger:1">
-            <img src="{{ asset('assets/img/spread-flower-street.webp') }}" loading="lazy" alt="Walking at sunset">
+            <img src="{{ asset('assets/img/spread-flower-street.webp') }}" loading="lazy" width="600" height="801" alt="Walking at sunset">
             <figcaption class="caption">the evening walk, every single day</figcaption>
           </figure>
           <figure class="plate hoverable" data-reveal style="--stagger:2">
-            <img src="{{ asset('assets/img/spread-shared-fries.webp') }}" loading="lazy" alt="Sharing fries">
+            <img src="{{ asset('assets/img/spread-shared-fries.webp') }}" loading="lazy" width="600" height="801" alt="Sharing fries">
             <figcaption class="caption">one plate, two forks — always</figcaption>
           </figure>
         @endforelse
