@@ -112,10 +112,10 @@
                     <div class="alert alert-info border-0 shadow-sm py-2.5 px-3 mb-4 small d-flex align-items-start gap-2.5 rounded" style="background-color: #f0f7ff; border-left: 4px solid #0d6efd !important;">
                         <i class="bi bi-info-circle-fill text-primary fs-5 mt-0.5"></i>
                         <div>
-                            <div class="fw-bold text-dark mb-0.5">Hero Card Image Guidelines:</div>
+                            <div class="fw-bold text-dark mb-0.5">Hero Card Image Specifications:</div>
                             <div class="text-muted">
-                                &bull; <strong>Recommended Resolution:</strong> <code>800 &times; 1100 px</code> (Portrait 3:4 aspect ratio)<br>
-                                &bull; <strong>Max File Size:</strong> <code>2 MB</code> &nbsp;|&nbsp; <strong>Formats:</strong> WebP, JPG, PNG, AVIF
+                                &bull; <strong>Max Width:</strong> <code>600 px</code> &nbsp;|&nbsp; <strong>Quality:</strong> <code>75</code> (WebP)<br>
+                                &bull; <strong>Expected File Size:</strong> <code>50&ndash;80 KB</code> &nbsp;|&nbsp; <strong>Formats:</strong> WebP, JPG, PNG, AVIF
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                                                     <input type="file" class="d-none card-file-input" name="hero_cards_file[{{ $index }}]" accept="image/webp,image/jpeg,image/png,image/avif">
                                                 </div>
                                                 <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
-                                                    <i class="bi bi-aspect-ratio me-1"></i> Rec. resolution: <strong>800 &times; 1100 px</strong> (3:4 portrait) &bull; Max <strong>2 MB</strong>
+                                                    <i class="bi bi-aspect-ratio me-1"></i> Max width: <strong>600 px</strong> &bull; Quality: <strong>75</strong> &bull; Expected size: <strong>50&ndash;80 KB</strong>
                                                 </small>
                                             </div>
                                             <div class="row g-2">
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <input type="file" class="d-none card-file-input" name="hero_cards_file[${newIndex}]" accept="image/webp,image/jpeg,image/png,image/avif">
                                     </div>
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
-                                        <i class="bi bi-aspect-ratio me-1"></i> Rec. resolution: <strong>800 &times; 1100 px</strong> (3:4 portrait) &bull; Max <strong>2 MB</strong>
+                                        <i class="bi bi-aspect-ratio me-1"></i> Max width: <strong>600 px</strong> &bull; Quality: <strong>75</strong> &bull; Expected size: <strong>50&ndash;80 KB</strong>
                                     </small>
                                 </div>
                                 <div class="row g-2">

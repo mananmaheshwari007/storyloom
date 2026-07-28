@@ -26,10 +26,69 @@
                     <div class="mb-3">
                         <label for="file" class="form-label">Choose Image File</label>
                         <input class="form-control" type="file" id="file" name="file" accept="image/*" required>
-                        <div class="form-text">Supported formats: JPG, PNG, WEBP, GIF. Max file size: <strong>10 MB</strong>. Recommended dimensions: <strong>1600 × 900 px</strong> or high-resolution source files.</div>
+                        <div class="form-text">Supported formats: JPG, PNG, WEBP, GIF, AVIF. Max file size: <strong>10 MB</strong>.</div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2"><i class="bi bi-upload me-1"></i> Upload File</button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Image Optimization Specifications Table -->
+        <div class="card shadow-sm mt-4 border-0">
+            <div class="card-header bg-white border-0 py-3">
+                <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-file-earmark-image me-2 text-info"></i> Image Optimization Specifications</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0" style="font-size: 0.82rem;">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Image Type</th>
+                                <th>Max Width</th>
+                                <th>Quality</th>
+                                <th class="pe-3">Expected Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-3 fw-medium text-dark">Hero Carousel Cards</td>
+                                <td><code>600px</code></td>
+                                <td>75</td>
+                                <td class="pe-3 text-success font-monospace">50–80 KB</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 fw-medium text-dark">Story-grid / Page Spreads</td>
+                                <td><code>800px</code></td>
+                                <td>72–75</td>
+                                <td class="pe-3 text-success font-monospace">60–95 KB</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 fw-medium text-dark">Library Book Spreads</td>
+                                <td><code>900px</code></td>
+                                <td>78–80</td>
+                                <td class="pe-3 text-success font-monospace">60–130 KB</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 fw-medium text-dark">Book Covers</td>
+                                <td><code>900px</code></td>
+                                <td>80</td>
+                                <td class="pe-3 text-success font-monospace">15–35 KB</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 fw-medium text-dark">Card Thumbnails</td>
+                                <td><code>240px</code></td>
+                                <td>75</td>
+                                <td class="pe-3 text-success font-monospace">7–18 KB</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-3 fw-medium text-dark">Logos (Transparency)</td>
+                                <td><code>2&times; display</code></td>
+                                <td>PNG-8 / WebP</td>
+                                <td class="pe-3 text-success font-monospace">&lt;10 KB</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
