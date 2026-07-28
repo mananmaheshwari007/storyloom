@@ -26,3 +26,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# User Uploaded Media (Preserve uploads directory in git, exclude dynamic uploads from git churn)
+/public/assets/img/uploads/*
+!/public/assets/img/uploads/.gitkeep
