@@ -133,18 +133,18 @@
             <figcaption class="caption">{{ $project->title }}</figcaption>
           </figure>
         @empty
-          <!-- Fallback plates if database empty -->
+          <!-- Dynamic plates from Homepage Editor settings -->
           <figure class="plate hoverable" data-reveal style="--stagger:0">
-            <img src="{{ asset('assets/img/spread-home-morning.webp') }}" loading="lazy" decoding="async" width="600" height="338" alt="Illustrated living room">
-            <figcaption class="caption">the flat where it all began</figcaption>
+            <img src="{{ asset(setting('reveal_plate1_image', 'assets/img/spread-home-morning.webp')) }}" loading="lazy" decoding="async" width="600" height="338" alt="{{ setting('reveal_plate1_caption', 'the flat where it all began') }}">
+            <figcaption class="caption">{{ setting('reveal_plate1_caption', 'the flat where it all began') }}</figcaption>
           </figure>
           <figure class="plate hoverable" data-reveal style="--stagger:1">
-            <img src="{{ asset('assets/img/spread-flower-street.webp') }}" loading="lazy" decoding="async" width="600" height="801" alt="Walking at sunset">
-            <figcaption class="caption">the evening walk, every single day</figcaption>
+            <img src="{{ asset(setting('reveal_plate2_image', 'assets/img/spread-flower-street.webp')) }}" loading="lazy" decoding="async" width="600" height="801" alt="{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}">
+            <figcaption class="caption">{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}</figcaption>
           </figure>
           <figure class="plate hoverable" data-reveal style="--stagger:2">
-            <img src="{{ asset('assets/img/spread-shared-fries.webp') }}" loading="lazy" decoding="async" width="600" height="801" alt="Sharing fries">
-            <figcaption class="caption">one plate, two forks — always</figcaption>
+            <img src="{{ asset(setting('reveal_plate3_image', 'assets/img/spread-shared-fries.webp')) }}" loading="lazy" decoding="async" width="600" height="801" alt="{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}">
+            <figcaption class="caption">{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}</figcaption>
           </figure>
         @endforelse
       </div>
@@ -157,24 +157,43 @@
   </section>
 
   <!-- ================= STORY EXAMPLES ================= -->
+  @php
+    $rawStoryCards = setting('story_for_cards');
+    $storyForCards = [];
+    if ($rawStoryCards) {
+        $storyForCards = is_array($rawStoryCards) ? $rawStoryCards : json_decode($rawStoryCards, true);
+    }
+    if (empty($storyForCards)) {
+        $storyForCards = [
+            ['image' => 'assets/img/spread-bench-sunset.webp', 'title' => 'For Your Wife', 'hint' => 'anniversaries · birthdays', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-sunday-breakfast.webp', 'title' => 'For Your Mom & Dad', 'hint' => 'parents 50th · retirement', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-bicycle-lesson.webp', 'title' => 'For Your Sister / Brother', 'hint' => 'rakhi · milestone birthdays', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-under-stars.webp', 'title' => 'For Your Husband / Partner', 'hint' => 'proposals · weddings', 'link' => route('occasions')],
+        ];
+    }
+  @endphp
   <section class="section section-tint grain">
     <div class="container">
       <div class="section-head" data-reveal>
-        <p class="eyebrow">Who is your story for?</p>
-        <h2>Every relationship has its own <em>book.</em></h2>
+        <p class="eyebrow">{{ setting('story_for_eyebrow', 'Who is your story for?') }}</p>
+        <h2>{!! setting('story_for_heading', 'Every relationship has its own <em>book.</em>') !!}</h2>
       </div>
       <div class="story-grid">
-        @forelse($portfolios as $index => $port)
-          <a class="story-card" href="{{ route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
-            <span class="img-wrap"><img src="{{ asset($port->thumbnail) }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $port->title }}"></span>
-            <span class="story-label"><span class="for">{{ $port->title }}</span><span class="hint">{{ $port->category }}</span></span>
-          </a>
-        @empty
-          <a class="story-card" href="{{ route('occasions') }}" data-reveal style="--stagger:0">
-            <span class="img-wrap"><img src="{{ asset('assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="300" alt="Sunset couple"></span>
-            <span class="story-label"><span class="for">For Your Wife</span><span class="hint">anniversaries · birthdays</span></span>
-          </a>
-        @endforelse
+        @if(isset($portfolios) && count($portfolios) > 0)
+          @foreach($portfolios as $index => $port)
+            <a class="story-card" href="{{ route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
+              <span class="img-wrap"><img src="{{ asset($port->thumbnail) }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $port->title }}"></span>
+              <span class="story-label"><span class="for">{{ $port->title }}</span><span class="hint">{{ $port->category }}</span></span>
+            </a>
+          @endforeach
+        @else
+          @foreach($storyForCards as $index => $card)
+            <a class="story-card" href="{{ $card['link'] ?? route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
+              <span class="img-wrap"><img src="{{ asset($card['image'] ?? 'assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $card['title'] ?? '' }}"></span>
+              <span class="story-label"><span class="for">{{ $card['title'] ?? '' }}</span><span class="hint">{{ $card['hint'] ?? '' }}</span></span>
+            </a>
+          @endforeach
+        @endif
       </div>
     </div>
   </section>
