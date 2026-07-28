@@ -117,7 +117,7 @@
   </section>
 
   <!-- ================= REVEAL (LEFT-JUSTIFIED & SEAMLESS RIGHT-IMAGE WITH DECREASING OPACITY) ================= -->
-  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #FAF7F2; padding: clamp(64px, 10vh, 120px) 0;">
+  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f7f4ed; min-height: clamp(580px, 75vh, 850px); display: flex; align-items: center; padding: clamp(90px, 14vh, 160px) 0;">
     <!-- Edge-to-Edge Right Image with Smooth Decreasing Opacity Gradient to Left -->
     <div class="reveal-right-img" style="position: absolute; top: 0; right: 0; bottom: 0; width: 58%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center right; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 18%, rgba(0,0,0,0.75) 48%, black 80%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 18%, rgba(0,0,0,0.75) 48%, black 80%);"></div>
 
