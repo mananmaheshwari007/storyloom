@@ -89,6 +89,7 @@ class HeroController extends Controller
         $imageUploadKeys = [
             'site_emblem_file' => 'site_emblem',
             'cta_bg_image_file' => 'cta_bg_image',
+            'reveal_book_spread_file' => 'reveal_book_spread_image',
             'reveal_plate1_file' => 'reveal_plate1_image',
             'reveal_plate2_file' => 'reveal_plate2_image',
             'reveal_plate3_file' => 'reveal_plate3_image',
@@ -129,6 +130,9 @@ class HeroController extends Controller
             'reveal_eyebrow' => $request->input('reveal_eyebrow'),
             'reveal_heading' => $request->input('reveal_heading'),
             'reveal_lede' => $request->input('reveal_lede'),
+            'reveal_btn_text' => $request->input('reveal_btn_text'),
+            'reveal_btn_link' => $request->input('reveal_btn_link'),
+            'reveal_book_spread_caption' => $request->input('reveal_book_spread_caption'),
             'reveal_plate1_caption' => $request->input('reveal_plate1_caption'),
             'reveal_plate2_caption' => $request->input('reveal_plate2_caption'),
             'reveal_plate3_caption' => $request->input('reveal_plate3_caption'),

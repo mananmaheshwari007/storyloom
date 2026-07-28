@@ -366,84 +366,52 @@
                         <input type="text" class="form-control form-control-sm" name="reveal_heading" value="{{ setting('reveal_heading', 'Your memories, woven into a <em>storybook.</em>') }}">
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label class="form-label font-weight-bold">Section Lede / Intro</label>
                         <textarea class="form-control form-control-sm" name="reveal_lede" rows="2">{{ setting('reveal_lede', 'A completely personalised, hand-illustrated book created from your memories — an original story where every detail belongs to your family alone.') }}</textarea>
                     </div>
 
-                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Featured Artwork Spreads Showcase Plates:</h6>
-
-                    <!-- Showcase Plate 1 with Uniform Upload UI & Live Preview -->
-                    <div class="p-3 bg-light rounded border mb-3 img-upload-block">
-                        <div class="fw-bold small text-dark mb-2"><i class="bi bi-image me-1 text-primary"></i> Showcase Plate 1</div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-md-3 text-center">
-                                <img src="{{ asset(setting('reveal_plate1_image', 'assets/img/spread-home-morning.webp')) }}" alt="Plate 1" class="img-fluid rounded border img-preview-el shadow-sm" style="max-height: 80px; object-fit: cover;">
-                            </div>
-                            <div class="col-md-9">
-                                <div class="mb-2">
-                                    <label class="form-label form-label-sm font-weight-bold mb-1">Image Path / Upload</label>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control img-path-input" name="reveal_plate1_image" value="{{ setting('reveal_plate1_image', 'assets/img/spread-home-morning.webp') }}" placeholder="assets/img/spread-home-morning.webp">
-                                        <button type="button" class="btn btn-outline-primary upload-trigger-btn">
-                                            <i class="bi bi-cloud-upload me-1"></i> Upload Image
-                                        </button>
-                                        <input type="file" class="d-none hidden-file-input" name="reveal_plate1_file" accept="image/*">
-                                    </div>
-                                </div>
-                                <input type="text" class="form-control form-control-sm" name="reveal_plate1_caption" value="{{ setting('reveal_plate1_caption', 'the flat where it all began') }}" placeholder="Plate 1 Caption">
-                            </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">Button Text</label>
+                            <input type="text" class="form-control form-control-sm" name="reveal_btn_text" value="{{ setting('reveal_btn_text', 'READ A STORYLOOM') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">Button Link</label>
+                            <input type="text" class="form-control form-control-sm" name="reveal_btn_link" value="{{ setting('reveal_btn_link', route('library')) }}">
                         </div>
                     </div>
 
-                    <!-- Showcase Plate 2 with Uniform Upload UI & Live Preview -->
-                    <div class="p-3 bg-light rounded border mb-3 img-upload-block">
-                        <div class="fw-bold small text-dark mb-2"><i class="bi bi-image me-1 text-success"></i> Showcase Plate 2</div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-md-3 text-center">
-                                <img src="{{ asset(setting('reveal_plate2_image', 'assets/img/spread-flower-street.webp')) }}" alt="Plate 2" class="img-fluid rounded border img-preview-el shadow-sm" style="max-height: 80px; object-fit: cover;">
-                            </div>
-                            <div class="col-md-9">
-                                <div class="mb-2">
-                                    <label class="form-label form-label-sm font-weight-bold mb-1">Image Path / Upload</label>
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control img-path-input" name="reveal_plate2_image" value="{{ setting('reveal_plate2_image', 'assets/img/spread-flower-street.webp') }}" placeholder="assets/img/spread-flower-street.webp">
-                                        <button type="button" class="btn btn-outline-primary upload-trigger-btn">
-                                            <i class="bi bi-cloud-upload me-1"></i> Upload Image
-                                        </button>
-                                        <input type="file" class="d-none hidden-file-input" name="reveal_plate2_file" accept="image/*">
-                                    </div>
-                                </div>
-                                <input type="text" class="form-control form-control-sm" name="reveal_plate2_caption" value="{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}" placeholder="Plate 2 Caption">
-                            </div>
-                        </div>
-                    </div>
+                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-book me-1 text-primary"></i> Open Book Spread Showcase Image:</h6>
 
-                    <!-- Showcase Plate 3 with Uniform Upload UI & Live Preview -->
-                    <div class="p-3 bg-light rounded border img-upload-block">
-                        <div class="fw-bold small text-dark mb-2"><i class="bi bi-image me-1 text-warning"></i> Showcase Plate 3</div>
+                    <!-- Open Book Spread Image Uploader & Live Preview -->
+                    <div class="p-3 bg-light rounded border mb-3 img-upload-block">
+                        <div class="fw-bold small text-dark mb-2"><i class="bi bi-image me-1 text-primary"></i> Open Book Spread Image</div>
                         <div class="row g-3 align-items-center">
-                            <div class="col-md-3 text-center">
-                                <img src="{{ asset(setting('reveal_plate3_image', 'assets/img/spread-shared-fries.webp')) }}" alt="Plate 3" class="img-fluid rounded border img-preview-el shadow-sm" style="max-height: 80px; object-fit: cover;">
+                            <div class="col-md-4 text-center">
+                                <img src="{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}" alt="Open Book Spread" class="img-fluid rounded border img-preview-el shadow-sm" style="max-height: 110px; width: 100%; object-fit: cover;">
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-8">
                                 <div class="mb-2">
                                     <label class="form-label form-label-sm font-weight-bold mb-1">Image Path / Upload</label>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control img-path-input" name="reveal_plate3_image" value="{{ setting('reveal_plate3_image', 'assets/img/spread-shared-fries.webp') }}" placeholder="assets/img/spread-shared-fries.webp">
+                                        <input type="text" class="form-control img-path-input" name="reveal_book_spread_image" value="{{ setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp') }}" placeholder="assets/img/spread-home-morning.webp">
                                         <button type="button" class="btn btn-outline-primary upload-trigger-btn">
                                             <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                         </button>
-                                        <input type="file" class="d-none hidden-file-input" name="reveal_plate3_file" accept="image/*">
+                                        <input type="file" class="d-none hidden-file-input" name="reveal_book_spread_file" accept="image/*">
                                     </div>
                                 </div>
-                                <input type="text" class="form-control form-control-sm" name="reveal_plate3_caption" value="{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}" placeholder="Plate 3 Caption">
+                                <div>
+                                    <label class="form-label form-label-sm font-weight-bold mb-1">Sub-caption (Optional)</label>
+                                    <input type="text" class="form-control form-control-sm" name="reveal_book_spread_caption" value="{{ setting('reveal_book_spread_caption', '') }}" placeholder="e.g. an authentic Storyloom spread">
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <small class="text-muted d-block mt-3" style="font-size: 0.72rem;">
-                        <i class="bi bi-info-circle me-1"></i> Story Spreads Specs: Max width <strong>800 px</strong> &bull; Quality <strong>72&ndash;75</strong> &bull; Expected size <strong>60&ndash;95 KB</strong>
+                        <i class="bi bi-info-circle me-1"></i> Open Book Spread Specs: Max width <strong>900&ndash;1200 px</strong> &bull; Quality <strong>78&ndash;80</strong> &bull; Expected size <strong>60&ndash;130 KB</strong>
                     </small>
                 </div>
             </div>
