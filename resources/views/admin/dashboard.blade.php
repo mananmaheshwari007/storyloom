@@ -4,15 +4,15 @@
 
 @section('content')
 <!-- ================= EXECUTIVE HEADER ================= -->
-<div class="card border-0 shadow-sm rounded-3 mb-4 bg-gradient p-4" style="background: linear-gradient(135deg, #1c222b 0%, #2a3443 100%); color: #ffffff;">
+<div class="card border-0 shadow-sm rounded-3 mb-4 p-4" style="background-color: #1C222B !important; color: #ffffff !important;">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <div>
             <div class="d-flex align-items-center gap-2 mb-1">
                 <span class="badge bg-warning text-dark font-monospace px-2.5 py-1 fw-bold" style="letter-spacing: 0.5px;">STORYLOOM CMS</span>
-                <span class="text-white-50 small"><i class="bi bi-clock me-1"></i> {{ date('F j, Y') }}</span>
+                <span class="small" style="color: rgba(255, 255, 255, 0.7) !important;"><i class="bi bi-clock me-1"></i> {{ date('F j, Y') }}</span>
             </div>
-            <h2 class="fw-bold text-white mb-1">Welcome back to Command Center</h2>
-            <p class="text-white-50 mb-0 small">Manage your library books, journal posts, customer inquiries, and brand settings from one place.</p>
+            <h2 class="fw-bold mb-1" style="color: #ffffff !important;">Welcome back to Command Center</h2>
+            <p class="mb-0 small" style="color: rgba(255, 255, 255, 0.75) !important;">Manage your library books, journal posts, customer inquiries, and brand settings from one place.</p>
         </div>
 
         <div class="d-flex flex-wrap align-items-center gap-2">
@@ -20,7 +20,7 @@
                 <i class="bi bi-box-arrow-up-right me-1.5"></i> View Site
             </a>
             
-            <form action="{{ route('admin.clear-cache') }}" method="POST" class="d-inline">
+            <form action="{{ Route::has('admin.clear-cache') ? route('admin.clear-cache') : url('admin/clear-cache') }}" method="POST" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-sm btn-warning text-dark fw-semibold d-inline-flex align-items-center">
                     <i class="bi bi-arrow-repeat me-1.5"></i> Clear Cache
@@ -31,19 +31,39 @@
 
     <!-- Quick Action Launch Bar -->
     <div class="mt-4 pt-3 border-top border-secondary border-opacity-50 d-flex flex-wrap align-items-center gap-2">
-        <span class="text-white-50 me-2 small fw-bold text-uppercase" style="letter-spacing: 0.05em; font-size: 0.75rem;">Quick Launch:</span>
-        <a href="{{ route('admin.library.create') }}" class="btn btn-sm btn-light text-dark fw-medium px-3">
-            <i class="bi bi-journal-plus text-primary me-1"></i> + New Library Book
-        </a>
-        <a href="{{ route('admin.blog.create') }}" class="btn btn-sm btn-light text-dark fw-medium px-3">
-            <i class="bi bi-pencil-square text-success me-1"></i> + Write Journal Article
-        </a>
-        <a href="{{ route('admin.hero.edit') }}" class="btn btn-sm btn-dark text-white border-secondary fw-medium px-3">
-            <i class="bi bi-window-sidebar text-warning me-1"></i> Hero Banners
-        </a>
-        <a href="{{ route('admin.settings.index') }}" class="btn btn-sm btn-dark text-white border-secondary fw-medium px-3">
-            <i class="bi bi-sliders text-info me-1"></i> Site Settings
-        </a>
+        <span class="me-2 small fw-bold text-uppercase" style="color: rgba(255, 255, 255, 0.6) !important; letter-spacing: 0.05em; font-size: 0.75rem;">Quick Launch:</span>
+        
+        @if(Route::has('admin.library.create'))
+            <a href="{{ route('admin.library.create') }}" class="btn btn-sm btn-light text-dark fw-medium px-3">
+                <i class="bi bi-journal-plus text-primary me-1"></i> + New Library Book
+            </a>
+        @elseif(Route::has('admin.library.index'))
+            <a href="{{ route('admin.library.index') }}" class="btn btn-sm btn-light text-dark fw-medium px-3">
+                <i class="bi bi-journal-plus text-primary me-1"></i> Library Books
+            </a>
+        @endif
+
+        @if(Route::has('admin.blog.create'))
+            <a href="{{ route('admin.blog.create') }}" class="btn btn-sm btn-light text-dark fw-medium px-3">
+                <i class="bi bi-pencil-square text-success me-1"></i> + Write Journal Article
+            </a>
+        @elseif(Route::has('admin.blog.index'))
+            <a href="{{ route('admin.blog.index') }}" class="btn btn-sm btn-light text-dark fw-medium px-3">
+                <i class="bi bi-pencil-square text-success me-1"></i> Journal Posts
+            </a>
+        @endif
+
+        @if(Route::has('admin.hero.edit'))
+            <a href="{{ route('admin.hero.edit') }}" class="btn btn-sm btn-secondary text-white border-secondary fw-medium px-3">
+                <i class="bi bi-window-sidebar text-warning me-1"></i> Hero Banners
+            </a>
+        @endif
+
+        @if(Route::has('admin.settings.index'))
+            <a href="{{ route('admin.settings.index') }}" class="btn btn-sm btn-secondary text-white border-secondary fw-medium px-3">
+                <i class="bi bi-sliders text-info me-1"></i> Site Settings
+            </a>
+        @endif
     </div>
 </div>
 
@@ -71,7 +91,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
                 <span class="badge bg-success-subtle text-success" style="font-size: 0.7rem;">{{ $stats['published_books'] }} Published</span>
-                <a href="{{ route('admin.library.index') }}" class="text-decoration-none text-muted small fw-medium">View &rarr;</a>
+                <a href="{{ Route::has('admin.library.index') ? route('admin.library.index') : '#' }}" class="text-decoration-none text-muted small fw-medium">View &rarr;</a>
             </div>
         </div>
     </div>
@@ -90,7 +110,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
                 <span class="badge bg-primary-subtle text-primary" style="font-size: 0.7rem;">{{ $stats['published_blogs'] }} Live</span>
-                <a href="{{ route('admin.blog.index') }}" class="text-decoration-none text-muted small fw-medium">Manage &rarr;</a>
+                <a href="{{ Route::has('admin.blog.index') ? route('admin.blog.index') : '#' }}" class="text-decoration-none text-muted small fw-medium">Manage &rarr;</a>
             </div>
         </div>
     </div>
@@ -113,7 +133,7 @@
                 @else
                     <span class="badge bg-secondary-subtle text-secondary" style="font-size: 0.7rem;">All Read</span>
                 @endif
-                <a href="{{ route('admin.messages.index') }}" class="text-decoration-none text-muted small fw-medium">Inbox &rarr;</a>
+                <a href="{{ Route::has('admin.messages.index') ? route('admin.messages.index') : '#' }}" class="text-decoration-none text-muted small fw-medium">Inbox &rarr;</a>
             </div>
         </div>
     </div>
@@ -132,7 +152,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
                 <span class="text-muted" style="font-size: 0.7rem;">Leads List</span>
-                <a href="{{ route('admin.newsletter.index') }}" class="text-decoration-none text-muted small fw-medium">Leads &rarr;</a>
+                <a href="{{ Route::has('admin.newsletter.index') ? route('admin.newsletter.index') : '#' }}" class="text-decoration-none text-muted small fw-medium">Leads &rarr;</a>
             </div>
         </div>
     </div>
@@ -151,7 +171,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
                 <span class="text-muted" style="font-size: 0.7rem;">Reviews</span>
-                <a href="{{ route('admin.testimonials.index') }}" class="text-decoration-none text-muted small fw-medium">View &rarr;</a>
+                <a href="{{ Route::has('admin.testimonials.index') ? route('admin.testimonials.index') : '#' }}" class="text-decoration-none text-muted small fw-medium">View &rarr;</a>
             </div>
         </div>
     </div>
@@ -170,7 +190,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
                 <span class="badge bg-success-subtle text-success" style="font-size: 0.7rem;"><i class="bi bi-check2-circle"></i> Active</span>
-                <a href="{{ route('admin.settings.index') }}" class="text-decoration-none text-muted small fw-medium">Config &rarr;</a>
+                <a href="{{ Route::has('admin.settings.index') ? route('admin.settings.index') : '#' }}" class="text-decoration-none text-muted small fw-medium">Config &rarr;</a>
             </div>
         </div>
     </div>
@@ -190,7 +210,9 @@
                     </h5>
                     <span class="badge bg-danger-subtle text-danger ms-2" style="font-size: 0.75rem;">{{ $stats['unread_messages'] }} Unread</span>
                 </div>
-                <a href="{{ route('admin.messages.index') }}" class="btn btn-sm btn-outline-primary fw-medium">View All Inbox</a>
+                @if(Route::has('admin.messages.index'))
+                    <a href="{{ route('admin.messages.index') }}" class="btn btn-sm btn-outline-primary fw-medium">View All Inbox</a>
+                @endif
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -218,9 +240,11 @@
                                     </td>
                                     <td class="text-muted small">{{ $message->created_at->format('M d, g:i a') }}</td>
                                     <td class="text-end pe-3">
-                                        <a href="{{ route('admin.messages.show', $message) }}" class="btn btn-sm btn-outline-secondary py-1 px-2.5">
-                                            <i class="bi bi-eye me-1"></i> Read
-                                        </a>
+                                        @if(Route::has('admin.messages.show'))
+                                            <a href="{{ route('admin.messages.show', $message) }}" class="btn btn-sm btn-outline-secondary py-1 px-2.5">
+                                                <i class="bi bi-eye me-1"></i> Read
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -240,7 +264,9 @@
                 <h5 class="fw-bold mb-0 text-dark d-inline-flex align-items-center">
                     <i class="bi bi-book-half me-2 text-warning"></i> Recent Library Books
                 </h5>
-                <a href="{{ route('admin.library.index') }}" class="btn btn-sm btn-outline-warning text-dark fw-medium">Manage Library</a>
+                @if(Route::has('admin.library.index'))
+                    <a href="{{ route('admin.library.index') }}" class="btn btn-sm btn-outline-warning text-dark fw-medium">Manage Library</a>
+                @endif
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -261,7 +287,7 @@
                                             @if(!empty($book->cover_image))
                                                 <img src="{{ asset($book->cover_image) }}" alt="Cover" class="rounded shadow-sm object-fit-cover" width="40" height="56">
                                             @else
-                                                <div class="rounded bg-light d-flex align-items-center justify-content-center text-muted" width="40" height="56" style="width: 40px; height: 56px;">
+                                                <div class="rounded bg-light d-flex align-items-center justify-content-center text-muted" style="width: 40px; height: 56px;">
                                                     <i class="bi bi-journal"></i>
                                                 </div>
                                             @endif
@@ -282,7 +308,7 @@
                                     <td class="text-end pe-3">
                                         @if(Route::has('admin.library.edit'))
                                             <a href="{{ route('admin.library.edit', $book) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        @else
+                                        @elseif(Route::has('admin.library.index'))
                                             <a href="{{ route('admin.library.index') }}" class="btn btn-sm btn-outline-secondary">View</a>
                                         @endif
                                     </td>
@@ -311,7 +337,7 @@
             <div class="card-body">
                 <div class="row g-2">
                     <div class="col-6">
-                        <a href="{{ route('admin.hero.edit') }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
+                        <a href="{{ Route::has('admin.hero.edit') ? route('admin.hero.edit') : '#' }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
                             <i class="bi bi-window-sidebar fs-5 text-warning"></i>
                             <div>
                                 <div class="fw-bold text-dark small">Hero Banners</div>
@@ -321,7 +347,7 @@
                     </div>
 
                     <div class="col-6">
-                        <a href="{{ route('admin.library.index') }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
+                        <a href="{{ Route::has('admin.library.index') ? route('admin.library.index') : '#' }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
                             <i class="bi bi-book fs-5 text-primary"></i>
                             <div>
                                 <div class="fw-bold text-dark small">Library CMS</div>
@@ -331,7 +357,7 @@
                     </div>
 
                     <div class="col-6">
-                        <a href="{{ route('admin.settings.index') }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
+                        <a href="{{ Route::has('admin.settings.index') ? route('admin.settings.index') : '#' }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
                             <i class="bi bi-sliders fs-5 text-info"></i>
                             <div>
                                 <div class="fw-bold text-dark small">Site Branding</div>
@@ -341,7 +367,7 @@
                     </div>
 
                     <div class="col-6">
-                        <a href="{{ route('admin.blog.index') }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
+                        <a href="{{ Route::has('admin.blog.index') ? route('admin.blog.index') : '#' }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
                             <i class="bi bi-newspaper fs-5 text-success"></i>
                             <div>
                                 <div class="fw-bold text-dark small">Journal Articles</div>
@@ -351,7 +377,7 @@
                     </div>
 
                     <div class="col-6">
-                        <a href="{{ route('admin.faqs.index') }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
+                        <a href="{{ Route::has('admin.faqs.index') ? route('admin.faqs.index') : '#' }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
                             <i class="bi bi-question-circle fs-5 text-danger"></i>
                             <div>
                                 <div class="fw-bold text-dark small">FAQs & Info</div>
@@ -361,7 +387,7 @@
                     </div>
 
                     <div class="col-6">
-                        <a href="{{ route('admin.testimonials.index') }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
+                        <a href="{{ Route::has('admin.testimonials.index') ? route('admin.testimonials.index') : '#' }}" class="btn btn-light border w-100 text-start p-2.5 d-flex align-items-center gap-2">
                             <i class="bi bi-star fs-5 text-warning"></i>
                             <div>
                                 <div class="fw-bold text-dark small">Testimonials</div>
@@ -377,16 +403,22 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
                 <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-journal-text me-2 text-info"></i> Recent Journal Posts</h5>
-                <a href="{{ route('admin.blog.index') }}" class="btn btn-sm btn-link text-decoration-none p-0">View All</a>
+                @if(Route::has('admin.blog.index'))
+                    <a href="{{ route('admin.blog.index') }}" class="btn btn-sm btn-link text-decoration-none p-0">View All</a>
+                @endif
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush">
                     @forelse($latest_blogs as $blog)
                         <li class="list-group-item d-flex justify-content-between align-items-center py-2.5 px-3">
                             <div>
-                                <a href="{{ route('admin.blog.edit', $blog) }}" class="text-decoration-none fw-medium text-dark">
-                                    {{ Str::limit($blog->title, 34) }}
-                                </a>
+                                @if(Route::has('admin.blog.edit'))
+                                    <a href="{{ route('admin.blog.edit', $blog) }}" class="text-decoration-none fw-medium text-dark">
+                                        {{ Str::limit($blog->title, 34) }}
+                                    </a>
+                                @else
+                                    <span class="fw-medium text-dark">{{ Str::limit($blog->title, 34) }}</span>
+                                @endif
                                 <div class="text-muted small">{{ $blog->created_at->format('M d, Y') }}</div>
                             </div>
                             <span class="badge rounded-pill bg-{{ $blog->status === 'published' ? 'success' : 'secondary' }}-subtle text-{{ $blog->status === 'published' ? 'success' : 'secondary' }}">
@@ -404,7 +436,9 @@
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
                 <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-mailbox me-2 text-success"></i> Newsletter Leads</h5>
-                <a href="{{ route('admin.newsletter.export') }}" class="btn btn-sm btn-outline-success">Export CSV</a>
+                @if(Route::has('admin.newsletter.export'))
+                    <a href="{{ route('admin.newsletter.export') }}" class="btn btn-sm btn-outline-success">Export CSV</a>
+                @endif
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush">
