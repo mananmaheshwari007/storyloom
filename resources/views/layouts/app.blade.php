@@ -7,8 +7,15 @@
 
   <x-seo-tags :seo="$seo ?? null" />
 
+  {{-- Ownership verification for Search Console / Merchant Center.
+       Set in Admin → Site Settings → Analytics & Site Verification. --}}
+  @if(setting('google_site_verification'))
+    <meta name="google-site-verification" content="{{ setting('google_site_verification') }}">
+  @endif
+
   <link rel="icon" type="image/png" href="{{ asset(setting('site_favicon', 'assets/img/favicon.png')) }}">
   @include('layouts.styles')
+  @include('layouts.analytics')
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>

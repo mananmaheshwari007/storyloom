@@ -141,6 +141,34 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Analytics & Verification -->
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white py-3 border-0">
+                            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-graph-up-arrow me-2 text-success"></i> Analytics &amp; Site Verification</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="google_analytics_id" class="form-label">Google Analytics Measurement ID</label>
+                                <input type="text" class="form-control" id="google_analytics_id" name="google_analytics_id"
+                                       value="{{ setting('google_analytics_id', '') }}" placeholder="G-XXXXXXXXXX">
+                                <div class="form-text">
+                                    From Google Analytics &rarr; Admin &rarr; Data Streams &rarr; your web stream. Leave blank to
+                                    switch tracking off entirely — nothing is loaded until an ID is saved here.
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <label for="google_site_verification" class="form-label">Google Site Verification Code</label>
+                                <input type="text" class="form-control" id="google_site_verification" name="google_site_verification"
+                                       value="{{ setting('google_site_verification', '') }}" placeholder="paste only the content value, not the whole tag">
+                                <div class="form-text">
+                                    Used to verify ownership in Search Console and Merchant Center. Google shows a tag like
+                                    <code>&lt;meta name="google-site-verification" content="<strong>abc123…</strong>"&gt;</code> —
+                                    paste only the bold part.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-4">
