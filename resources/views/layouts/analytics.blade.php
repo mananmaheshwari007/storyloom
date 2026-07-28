@@ -11,17 +11,21 @@
     or the browser will silently block this and no data will arrive.
 --}}
 @php 
+  $host = request()->getHost();
+  $isLocal = in_array($host, ['localhost', '127.0.0.1', '::1']) || str_contains($host, '.test') || str_contains($host, '.local');
   $gaId = trim((string) setting('google_analytics_id', 'G-1V87JW7B54')); 
   if (empty($gaId)) {
       $gaId = 'G-1V87JW7B54';
   }
 @endphp
 
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+@if(!$isLocal && !empty($gaId))
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', '{{ $gaId }}');
-</script>
+    gtag('config', '{{ $gaId }}');
+  </script>
+@endif
