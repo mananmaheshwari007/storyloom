@@ -70,6 +70,7 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/clear-cache', [DashboardController::class, 'clearCache'])->name('clear-cache');
 
     // Journal writer helpers
     Route::post('/blog/upload', [BlogController::class, 'upload'])->name('blog.upload');
