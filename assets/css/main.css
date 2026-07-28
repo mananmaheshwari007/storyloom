@@ -134,6 +134,17 @@ h1 em, h2 em, h3 em { color: var(--terra); font-weight: 500; }
 .eyebrow-center::after {
   content: ""; width: 34px; height: 1px; background: var(--terra); flex: none;
 }
+.hero-eyebrow-center {
+  font-family: var(--font-display); font-style: normal; font-weight: 700;
+  font-size: 14px; line-height: 24px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgb(181, 91, 41); margin-bottom: 24px; display: inline-flex;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.hero-eyebrow-center::before,
+.hero-eyebrow-center::after {
+  content: ""; display: inline-block; width: 36px; height: 1px;
+  background-color: rgb(181, 91, 41); opacity: 0.85;
+}
 .section-dark .eyebrow { color: #D98A5A; }
 .section-dark .eyebrow::before, .section-dark .eyebrow::after { background: #D98A5A; }
 
