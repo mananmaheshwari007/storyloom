@@ -151,7 +151,7 @@
                             <div class="mb-3">
                                 <label for="google_analytics_id" class="form-label">Google Analytics Measurement ID</label>
                                 <input type="text" class="form-control" id="google_analytics_id" name="google_analytics_id"
-                                       value="{{ setting('google_analytics_id', '') }}" placeholder="G-XXXXXXXXXX">
+                                       value="{{ setting('google_analytics_id', 'G-1V87JW7B54') }}" placeholder="G-1V87JW7B54">
                                 <div class="form-text">
                                     From Google Analytics &rarr; Admin &rarr; Data Streams &rarr; your web stream. Leave blank to
                                     switch tracking off entirely — nothing is loaded until an ID is saved here.

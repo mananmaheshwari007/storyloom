@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+  @include('layouts.analytics')
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -15,7 +16,6 @@
 
   <link rel="icon" type="image/png" href="{{ asset(setting('site_favicon', 'assets/img/favicon.png')) }}">
   @include('layouts.styles')
-  @include('layouts.analytics')
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
