@@ -150,7 +150,7 @@
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Hero Heading (supports &lt;em&gt; and &lt;br&gt;)</label>
-                        <textarea name="library_hero_heading" class="form-control form-control-sm" rows="2" required>{{ setting('library_hero_heading', 'Read one. Then<br>imagine <em>yours.</em>') }}</textarea>
+                        <textarea name="library_hero_heading" class="form-control form-control-sm" rows="2" required>{{ setting('library_hero_heading', 'Read one. Then imagine <em>yours.</em>') }}</textarea>
                     </div>
 
                     <div class="mb-3">

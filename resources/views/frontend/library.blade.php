@@ -1,51 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-  <!-- ============ HERO & DISPLAY STACK ============ -->
+  <!-- ============ HERO SECTION ============ -->
   <section class="container library-hero">
-    <div class="page-hero" data-reveal="left">
+    <div class="page-hero" data-reveal>
       <p class="eyebrow eyebrow-center">{{ setting('library_hero_eyebrow', 'THE STORYLOOM LIBRARY') }}</p>
-      <h1>{!! setting('library_hero_heading', 'Read one. Then<br>imagine <em>yours.</em>') !!}</h1>
+      <h1>{!! setting('library_hero_heading', 'Read one. Then imagine <em>yours.</em>') !!}</h1>
       <p class="lede">{{ setting('library_hero_lede', 'Real books, made for real families, shared with their blessing. Take your time — this room is quiet.') }}</p>
-    </div>
-    <div class="display-stack-wrap" data-reveal="right">
-      <div class="display-stack">
-        <a class="display-card" href="#shelf">
-          <span class="dc-cover placeholder"><img src="{{ asset('assets/img/logo-emblem-light.png') }}" alt=""></span>
-          <span class="dc-body">
-            <span class="dc-title">The Moon Protector</span>
-            <span class="dc-desc">For a daughter — on the loom</span>
-            <span class="dc-meta">New stories join every month</span>
-          </span>
-        </a>
-        @if(isset($featuredBooks) && count($featuredBooks) > 1)
-          @php
-            $b2 = $featuredBooks[1];
-            $b2Cover = $b2->cover_image ? asset($b2->cover_image) : asset('assets/img/logo-emblem-light.png');
-          @endphp
-          <button class="display-card" data-open-book="#open-book-{{ $b2->id }}" type="button">
-            <span class="dc-cover"><img src="{{ $b2Cover }}" alt="Front cover of {{ $b2->title }}"></span>
-            <span class="dc-body">
-              <span class="dc-title">{{ $b2->title }}</span>
-              <span class="dc-desc">{{ $b2->subtitle ?: $b2->relation_tag }}</span>
-              <span class="dc-meta">{{ $b2->spreads_count ?: '17 spreads' }} · {{ $b2->read_time ?: '9 min read' }} · tap to open</span>
-            </span>
-          </button>
-        @endif
-        @if(isset($featuredBooks) && count($featuredBooks) > 0)
-          @php
-            $b1 = $featuredBooks[0];
-            $b1Cover = $b1->cover_image ? asset($b1->cover_image) : asset('assets/img/logo-emblem-light.png');
-          @endphp
-          <button class="display-card" data-open-book="#open-book-{{ $b1->id }}" type="button">
-            <span class="dc-cover"><img src="{{ $b1Cover }}" alt="Front cover of {{ $b1->title }}"></span>
-            <span class="dc-body">
-              <span class="dc-title">{{ $b1->title }}</span>
-              <span class="dc-desc">{{ $b1->subtitle ?: $b1->relation_tag }}</span>
-              <span class="dc-meta">{{ $b1->spreads_count ?: '15 spreads' }} · {{ $b1->read_time ?: '8 min read' }} · tap to open</span>
-            </span>
-          </button>
-        @endif
+
+      <div class="hero-library-badges" data-reveal>
+        <span class="hl-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Full Spreads Available
+        </span>
+        <span class="hl-dot" aria-hidden="true"></span>
+        <span class="hl-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Tap Any Book To Open
+        </span>
+        <span class="hl-dot" aria-hidden="true"></span>
+        <span class="hl-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Shared With Permission
+        </span>
       </div>
     </div>
   </section>
