@@ -18,6 +18,7 @@ use App\Models\LibraryBook;
 use App\Models\ContactMessage;
 use App\Models\NewsletterSubscriber;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 
 class FrontendController extends Controller
 {
@@ -26,12 +27,12 @@ class FrontendController extends Controller
      */
     public function index()
     {
-        $hero = Hero::first();
-        $services = Service::where('status', 'active')->orderBy('display_order')->get();
-        $projects = Project::where('status', 'published')->orderBy('created_at', 'desc')->get();
-        $portfolios = Portfolio::where('status', 'published')->get();
-        $testimonials = Testimonial::where('status', 'active')->get();
-        $faqs = Faq::where('status', 'active')->orderBy('display_order')->take(4)->get();
+        $hero = Cache::remember('home_hero', 3600, fn() => Hero::first());
+        $services = Cache::remember('home_services', 3600, fn() => Service::where('status', 'active')->orderBy('display_order')->get());
+        $projects = Cache::remember('home_projects', 3600, fn() => Project::where('status', 'published')->orderBy('created_at', 'desc')->get());
+        $portfolios = Cache::remember('home_portfolios', 3600, fn() => Portfolio::where('status', 'published')->get());
+        $testimonials = Cache::remember('home_testimonials', 3600, fn() => Testimonial::where('status', 'active')->get());
+        $faqs = Cache::remember('home_faqs', 3600, fn() => Faq::where('status', 'active')->orderBy('display_order')->take(4)->get());
         
         $seo = [
             'title' => setting('seo_title', 'Storyloom — The Story Only You Could Give'),
@@ -205,7 +206,7 @@ class FrontendController extends Controller
      */
     public function occasions()
     {
-        $portfolios = Portfolio::where('status', 'published')->get();
+        $portfolios = Cache::remember('occasions_portfolios', 3600, fn() => Portfolio::where('status', 'published')->get());
         
         $seo = [
             'title' => 'Gifting Occasions — Keepsakes for Milestones',
@@ -220,7 +221,7 @@ class FrontendController extends Controller
      */
     public function pricing()
     {
-        $plans = PricingPlan::where('status', 'active')->get();
+        $plans = Cache::remember('pricing_plans', 3600, fn() => PricingPlan::where('status', 'active')->get());
         
         $seo = [
             'title' => 'Pricing & Book Formats — Storyloom',
@@ -235,7 +236,7 @@ class FrontendController extends Controller
      */
     public function faq()
     {
-        $faqs = Faq::where('status', 'active')->orderBy('display_order')->get();
+        $faqs = Cache::remember('faq_faqs', 3600, fn() => Faq::where('status', 'active')->orderBy('display_order')->get());
         
         $seo = [
             'title' => 'Good Questions — FAQ | Storyloom',

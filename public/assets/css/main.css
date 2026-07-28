@@ -4080,3 +4080,17 @@ html:not(.js) .loom-hint,
     text-align: center;
   }
 }
+
+/* ============================================================
+   PAGESPEED RENDERING OPTIMIZATIONS
+   ============================================================ */
+.weave-gallery,
+.story-grid,
+.process-grid,
+.occasion-grid,
+.final-cta,
+.faq-list,
+.testimonial-stage {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 400px;
+}

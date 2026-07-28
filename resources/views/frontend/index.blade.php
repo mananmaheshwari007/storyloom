@@ -44,7 +44,8 @@
                      mobile — let the browser fetch it ahead of the other art. --}}
                 <img src="{{ asset($card['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}"
                      alt="{{ $card['title'] ?? '' }}"
-                     @if($index === 0) fetchpriority="high" @endif>
+                     width="400" height="520" decoding="async"
+                     @if($index === 0) fetchpriority="high" @else loading="lazy" @endif>
                 <div class="arc-card-caption">
                   <strong>{{ $card['title'] ?? '' }}</strong>
                   <span>{{ $card['caption'] ?? '' }}</span>
@@ -127,22 +128,22 @@
         @forelse($projects->where('featured', true)->take(3) as $index => $project)
           <figure class="plate hoverable" data-reveal style="--stagger:{{ $index }}">
             @if($project->images && count($project->images) > 0)
-              <img src="{{ asset($project->images[0]) }}" loading="lazy" alt="{{ $project->title }}">
+              <img src="{{ asset($project->images[0]) }}" loading="lazy" decoding="async" width="600" height="400" alt="{{ $project->title }}">
             @endif
             <figcaption class="caption">{{ $project->title }}</figcaption>
           </figure>
         @empty
           <!-- Fallback plates if database empty -->
           <figure class="plate hoverable" data-reveal style="--stagger:0">
-            <img src="{{ asset('assets/img/spread-home-morning.webp') }}" loading="lazy" width="600" height="338" alt="Illustrated living room">
+            <img src="{{ asset('assets/img/spread-home-morning.webp') }}" loading="lazy" decoding="async" width="600" height="338" alt="Illustrated living room">
             <figcaption class="caption">the flat where it all began</figcaption>
           </figure>
           <figure class="plate hoverable" data-reveal style="--stagger:1">
-            <img src="{{ asset('assets/img/spread-flower-street.webp') }}" loading="lazy" width="600" height="801" alt="Walking at sunset">
+            <img src="{{ asset('assets/img/spread-flower-street.webp') }}" loading="lazy" decoding="async" width="600" height="801" alt="Walking at sunset">
             <figcaption class="caption">the evening walk, every single day</figcaption>
           </figure>
           <figure class="plate hoverable" data-reveal style="--stagger:2">
-            <img src="{{ asset('assets/img/spread-shared-fries.webp') }}" loading="lazy" width="600" height="801" alt="Sharing fries">
+            <img src="{{ asset('assets/img/spread-shared-fries.webp') }}" loading="lazy" decoding="async" width="600" height="801" alt="Sharing fries">
             <figcaption class="caption">one plate, two forks — always</figcaption>
           </figure>
         @endforelse
@@ -165,12 +166,12 @@
       <div class="story-grid">
         @forelse($portfolios as $index => $port)
           <a class="story-card" href="{{ route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
-            <span class="img-wrap"><img src="{{ asset($port->thumbnail) }}" loading="lazy" alt="{{ $port->title }}"></span>
+            <span class="img-wrap"><img src="{{ asset($port->thumbnail) }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $port->title }}"></span>
             <span class="story-label"><span class="for">{{ $port->title }}</span><span class="hint">{{ $port->category }}</span></span>
           </a>
         @empty
           <a class="story-card" href="{{ route('occasions') }}" data-reveal style="--stagger:0">
-            <span class="img-wrap"><img src="{{ asset('assets/img/spread-bench-sunset.webp') }}" loading="lazy" alt="Sunset couple"></span>
+            <span class="img-wrap"><img src="{{ asset('assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="300" alt="Sunset couple"></span>
             <span class="story-label"><span class="for">For Your Wife</span><span class="hint">anniversaries · birthdays</span></span>
           </a>
         @endforelse
