@@ -66,12 +66,12 @@
 
       <!-- Hero Copy Centered -->
       <div class="hero-copy hero-copy-centered">
-        <p class="eyebrow eyebrow-center" data-hero="1">{{ $hero->subheading ?? setting('hero_subheading', 'PERSONALISED KEEPSAKE STORYBOOKS') }}</p>
-        <h1 data-hero="2">{!! $hero->heading ?? setting('hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
-        <p class="sub" data-hero="3">{{ $hero->description ?? setting('hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
+        <p class="eyebrow eyebrow-center" data-hero="1">{{ $hero?->subheading ?? setting('hero_subheading', 'PERSONALISED KEEPSAKE STORYBOOKS') }}</p>
+        <h1 data-hero="2">{!! $hero?->heading ?? setting('hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
+        <p class="sub" data-hero="3">{{ $hero?->description ?? setting('hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
         <div class="btn-row btn-row-center" data-hero="4">
-          <a class="btn btn-primary" href="{{ $hero->button_link ?? setting('hero_btn1_link', route('begin')) }}">
-            {{ $hero->button_text ?? setting('hero_btn1_text', 'BEGIN YOUR STORY') }}
+          <a class="btn btn-primary" href="{{ $hero?->button_link ?? setting('hero_btn1_link', route('begin')) }}">
+            {{ $hero?->button_text ?? setting('hero_btn1_text', 'BEGIN YOUR STORY') }}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
           </a>
           <a class="btn btn-ghost" href="{{ setting('hero_btn2_link', route('library')) }}">{{ setting('hero_btn2_text', 'READ A STORYLOOM') }}</a>

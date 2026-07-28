@@ -95,6 +95,8 @@ class HeroController extends Controller
             Cache::forget('setting.hero_cards');
         }
 
+        Cache::forget('home_hero');
+
         return back()->with('success', 'Hero Arc Carousel section updated successfully.');
     }
 }
