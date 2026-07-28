@@ -117,22 +117,28 @@
   </section>
 
   <!-- ================= REVEAL (LEFT-JUSTIFIED & SEAMLESS RIGHT-IMAGE WITH DECREASING OPACITY) ================= -->
-  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f7f4ed; min-height: clamp(580px, 75vh, 850px); display: flex; align-items: center; padding: clamp(90px, 14vh, 160px) 0;">
-    <!-- Edge-to-Edge Right Image with Smooth Decreasing Opacity Gradient to Left -->
-    <div class="reveal-right-img" style="position: absolute; top: 0; right: 0; bottom: 0; width: 58%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center right; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 18%, rgba(0,0,0,0.75) 48%, black 80%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 18%, rgba(0,0,0,0.75) 48%, black 80%);"></div>
+  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f7f4ed; min-height: clamp(620px, 80vh, 900px); display: flex; align-items: center; padding: clamp(80px, 12vh, 140px) 0;">
+    <!-- Edge-to-Edge Right Image (Wider width & opacity gradient starting later to show more artwork) -->
+    <div class="reveal-right-img" style="position: absolute; top: 0; right: 0; bottom: 0; width: 72%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center right; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 10%, rgba(0,0,0,0.65) 26%, black 48%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 10%, rgba(0,0,0,0.65) 26%, black 48%);"></div>
 
     <div class="container" style="position: relative; z-index: 2;">
-      <div class="row align-items-center">
-        <div class="col-lg-6 col-md-7 text-start" data-reveal>
-          <p class="eyebrow" style="text-align: left; margin-bottom: 14px; letter-spacing: 0.12em;">{{ setting('reveal_eyebrow', 'INTRODUCING STORYLOOM') }}</p>
-          <h2 style="text-align: left; font-family: var(--font-display); font-size: clamp(2.4rem, 4.5vw, 3.8rem); font-weight: 500; line-height: 1.18; color: #1C222B; margin-bottom: 22px;">
-            {!! setting('reveal_heading', 'Your memories, woven into a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; color: #B55B29;">storybook.</em>') !!}
-          </h2>
-          <p class="sub" style="text-align: left; font-family: 'Libre Caslon Text', Georgia, serif; font-size: clamp(1.02rem, 1.3vw, 1.15rem); line-height: 1.72; color: rgba(28, 34, 43, 0.78); max-width: 520px; margin-bottom: 34px;">
-            {{ setting('reveal_lede', 'A completely personalised, hand-illustrated book created from your memories — an original story where every detail belongs to your family alone.') }}
-          </p>
-          <div class="btn-row" style="justify-content: flex-start; gap: 16px; align-items: center;">
-            <a class="btn btn-primary" href="{{ setting('reveal_btn_link', route('library')) }}" style="padding: 14px 28px; font-weight: 600;">
+      <div class="row">
+        <!-- Text pulled left with top text block & bottom button spacing -->
+        <div class="col-lg-5 col-md-6 text-start d-flex flex-column justify-content-between" data-reveal style="min-height: clamp(400px, 50vh, 520px);">
+          <!-- Top Text Content Block -->
+          <div class="reveal-text-top">
+            <p class="eyebrow" style="text-align: left; margin-bottom: 16px; letter-spacing: 0.12em;">{{ setting('reveal_eyebrow', 'INTRODUCING STORYLOOM') }}</p>
+            <h2 style="text-align: left; font-family: var(--font-display); font-size: clamp(2.4rem, 4.2vw, 3.8rem); font-weight: 500; line-height: 1.16; color: #1C222B; margin-bottom: 24px;">
+              {!! setting('reveal_heading', 'Your memories, woven into a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; color: #B55B29;">storybook.</em>') !!}
+            </h2>
+            <p class="sub" style="text-align: left; font-family: 'Libre Caslon Text', Georgia, serif; font-size: clamp(1.02rem, 1.3vw, 1.15rem); line-height: 1.72; color: rgba(28, 34, 43, 0.82); max-width: 480px; margin-bottom: 0;">
+              {{ setting('reveal_lede', 'A completely personalised, hand-illustrated book created from your memories — an original story where every detail belongs to your family alone.') }}
+            </p>
+          </div>
+
+          <!-- Bottom Button Block -->
+          <div class="reveal-btn-bottom mt-4" style="padding-top: 24px;">
+            <a class="btn btn-primary" href="{{ setting('reveal_btn_link', route('library')) }}" style="padding: 15px 32px; font-weight: 600;">
               {{ setting('reveal_btn_text', 'READ A STORYLOOM') }}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width: 18px; height: 18px; margin-left: 6px;"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
             </a>
