@@ -109,17 +109,7 @@
               }, $sPages);
               $sPagesJson = json_encode($sFormattedPages, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             @endphp
-            <div class="shelf-card" data-reveal
-                 @if(count($sFormattedPages) > 0)
-                   data-book-pages='{{ $sPagesJson }}'
-                   data-book-title="{{ $sBook->title }}"
-                   data-book-sub="{{ $sBook->subtitle }}"
-                   data-book-cover="{{ $sCover }}"
-                   data-book-back="{{ $sBook->back_image ? asset($sBook->back_image) : $sCover }}"
-                 @elseif(isset($featuredBooks[0]))
-                   data-open-book="#open-book-{{ $featuredBooks[0]->id }}"
-                 @endif
-                 style="--stagger:{{ $sIndex % 4 }}; cursor:pointer;" tabindex="0" title="Click to read {{ $sBook->title }}">
+            <div class="shelf-card" data-reveal style="--stagger:{{ $sIndex % 4 }}; cursor: default;">
               <span class="sc-bg" style="background-image:url('{{ $sCover }}')" role="img" aria-label="{{ $sBook->title }}"></span>
               <div class="content">
                 <span class="sc-title">{{ $sBook->title }}</span>

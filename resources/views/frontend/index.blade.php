@@ -125,28 +125,18 @@
         <p class="lede">{{ setting('reveal_lede', 'A completely personalised, hand-illustrated book created from your memories — an original story where every detail belongs to your family alone.') }}</p>
       </div>
       <div class="weave-gallery">
-        @forelse($projects->where('featured', true)->take(3) as $index => $project)
-          <figure class="plate hoverable" data-reveal style="--stagger:{{ $index }}">
-            @if($project->images && count($project->images) > 0)
-              <img src="{{ asset($project->images[0]) }}" loading="lazy" decoding="async" width="600" height="400" alt="{{ $project->title }}">
-            @endif
-            <figcaption class="caption">{{ $project->title }}</figcaption>
-          </figure>
-        @empty
-          <!-- Dynamic plates from Homepage Editor settings -->
-          <figure class="plate hoverable" data-reveal style="--stagger:0">
-            <img src="{{ asset(setting('reveal_plate1_image', 'assets/img/spread-home-morning.webp')) }}" loading="lazy" decoding="async" width="600" height="338" alt="{{ setting('reveal_plate1_caption', 'the flat where it all began') }}">
-            <figcaption class="caption">{{ setting('reveal_plate1_caption', 'the flat where it all began') }}</figcaption>
-          </figure>
-          <figure class="plate hoverable" data-reveal style="--stagger:1">
-            <img src="{{ asset(setting('reveal_plate2_image', 'assets/img/spread-flower-street.webp')) }}" loading="lazy" decoding="async" width="600" height="801" alt="{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}">
-            <figcaption class="caption">{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}</figcaption>
-          </figure>
-          <figure class="plate hoverable" data-reveal style="--stagger:2">
-            <img src="{{ asset(setting('reveal_plate3_image', 'assets/img/spread-shared-fries.webp')) }}" loading="lazy" decoding="async" width="600" height="801" alt="{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}">
-            <figcaption class="caption">{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}</figcaption>
-          </figure>
-        @endforelse
+        <figure class="plate hoverable" data-reveal style="--stagger:0">
+          <img src="{{ asset(setting('reveal_plate1_image', 'assets/img/spread-home-morning.webp')) }}" loading="lazy" decoding="async" width="600" height="338" alt="{{ setting('reveal_plate1_caption', 'the flat where it all began') }}">
+          <figcaption class="caption">{{ setting('reveal_plate1_caption', 'the flat where it all began') }}</figcaption>
+        </figure>
+        <figure class="plate hoverable" data-reveal style="--stagger:1">
+          <img src="{{ asset(setting('reveal_plate2_image', 'assets/img/spread-flower-street.webp')) }}" loading="lazy" decoding="async" width="600" height="801" alt="{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}">
+          <figcaption class="caption">{{ setting('reveal_plate2_caption', 'the evening walk, every single day') }}</figcaption>
+        </figure>
+        <figure class="plate hoverable" data-reveal style="--stagger:2">
+          <img src="{{ asset(setting('reveal_plate3_image', 'assets/img/spread-shared-fries.webp')) }}" loading="lazy" decoding="async" width="600" height="801" alt="{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}">
+          <figcaption class="caption">{{ setting('reveal_plate3_caption', 'one plate, two forks — always') }}</figcaption>
+        </figure>
       </div>
       <div style="text-align:center; margin-top: clamp(40px, 6vh, 64px)" data-reveal>
         <a class="text-link" href="{{ route('library') }}">Read a Storyloom
@@ -179,21 +169,12 @@
         <h2>{!! setting('story_for_heading', 'Every relationship has its own <em>book.</em>') !!}</h2>
       </div>
       <div class="story-grid">
-        @if(isset($portfolios) && count($portfolios) > 0)
-          @foreach($portfolios as $index => $port)
-            <a class="story-card" href="{{ route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
-              <span class="img-wrap"><img src="{{ asset($port->thumbnail) }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $port->title }}"></span>
-              <span class="story-label"><span class="for">{{ $port->title }}</span><span class="hint">{{ $port->category }}</span></span>
-            </a>
-          @endforeach
-        @else
-          @foreach($storyForCards as $index => $card)
-            <a class="story-card" href="{{ $card['link'] ?? route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
-              <span class="img-wrap"><img src="{{ asset($card['image'] ?? 'assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $card['title'] ?? '' }}"></span>
-              <span class="story-label"><span class="for">{{ $card['title'] ?? '' }}</span><span class="hint">{{ $card['hint'] ?? '' }}</span></span>
-            </a>
-          @endforeach
-        @endif
+        @foreach($storyForCards as $index => $card)
+          <a class="story-card" href="{{ $card['link'] ?? route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
+            <span class="img-wrap"><img src="{{ asset($card['image'] ?? 'assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $card['title'] ?? '' }}"></span>
+            <span class="story-label"><span class="for">{{ $card['title'] ?? '' }}</span><span class="hint">{{ $card['hint'] ?? '' }}</span></span>
+          </a>
+        @endforeach
       </div>
     </div>
   </section>

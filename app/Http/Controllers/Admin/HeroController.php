@@ -47,6 +47,8 @@ class HeroController extends Controller
                 ['image' => 'assets/img/spread-sunday-breakfast.webp', 'title' => 'For Your Mom & Dad', 'hint' => 'parents 50th · retirement', 'link' => '/occasions'],
                 ['image' => 'assets/img/spread-bicycle-lesson.webp', 'title' => 'For Your Sister / Brother', 'hint' => 'rakhi · milestone birthdays', 'link' => '/occasions'],
                 ['image' => 'assets/img/spread-under-stars.webp', 'title' => 'For Your Husband / Partner', 'hint' => 'proposals · weddings', 'link' => '/occasions'],
+                ['image' => 'assets/img/spread-shared-fries.webp', 'title' => 'For Your Daughter / Son', 'hint' => 'graduations · first home', 'link' => '/occasions'],
+                ['image' => 'assets/img/spread-flower-street.webp', 'title' => 'For Your Grandmother / Grandfather', 'hint' => '80th birthday · family legacy', 'link' => '/occasions'],
             ];
         }
 
