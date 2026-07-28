@@ -228,7 +228,10 @@
     var show = function (n) {
       idx = (n + items.length) % items.length;
       items.forEach(function (el, i) { el.classList.toggle("is-active", i === idx); });
-      dots.forEach(function (d, i) { d.setAttribute("aria-current", String(i === idx)); });
+      dots.forEach(function (d, i) {
+        d.setAttribute("aria-current", String(i === idx));
+        d.setAttribute("aria-selected", String(i === idx));
+      });
     };
     var play = function () {
       if (reduceMotion) return;

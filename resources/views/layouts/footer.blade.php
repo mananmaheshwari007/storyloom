@@ -6,7 +6,7 @@
         <p>{{ setting('site_description', "Personalised, hand-illustrated keepsake storybooks. Your memories, woven into a book your family will treasure for generations. Crafted in India, delivered worldwide.") }}</p>
       </div>
       <div class="footer-col">
-        <h4>Explore</h4>
+        <p class="footer-heading">Explore</p>
         <ul>
           <li><a href="{{ route('how-it-works') }}">How It Works</a></li>
           <li><a href="{{ route('library') }}">Read a Storyloom</a></li>
@@ -16,7 +16,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Storyloom</h4>
+        <p class="footer-heading">Storyloom</p>
         <ul>
           <li><a href="{{ route('about') }}">Our Story</a></li>
           <li><a href="{{ route('faq') }}">FAQ</a></li>
@@ -25,7 +25,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Newsletter</h4>
+        <p class="footer-heading">Newsletter</p>
         <p style="font-size: 0.85rem; color: var(--cream-soft-on-dark); margin-bottom: 12px;">Subscribe for new stories &amp; updates.</p>
         <form action="{{ route('newsletter.subscribe') }}" method="POST" class="newsletter-form" style="display: flex; gap: 8px;">
           @csrf
@@ -39,7 +39,7 @@
           <p style="color: #FC8181; font-size: 0.8rem; margin-top: 6px;">{{ $errors->first('email') }}</p>
         @endif
 
-        <h4 style="margin-top: 24px;">Say hello</h4>
+        <p class="footer-heading" style="margin-top: 24px;">Say hello</p>
         <ul class="footer-contact">
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>

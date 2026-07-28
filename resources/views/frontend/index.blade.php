@@ -259,7 +259,7 @@
       </div>
       <div class="testimonial-dots" role="tablist" aria-label="Choose testimonial">
         @foreach($testimonials as $index => $test)
-          <button aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Testimonial {{ $index + 1 }}"></button>
+          <button role="tab" aria-selected="{{ $index === 0 ? 'true' : 'false' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Testimonial {{ $index + 1 }}"></button>
         @endforeach
       </div>
     </div>
