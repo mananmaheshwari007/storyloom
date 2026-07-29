@@ -738,7 +738,8 @@ h3 em {
 .hero-copy .sub {
   font-size: clamp(1.06rem, 1.5vw, 1.2rem);
   color: var(--ink-soft);
-  max-width: 34em;
+  /* Wider measure so the standfirst fits more words per line before wrapping. */
+  max-width: 62em;
   margin-bottom: 36px;
   line-height: 1.72;
 }
@@ -970,7 +971,7 @@ h3 em {
 /* Centered Copy Layout */
 .hero-copy-centered {
   text-align: center;
-  max-width: 780px;
+  max-width: 1200px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -1159,7 +1160,7 @@ h3 em {
     line-height: 1.72;
     color: rgba(255, 253, 248, 0.82);
     margin: 0 0 28px;
-    max-width: 28em;
+    max-width: 100%;
   }
 
   .hero-mobile-body {
