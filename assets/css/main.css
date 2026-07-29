@@ -1054,7 +1054,37 @@ a.chip:hover { border-color: var(--terra); color: var(--terra-deep); transform: 
   .stats-strip { grid-template-columns: 1fr; gap: 28px; }
 }
 @media (max-width: 640px) {
-  .story-grid { grid-template-columns: 1fr; }
+  .story-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px;
+  }
+  .story-card .story-label {
+    padding: 10px 2px 2px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .story-card .story-label .for {
+    font-size: 1.05rem;
+  }
+  .story-card .story-label .hint {
+    font-size: 0.78rem;
+    white-space: normal;
+  }
+  .story-card .card-hover-content {
+    padding: 14px 12px;
+    gap: 4px;
+  }
+  .story-card .card-hover-content .for-title {
+    font-size: 1.05rem;
+  }
+  .story-card .card-hover-content .hint-text {
+    font-size: 0.78rem;
+  }
+  .story-card .card-hover-content .explore-btn {
+    font-size: 0.72rem;
+    margin-top: 2px;
+  }
   .footer-grid { grid-template-columns: 1fr; }
   .brand img.wordmark { width: 132px; }
   .btn { width: 100%; }
