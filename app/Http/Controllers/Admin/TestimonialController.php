@@ -76,7 +76,7 @@ class TestimonialController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $data = $request->except('image_file');
+        $data = $request->except(['image_file', 'remove_image']);
 
         if ($request->hasFile('image_file')) {
             if ($testimonial->image && str_starts_with($testimonial->image, 'storage/')) {
@@ -84,6 +84,12 @@ class TestimonialController extends Controller
             }
             $path = $request->file('image_file')->store('testimonials', 'public');
             $data['image'] = 'storage/' . $path;
+        } elseif ($request->boolean('remove_image')) {
+            // Drop the stored file too, so removing a photo doesn't leave orphans.
+            if ($testimonial->image && str_starts_with($testimonial->image, 'storage/')) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $testimonial->image));
+            }
+            $data['image'] = null;
         }
 
         $testimonial->update($data);

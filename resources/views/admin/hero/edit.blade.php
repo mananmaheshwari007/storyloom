@@ -195,6 +195,7 @@
                                         <button type="button" class="btn btn-outline-success upload-trigger-btn">
                                             <i class="bi bi-cloud-upload me-1"></i> Upload
                                         </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                         <input type="file" class="d-none hidden-file-input" name="mobile_hero_cards_file[{{ $mi }}]" accept="image/jpeg,image/png,image/webp,image/avif">
                                     </div>
                                 </div>
@@ -224,6 +225,7 @@
                                     <button type="button" class="btn btn-outline-primary upload-trigger-btn">
                                         <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                     </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                     <input type="file" class="d-none hidden-file-input" name="site_emblem_file" accept="image/png,image/webp,image/svg+xml">
                                 </div>
                                 <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -269,6 +271,7 @@
                                     <button type="button" class="btn btn-outline-primary upload-trigger-btn">
                                         <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                     </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                     <input type="file" class="d-none hidden-file-input" name="cta_bg_image_file" accept="image/webp,image/jpeg,image/png">
                                 </div>
                                 <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -367,6 +370,7 @@
                                                     <button type="button" class="btn btn-outline-primary upload-card-img-btn upload-trigger-btn">
                                                         <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                                     </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                                     <input type="file" class="d-none card-file-input hidden-file-input" name="hero_cards_file[{{ $index }}]" accept="image/webp,image/jpeg,image/png,image/avif">
                                                 </div>
                                                 <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -431,6 +435,7 @@
                                                     <button type="button" class="btn btn-outline-primary upload-story-for-img-btn upload-trigger-btn">
                                                         <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                                     </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                                     <input type="file" class="d-none story-for-file-input hidden-file-input" name="story_for_cards_file[{{ $index }}]" accept="image/webp,image/jpeg,image/png,image/avif">
                                                 </div>
                                                 <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -505,6 +510,7 @@
                                         <button type="button" class="btn btn-outline-primary upload-trigger-btn">
                                             <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                         </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                         <input type="file" class="d-none hidden-file-input" name="reveal_book_spread_file" accept="image/*">
                                     </div>
                                 </div>
@@ -581,6 +587,7 @@
                                     <button type="button" class="btn btn-outline-primary upload-trigger-btn">
                                         <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                     </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                     <input type="file" class="d-none hidden-file-input" name="cta_bg_image_file" accept="image/*">
                                 </div>
                                 <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -650,6 +657,7 @@
                                         <div class="input-group input-group-sm">
                                             <input type="text" class="form-control img-path-input" name="problem_gift{{ $n }}_icon" value="{{ setting('problem_gift'.$n.'_icon') }}" placeholder="optional">
                                             <button type="button" class="btn btn-outline-primary upload-trigger-btn"><i class="bi bi-cloud-upload"></i></button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                             <input type="file" class="d-none hidden-file-input" name="problem_gift{{ $n }}_icon_file" accept=".png,.webp,.svg">
                                         </div>
                                     </div>
@@ -709,6 +717,7 @@
                                         <div class="input-group input-group-sm">
                                             <input type="text" class="form-control img-path-input" name="process_step{{ $n }}_icon" value="{{ setting('process_step'.$n.'_icon') }}" placeholder="leave blank to show the roman numeral">
                                             <button type="button" class="btn btn-outline-primary upload-trigger-btn"><i class="bi bi-cloud-upload me-1"></i> Upload</button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                             <input type="file" class="d-none hidden-file-input" name="process_step{{ $n }}_icon_file" accept=".png,.webp,.svg">
                                         </div>
                                         <small class="text-muted d-block mt-1" style="font-size:.72rem;">
@@ -774,8 +783,56 @@
                             <input type="text" class="form-control form-control-sm" name="testimonial_heading" value="{{ setting('testimonial_heading', 'Some gifts get a thank-you. <em>These get tears.</em>') }}">
                         </div>
                     </div>
+                    @php $tmList = \App\Models\Testimonial::orderBy('id')->get(); @endphp
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-4">
+                            <label class="form-label font-weight-bold">"Read more" Link Text</label>
+                            <input type="text" class="form-control form-control-sm" name="testimonial_more_text" value="{{ setting('testimonial_more_text', 'Read more reviews') }}">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label font-weight-bold">"Read more" Link URL</label>
+                            <input type="text" class="form-control form-control-sm" name="testimonial_more_link" value="{{ setting('testimonial_more_link', route('library')) }}">
+                        </div>
+                    </div>
+
+                    <hr class="my-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold text-muted" style="font-size:.78rem; letter-spacing:.08em;">
+                            QUOTES IN ROTATION ({{ $tmList->count() }})
+                        </span>
+                        <a href="{{ route('admin.testimonials.create') }}" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i> Add Testimonial
+                        </a>
+                    </div>
+
+                    @forelse($tmList as $tm)
+                        <div class="d-flex align-items-center gap-3 border rounded p-2 mb-2 {{ $tm->status === 'active' ? 'bg-light' : 'bg-white opacity-75' }}">
+                            @if($tm->image)
+                                <img src="{{ asset($tm->image) }}" alt="" width="44" height="44" class="rounded border" style="object-fit:cover; flex:none;">
+                            @else
+                                <span class="d-inline-flex align-items-center justify-content-center border rounded bg-white text-muted" style="width:44px;height:44px;font-size:.6rem;flex:none;">no&nbsp;photo</span>
+                            @endif
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="fw-semibold text-dark" style="font-size:.88rem;">
+                                    {{ $tm->client_name }}@if($tm->designation)<span class="text-muted fw-normal">, {{ $tm->designation }}</span>@endif
+                                    @if($tm->status !== 'active')
+                                        <span class="badge bg-secondary ms-1">hidden</span>
+                                    @endif
+                                </div>
+                                <div class="text-muted text-truncate" style="font-size:.78rem;">{{ \Illuminate\Support\Str::limit($tm->review, 90) }}</div>
+                            </div>
+                            <a href="{{ route('admin.testimonials.edit', $tm->id) }}" class="btn btn-sm btn-outline-primary" title="Edit quote &amp; photo">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </div>
+                    @empty
+                        <div class="text-muted border rounded p-3 text-center" style="font-size:.85rem;">
+                            No testimonials yet — the homepage shows a placeholder quote until you add one.
+                        </div>
+                    @endforelse
+
                     <div class="form-text mt-2">
-                        <i class="bi bi-info-circle me-1"></i> The quotes themselves are managed under <strong>Testimonials</strong> in the sidebar.
+                        <i class="bi bi-info-circle me-1"></i> Edit opens the full quote editor, where you can change the photo or remove it. Each quote's photo is what fades in on the left of the homepage band.
                     </div>
                 </div>
             </div>
@@ -836,6 +893,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <button type="button" class="btn btn-outline-primary upload-card-img-btn upload-trigger-btn">
                                             <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                         </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                         <input type="file" class="d-none card-file-input hidden-file-input" name="hero_cards_file[${newIndex}]" accept="image/webp,image/jpeg,image/png,image/avif">
                                     </div>
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -898,6 +956,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <button type="button" class="btn btn-outline-primary upload-story-for-img-btn upload-trigger-btn">
                                             <i class="bi bi-cloud-upload me-1"></i> Upload Image
                                         </button>
+                                        <button type="button" class="btn btn-outline-danger remove-img-btn" title="Remove image"><i class="bi bi-trash"></i></button>
                                         <input type="file" class="d-none story-for-file-input hidden-file-input" name="story_for_cards_file[${newIndex}]" accept="image/webp,image/jpeg,image/png,image/avif">
                                     </div>
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
@@ -947,6 +1006,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         }
+
+        // "Remove image" is handled globally in layouts/admin.blade.php so it
+        // works on every admin screen, not just this one.
     });
 
     document.addEventListener("change", function(e) {

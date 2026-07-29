@@ -237,11 +237,18 @@
   if (stage) {
     var items = stage.querySelectorAll(".testimonial");
     var dots = document.querySelectorAll(".testimonial-dots button");
+    // Photos live outside .testimonial-stage, so scope to the band.
+    var band = stage.closest(".testimonial-band");
+    var photos = band ? band.querySelectorAll(".tb-photo") : [];
     var idx = 0;
-    var timer = null;
+    var tTimer = null;
     var show = function (n) {
       idx = (n + items.length) % items.length;
       items.forEach(function (el, i) { el.classList.toggle("is-active", i === idx); });
+      // Crossfade the portrait in step with the quote
+      Array.prototype.forEach.call(photos, function (p, i) {
+        p.classList.toggle("is-active", i === idx);
+      });
       dots.forEach(function (d, i) {
         d.setAttribute("aria-current", String(i === idx));
         d.setAttribute("aria-selected", String(i === idx));
@@ -249,9 +256,9 @@
     };
     var play = function () {
       if (reduceMotion) return;
-      timer = window.setInterval(function () { show(idx + 1); }, 6000);
+      tTimer = window.setInterval(function () { show(idx + 1); }, 6000);
     };
-    var stop = function () { if (timer) { clearInterval(timer); timer = null; } };
+    var stop = function () { if (tTimer) { clearInterval(tTimer); tTimer = null; } };
     dots.forEach(function (d, i) {
       d.addEventListener("click", function () { stop(); show(i); play(); });
     });
@@ -572,7 +579,7 @@
   var mobileHero = document.getElementById("heroMobile");
   if (mobileHero) {
     var slides = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-slide"));
-    var dots = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-dot"));
+    var mhDots = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-dot"));
     if (slides.length > 1) {
       var currentSlide = 0;
       var slideTimer = null;
@@ -586,15 +593,15 @@
 
       var showSlide = function (n) {
         slides[currentSlide].classList.remove("is-active");
-        if (dots[currentSlide]) {
-          dots[currentSlide].classList.remove("is-active");
-          dots[currentSlide].setAttribute("aria-current", "false");
+        if (mhDots[currentSlide]) {
+          mhDots[currentSlide].classList.remove("is-active");
+          mhDots[currentSlide].setAttribute("aria-current", "false");
         }
         currentSlide = (n + slides.length) % slides.length;
         slides[currentSlide].classList.add("is-active");
-        if (dots[currentSlide]) {
-          dots[currentSlide].classList.add("is-active");
-          dots[currentSlide].setAttribute("aria-current", "true");
+        if (mhDots[currentSlide]) {
+          mhDots[currentSlide].classList.add("is-active");
+          mhDots[currentSlide].setAttribute("aria-current", "true");
         }
       };
 
@@ -608,7 +615,7 @@
         }, slideInterval);
       };
 
-      dots.forEach(function (dot, i) {
+      mhDots.forEach(function (dot, i) {
         dot.addEventListener("click", function () {
           showSlide(i);
           startSlideshow(); // restart the clock after a manual pick

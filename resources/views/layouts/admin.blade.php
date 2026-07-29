@@ -377,6 +377,37 @@
         document.getElementById('sidebar-toggle')?.addEventListener('click', function() {
             document.body.classList.toggle('sidebar-open');
         });
+
+        /* Universal "Remove image".
+           Any image field wrapped in .img-upload-block gets this for free:
+           clears the stored path, clears any pending file, and dims the
+           preview. The blank value is what tells the controller to drop the
+           saved image — so it only takes effect once the form is saved. */
+        (function () {
+            var PLACEHOLDER = "{{ asset('assets/img/logo-emblem.png') }}";
+
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.remove-img-btn');
+                if (!btn) return;
+
+                var block = btn.closest('.img-upload-block');
+                if (!block) return;
+
+                e.preventDefault();
+
+                var pathInput = block.querySelector('.img-path-input');
+                var fileInput = block.querySelector('.hidden-file-input');
+                var preview   = block.querySelector('.img-preview-el');
+
+                if (pathInput) pathInput.value = '';
+                if (fileInput) fileInput.value = '';
+                if (preview) {
+                    preview.src = PLACEHOLDER;
+                    preview.style.opacity = '.25';
+                }
+                btn.blur();
+            });
+        })();
     </script>
     @yield('scripts')
 </body>

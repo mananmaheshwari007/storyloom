@@ -353,23 +353,54 @@
         <p class="eyebrow eyebrow-center">{{ setting('testimonial_eyebrow', 'The moment it opens') }}</p>
         <h2>{!! setting('testimonial_heading', 'Some gifts get a thank-you. <em>These get tears.</em>') !!}</h2>
       </div>
-      <div class="testimonial-stage" data-reveal>
-        @forelse($testimonials as $index => $test)
-          <div class="testimonial {{ $index === 0 ? 'is-active' : '' }}">
-            <blockquote>“{{ $test->review }}”</blockquote>
-            <cite>{{ $test->client_name }} @if($test->designation), {{ $test->designation }}@endif</cite>
+      @php
+        $tItems = $testimonials->count() ? $testimonials : collect([(object)[
+            'review' => "My mother read it aloud twice, cried both times, and now it lives on her bedside table. Nothing I've ever given her has come close.",
+            'client_name' => "A daughter's gift", 'designation' => "for her mother's 60th", 'image' => null,
+        ]]);
+        $tFallbackImg = 'assets/img/spread-home-morning.webp';
+      @endphp
+      <div class="testimonial-band" data-reveal>
+        {{-- Photo column: crossfades in step with the quote --}}
+        <div class="tb-media" aria-hidden="true">
+          @foreach($tItems as $index => $test)
+            <img class="tb-photo {{ $index === 0 ? 'is-active' : '' }}"
+                 src="{{ asset($test->image ?: $tFallbackImg) }}"
+                 alt="" width="700" height="440" loading="lazy" decoding="async">
+          @endforeach
+          <span class="tb-fade"></span>
+        </div>
+
+        <div class="tb-body">
+          <svg class="tb-quote" viewBox="0 0 32 24" aria-hidden="true" focusable="false">
+            <path d="M13 24V13.2C13 5.9 17.4 1.2 25 0l1.5 3.4C22 4.7 19.6 7.2 19.3 11H24v13h-11Zm-13 0V13.2C0 5.9 4.4 1.2 12 0l1.5 3.4C9 4.7 6.6 7.2 6.3 11H11v13H0Z"/>
+          </svg>
+
+          <div class="testimonial-stage">
+            @foreach($tItems as $index => $test)
+              <div class="testimonial {{ $index === 0 ? 'is-active' : '' }}">
+                <blockquote>{{ $test->review }}</blockquote>
+                <cite>— {{ $test->client_name }}@if($test->designation), {{ $test->designation }}@endif</cite>
+              </div>
+            @endforeach
           </div>
-        @empty
-          <div class="testimonial is-active">
-            <blockquote>“My mother read it aloud twice, cried both times, and now it lives on her bedside table. Nothing I've ever given her has come close.”</blockquote>
-            <cite>A daughter's gift, for her mother's 60th</cite>
+
+          <a class="tb-more" href="{{ setting('testimonial_more_link', route('library')) }}">
+            {{ setting('testimonial_more_text', 'Read more reviews') }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        @if($tItems->count() > 1)
+          <div class="testimonial-dots" role="tablist" aria-label="Choose testimonial">
+            @foreach($tItems as $index => $test)
+              <button type="button" role="tab"
+                      aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
+                      aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                      aria-label="Testimonial {{ $index + 1 }} of {{ $tItems->count() }}"></button>
+            @endforeach
           </div>
-        @endforelse
-      </div>
-      <div class="testimonial-dots" role="tablist" aria-label="Choose testimonial">
-        @foreach($testimonials as $index => $test)
-          <button role="tab" aria-selected="{{ $index === 0 ? 'true' : 'false' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Testimonial {{ $index + 1 }}"></button>
-        @endforeach
+        @endif
       </div>
     </div>
   </section>

@@ -80,7 +80,16 @@
                 @if($testimonial->image)
                     <div class="mt-2 text-muted" style="font-size: 0.85rem;">
                         Current Photo: <code>{{ $testimonial->image }}</code>
-                        <div class="mt-1"><img src="{{ asset($testimonial->image) }}" alt="Preview" height="80" class="border rounded"></div>
+                        <div class="mt-1 d-flex align-items-center gap-3">
+                            <img src="{{ asset($testimonial->image) }}" alt="Preview" height="80" class="border rounded">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="remove_image" name="remove_image">
+                                <label class="form-check-label text-danger fw-semibold" for="remove_image">
+                                    <i class="bi bi-trash me-1"></i> Remove this photo
+                                </label>
+                                <div class="form-text">Applied when you save. The testimonial keeps working without a photo.</div>
+                            </div>
+                        </div>
                     </div>
                 @endif
             </div>

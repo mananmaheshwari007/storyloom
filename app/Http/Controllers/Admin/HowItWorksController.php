@@ -76,7 +76,14 @@ class HowItWorksController extends Controller
                 $path = $request->file("{$key}_file")->store('uploads/how', 'public');
                 $data[$key] = 'storage/' . $path;
             } elseif ($request->has($key)) {
-                $data[$key] = $request->input($key);
+                $value = trim((string) $request->input($key));
+                if ($value === '') {
+                    // Cleared via the "Remove" button — drop the row so no icon renders.
+                    Setting::where('key', $key)->delete();
+                    Cache::forget('setting.' . $key);
+                } else {
+                    $data[$key] = $value;
+                }
             }
         }
 

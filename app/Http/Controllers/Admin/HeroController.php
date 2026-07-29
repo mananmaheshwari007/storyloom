@@ -131,6 +131,12 @@ class HeroController extends Controller
             } elseif ($request->filled($settingKey)) {
                 Setting::updateOrCreate(['key' => $settingKey], ['value' => $request->input($settingKey)]);
                 Cache::forget("setting.{$settingKey}");
+            } elseif ($request->has($settingKey)) {
+                // Field was submitted but empty — the "Remove" button cleared it.
+                // Drop the row entirely so the section falls back to its default
+                // (or, for optional icons, renders nothing at all).
+                Setting::where('key', $settingKey)->delete();
+                Cache::forget("setting.{$settingKey}");
             }
         }
 
@@ -233,6 +239,8 @@ class HeroController extends Controller
             // "The Moment It Opens" — testimonials heading
             'testimonial_eyebrow' => $request->input('testimonial_eyebrow'),
             'testimonial_heading' => $request->input('testimonial_heading'),
+            'testimonial_more_text' => $request->input('testimonial_more_text'),
+            'testimonial_more_link' => $request->input('testimonial_more_link'),
 
             // "For Every Occasion" — marquee
             'marquee_eyebrow' => $request->input('marquee_eyebrow'),

@@ -1303,7 +1303,10 @@ a.plate:hover,
 /* ---------- Problem strip ---------- */
 .fading-gifts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Narrower cards read better than three wide slabs — cap each one and
+     centre the row rather than stretching to the full container. */
+  grid-template-columns: repeat(3, minmax(0, 300px));
+  justify-content: center;
   gap: clamp(20px, 3vw, 36px);
   margin-block: 48px;
 }
@@ -1619,9 +1622,73 @@ a.plate:hover,
 }
 
 /* ---------- Testimonials (dark) ---------- */
+/* ---------- Testimonial band ----------
+   One thin horizontal panel: photo on the left fading into the dark
+   panel, quote in the middle, vertical dots on the right. */
+.testimonial-band {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.6fr) auto;
+  align-items: stretch;
+  background: var(--ink);
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 340px;
+}
+
+/* Photo column */
+.tb-media {
+  position: relative;
+  overflow: hidden;
+}
+
+.tb-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+.tb-photo.is-active {
+  opacity: 1;
+}
+
+/* Feathered edge so the photo dissolves into the panel */
+.tb-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(29, 42, 68, 0) 38%,
+    rgba(29, 42, 68, 0.72) 74%,
+    var(--ink) 100%
+  );
+}
+
+/* Copy column */
+.tb-body {
+  position: relative;
+  padding: clamp(30px, 4vw, 52px) clamp(24px, 3.5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tb-quote {
+  width: 30px;
+  height: 22px;
+  fill: #D98A5A;
+  opacity: 0.85;
+  margin-bottom: 18px;
+  flex: none;
+}
+
 .testimonial-stage {
   position: relative;
-  min-height: 300px;
+  min-height: 150px;
 }
 
 .testimonial {
@@ -1629,11 +1696,11 @@ a.plate:hover,
   inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(14px);
+  transform: translateY(12px);
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out), visibility 0s linear 0.7s;
 }
 
@@ -1641,38 +1708,64 @@ a.plate:hover,
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition-delay: 0.15s, 0.15s, 0.15s;
+  transition-delay: 0.12s, 0.12s, 0.12s;
 }
 
 .testimonial blockquote {
   font-family: var(--font-display);
-  font-style: italic;
   font-weight: 500;
-  font-size: clamp(1.5rem, 3vw, 2.3rem);
-  line-height: 1.4;
-  max-width: 21em;
+  font-size: clamp(1.12rem, 1.7vw, 1.5rem);
+  line-height: 1.55;
+  max-width: 26em;
   color: var(--cream-on-dark);
 }
 
 .testimonial cite {
-  margin-top: 26px;
+  margin-top: 16px;
   font-style: normal;
-  font-size: 0.88rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #D98A5A;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: rgba(255, 253, 248, 0.62);
 }
 
+.tb-more {
+  margin-top: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #E8A87C;
+  transition: gap var(--dur-quick), color var(--dur-quick);
+}
+
+.tb-more svg {
+  width: 17px;
+  height: 17px;
+}
+
+.tb-more:hover {
+  gap: 15px;
+  color: #F2C29B;
+}
+
+/* Vertical dot rail */
 .testimonial-dots {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 12px;
-  margin-top: 40px;
+  gap: 6px;
+  padding-right: clamp(16px, 2vw, 30px);
 }
 
 .testimonial-dots button {
-  width: 34px;
-  height: 34px;
+  width: 26px;
+  height: 26px;
   display: grid;
   place-items: center;
 }
@@ -1682,13 +1775,44 @@ a.plate:hover,
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--hairline-on-dark);
+  background: rgba(255, 253, 248, 0.28);
   transition: background var(--dur-quick), transform var(--dur-quick);
 }
 
 .testimonial-dots button[aria-current="true"]::after {
-  background: #D98A5A;
-  transform: scale(1.3);
+  background: #E8A87C;
+  transform: scale(1.35);
+}
+
+@media (max-width: 860px) {
+  /* Stack: photo on top, copy below, dots go horizontal */
+  .testimonial-band {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .tb-media {
+    height: 210px;
+  }
+
+  .tb-fade {
+    background: linear-gradient(
+      to bottom,
+      rgba(29, 42, 68, 0) 30%,
+      rgba(29, 42, 68, 0.75) 76%,
+      var(--ink) 100%
+    );
+  }
+
+  .testimonial-stage {
+    min-height: 190px;
+  }
+
+  .testimonial-dots {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0 0 26px;
+  }
 }
 
 /* ---------- Occasions marquee ---------- */
@@ -4644,8 +4768,8 @@ html:not(.js) .loom-hint,
    Sized from a single token so every icon stays consistent.
    ============================================================ */
 :root {
-  --icon-size: 72px;
-  --icon-size-sm: 56px;
+  --icon-size: 108px;
+  --icon-size-sm: 84px;
 }
 
 .section-icon {
@@ -4673,8 +4797,8 @@ html:not(.js) .loom-hint,
 
 @media (max-width: 767px) {
   :root {
-    --icon-size: 56px;
-    --icon-size-sm: 44px;
+    --icon-size: 84px;
+    --icon-size-sm: 66px;
   }
 
   .section-icon {
@@ -4685,13 +4809,16 @@ html:not(.js) .loom-hint,
 /* ============================================================
    PAGESPEED RENDERING OPTIMIZATIONS
    ============================================================ */
+/* .testimonial-stage is deliberately NOT in this list any more: it now sits
+   inside .testimonial-band, whose height it drives. A 400px intrinsic
+   placeholder made the band render ~250px too tall until it scrolled into
+   view, then snap shorter — a visible layout jump. */
 .weave-gallery,
 .story-grid,
 .process-grid,
 .occasion-grid,
 .final-cta,
-.faq-list,
-.testimonial-stage {
+.faq-list {
   content-visibility: auto;
   contain-intrinsic-size: 1px 400px;
 }
