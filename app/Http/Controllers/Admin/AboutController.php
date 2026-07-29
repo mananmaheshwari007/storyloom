@@ -21,55 +21,45 @@ class AboutController extends Controller
     }
 
     /**
-     * Update the About section and page settings.
+     * Update the About page settings and section copy.
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'heading' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'nullable|string',
-            'image_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:3072',
-            'experience_years' => 'nullable|integer',
-            'skills' => 'nullable|array',
-            'statistics' => 'nullable|array',
-        ]);
-
-        $data = $request->all();
-
-        if ($request->hasFile('image_file')) {
-            $destinationPath = public_path('assets/img/uploads');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-            $file = $request->file('image_file');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-            $file->move($destinationPath, $filename);
-            $data['image'] = 'assets/img/uploads/' . $filename;
-        }
-
-        $about = About::first();
-        if ($about) {
-            $about->update($data);
-        } else {
-            About::create($data);
-        }
-
         // Process About Page settings
         $aboutSettingsKeys = [
+            // Section 1: Hero & Story Prose
             'about_hero_eyebrow',
             'about_hero_heading',
-            'about_hero_lede',
-            'about_val1_title',
-            'about_val1_desc',
-            'about_val2_title',
-            'about_val2_desc',
-            'about_val3_title',
-            'about_val3_desc',
+            'about_hero_p1',
+            'about_hero_p2',
+            'about_hero_p3',
+            'about_artwork_img',
+            'about_artwork_caption',
+
+            // Section 2: What We Stand For
+            'stand_eyebrow',
+            'stand_heading',
+            'stand_card1_title', 'stand_card1_desc',
+            'stand_card2_title', 'stand_card2_desc',
+            'stand_card3_title', 'stand_card3_desc',
+            'stand_card4_title', 'stand_card4_desc',
+
+            // Section 3: The Mark We Make
+            'mark_eyebrow',
+            'mark_heading',
+            'mark_p1',
+            'mark_p2',
+
+            // Section 4: A Note from the Founder
+            'founder_eyebrow',
+            'founder_quote',
+            'founder_author',
+
+            // Section 5: About Page Final CTA
             'about_cta_heading',
             'about_cta_desc',
-            'about_cta_btn_text',
-            'about_cta_btn_link',
+            'about_cta_btn1',
+            'about_cta_bg',
         ];
 
         foreach ($aboutSettingsKeys as $key) {
@@ -79,6 +69,32 @@ class AboutController extends Controller
             }
         }
 
-        return back()->with('success', 'About page content & settings updated successfully.');
+        // Handle Image File Upload for Polaroid Artwork Card
+        if ($request->hasFile('about_artwork_img_file')) {
+            $destinationPath = public_path('assets/img/uploads');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file = $request->file('about_artwork_img_file');
+            $filename = 'about_art_' . time() . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $filename);
+            Setting::updateOrCreate(['key' => 'about_artwork_img'], ['value' => 'assets/img/uploads/' . $filename]);
+            Cache::forget('setting.about_artwork_img');
+        }
+
+        // Handle Image File Upload for Final CTA Background
+        if ($request->hasFile('about_cta_bg_file')) {
+            $destinationPath = public_path('assets/img/uploads');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file = $request->file('about_cta_bg_file');
+            $filename = 'about_cta_' . time() . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $filename);
+            Setting::updateOrCreate(['key' => 'about_cta_bg'], ['value' => 'assets/img/uploads/' . $filename]);
+            Cache::forget('setting.about_cta_bg');
+        }
+
+        return back()->with('success', 'About page content, cards, and CTA updated successfully.');
     }
 }

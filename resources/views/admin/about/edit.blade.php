@@ -6,12 +6,12 @@
 <div class="page-header d-flex align-items-center justify-content-between mb-4">
     <div>
         <h1 class="page-title h3 mb-1"><i class="bi bi-file-person me-2 text-primary"></i> 7. About Page Manager</h1>
-        <p class="text-muted small mb-0">Manage story, hero intro, brand philosophy, values cards, founder artwork, and final CTA on the About page.</p>
+        <p class="text-muted small mb-0">Manage 100% of hero copy, story prose, "What We Stand For" cards, emblem explanation, founder quote, and final CTA on the About page (/about).</p>
     </div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">About Section</li>
+            <li class="breadcrumb-item active" aria-current="page">About Page</li>
         </ol>
     </nav>
 </div>
@@ -28,163 +28,199 @@
         </div>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-8">
-            <!-- Hero Header Section -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-fonts me-2 text-primary"></i> 1. Page Hero Header</h5>
+    <!-- 1. Hero Header & Story Prose Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-fonts me-2 text-primary"></i> 1. Page Hero Header &amp; Main Brand Story Prose</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Hero Eyebrow</label>
+                    <input type="text" name="about_hero_eyebrow" class="form-control form-control-sm" value="{{ setting('about_hero_eyebrow', 'ABOUT STORYLOOM') }}">
                 </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Hero Eyebrow</label>
-                        <input type="text" class="form-control" name="about_hero_eyebrow" value="{{ setting('about_hero_eyebrow', 'ABOUT STORYLOOM') }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Hero Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
-                        <input type="text" class="form-control" name="about_hero_heading" value="{{ setting('about_hero_heading', 'Every story is a <em>keepsake.</em>') }}">
-                        <div class="form-text">Use <code>&lt;em&gt;text&lt;/em&gt;</code> for the custom script font accent.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Hero Lede / Intro Text</label>
-                        <textarea class="form-control" name="about_hero_lede" rows="3">{{ setting('about_hero_lede', 'Storyloom was born from a simple belief: the moments that shaped your life deserve more than a fading photo or a forgotten text message.') }}</textarea>
-                    </div>
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">Hero Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                    <input type="text" name="about_hero_heading" class="form-control form-control-sm" value="{{ setting('about_hero_heading', 'We exist because memories<br>deserve better than a <em>camera roll.</em>') }}">
+                    <div class="form-text">Use <code>&lt;em&gt;text&lt;/em&gt;</code> for the custom script font accent.</div>
                 </div>
             </div>
 
-            <!-- About Content -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-journal-text me-2 text-primary"></i> 2. Main Brand Story</h5>
-                </div>
-                <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-8">
                     <div class="mb-3">
-                        <label for="heading" class="form-label fw-bold">Story Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
-                        <input type="text" class="form-control" id="heading" name="heading" value="{{ old('heading', $about->heading) }}" required>
+                        <label class="form-label fw-bold">Story Paragraph 1 (with Drop Cap)</label>
+                        <textarea name="about_hero_p1" class="form-control form-control-sm" rows="3">{{ setting('about_hero_p1', 'Families have stories. Often hundreds — and most of them die with us.') }}</textarea>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Story Paragraph 2</label>
+                        <textarea name="about_hero_p2" class="form-control form-control-sm" rows="3">{{ setting('about_hero_p2', 'They live in WhatsApp, scattered across hard drives, lost in phones and albums nobody opens. And as time passes, the details start to blur, and memories lose their frame.') }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Story Paragraph 3</label>
+                        <textarea name="about_hero_p3" class="form-control form-control-sm" rows="2">{{ setting('about_hero_p3', 'The story is the most valuable thing a family can leave behind. It deserves better than a screen.') }}</textarea>
+                    </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label fw-bold">Main Description Paragraphs</label>
-                        <textarea class="form-control" id="description" name="description" rows="6" required>{{ old('description', $about->description) }}</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="experience_years" class="form-label fw-bold">Years of Experience / Activity</label>
-                        <input type="number" class="form-control" id="experience_years" name="experience_years" value="{{ old('experience_years', $about->experience_years) }}">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Core Values / Philosophy -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-heart me-2 text-danger"></i> 3. Core Values & Brand Pillars</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3 p-3 bg-light rounded border">
-                        <label class="form-label fw-bold text-dark mb-1">Value 1 Title & Description</label>
-                        <input type="text" class="form-control mb-2" name="about_val1_title" value="{{ setting('about_val1_title', 'Crafted One-by-One') }}">
-                        <textarea class="form-control form-control-sm" name="about_val1_desc" rows="2">{{ setting('about_val1_desc', 'No templates. Every story is painted around your real people and places.') }}</textarea>
-                    </div>
-                    <div class="mb-3 p-3 bg-light rounded border">
-                        <label class="form-label fw-bold text-dark mb-1">Value 2 Title & Description</label>
-                        <input type="text" class="form-control mb-2" name="about_val2_title" value="{{ setting('about_val2_title', 'Archival Quality') }}">
-                        <textarea class="form-control form-control-sm" name="about_val2_desc" rows="2">{{ setting('about_val2_desc', 'Hardbound binding and heavy art paper designed to last for generations.') }}</textarea>
-                    </div>
-                    <div class="mb-3 p-3 bg-light rounded border">
-                        <label class="form-label fw-bold text-dark mb-1">Value 3 Title & Description</label>
-                        <input type="text" class="form-control mb-2" name="about_val3_title" value="{{ setting('about_val3_title', 'Delivered Worldwide') }}">
-                        <textarea class="form-control form-control-sm" name="about_val3_desc" rows="2">{{ setting('about_val3_desc', 'Safely packaged, ribbon-sealed, and shipped to families everywhere.') }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Final CTA Banner -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-megaphone me-2 text-danger"></i> 4. About Page Final CTA</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">CTA Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
-                        <input type="text" class="form-control" name="about_cta_heading" value="{{ setting('about_cta_heading', 'Ready to turn your memories into a <em>book?</em>') }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">CTA Description</label>
-                        <textarea class="form-control" name="about_cta_desc" rows="2">{{ setting('about_cta_desc', 'Start a conversation with our editorial team today.') }}</textarea>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Button Label</label>
-                            <input type="text" class="form-control" name="about_cta_btn_text" value="{{ setting('about_cta_btn_text', 'BEGIN YOUR STORY') }}">
+                <div class="col-md-4">
+                    <div class="p-3 border rounded bg-light">
+                        <label class="form-label fw-bold text-dark mb-1"><i class="bi bi-image me-1 text-primary"></i> Polaroid Artwork Card</label>
+                        <div class="mb-2 text-center">
+                            <img id="about_art_preview" src="{{ asset(setting('about_artwork_img', 'assets/img/spread-street-morning.webp')) }}" class="rounded border object-fit-cover shadow-sm" style="max-height: 140px; width: 100%;">
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Button Link</label>
-                            <input type="text" class="form-control" name="about_cta_btn_link" value="{{ setting('about_cta_btn_link', '/begin') }}">
-                        </div>
+                        <label class="form-label micro fw-bold mt-2">Upload Artwork Image</label>
+                        <input type="file" class="form-control form-control-sm mb-2" name="about_artwork_img_file" accept="image/*" onchange="previewImg(this, 'about_art_preview')">
+                        <input type="text" class="form-control form-control-sm mb-2" name="about_artwork_img" value="{{ setting('about_artwork_img', 'assets/img/spread-street-morning.webp') }}">
+                        <label class="form-label micro fw-bold">Polaroid Handwritten Caption</label>
+                        <input type="text" name="about_artwork_caption" class="form-control form-control-sm" value="{{ setting('about_artwork_caption', 'An everyday moment — captured for a family heirloom.') }}">
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-4">
-            <!-- Stats and Skills -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bar-chart me-2 text-success"></i> Statistics & Pillars</h5>
+    <!-- 2. What We Stand For (4 Cards) -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-shield-check me-2 text-warning"></i> 2. What We Stand For Section (4 Cards)</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Section Eyebrow</label>
+                    <input type="text" name="stand_eyebrow" class="form-control form-control-sm" value="{{ setting('stand_eyebrow', 'WHAT WE STAND FOR') }}">
                 </div>
-                <div class="card-body">
-                    <div class="mb-4">
-                        <label class="form-label fw-bold d-block">Statistics Counters (3 items)</label>
-                        <div class="row g-2">
-                            @for($i = 0; $i < 3; $i++)
-                                @php
-                                    $statVal = isset($about->statistics[$i]) ? $about->statistics[$i] : ['number' => '', 'label' => ''];
-                                @endphp
-                                <div class="col-12 mb-2">
-                                    <div class="p-2.5 border rounded bg-light">
-                                        <label class="form-label micro fw-bold">Stat #{{ $i + 1 }} Number & Label</label>
-                                        <input type="text" class="form-control form-control-sm mb-1" name="statistics[{{ $i }}][number]" value="{{ $statVal['number'] }}" placeholder="1000+">
-                                        <input type="text" class="form-control form-control-sm" name="statistics[{{ $i }}][label]" value="{{ $statVal['label'] }}" placeholder="Stories Painted">
-                                    </div>
-                                </div>
-                            @endfor
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                    <input type="text" name="stand_heading" class="form-control form-control-sm" value="{{ setting('stand_heading', 'Craftsmanship over speed.<br>Specificity over <em>sentiment.</em>') }}">
+                </div>
+            </div>
+
+            @php
+                $standDefaults = [
+                    1 => ['title' => 'Every detail belongs to you', 'desc' => 'It\'s not a generic template. Every illustration — every street, corner, face — belongs to your story.'],
+                    2 => ['title' => 'The book is the monument', 'desc' => 'Not a photo album. A custom hardbound book built to last longer than the memories inside it.'],
+                    3 => ['title' => 'Paper, not plastic', 'desc' => 'Archival-quality paper, cloth-bound covers, true hot-stamped foil.'],
+                    4 => ['title' => 'Made to be handed down', 'desc' => 'Built for living rooms — built to be kept for generations.'],
+                ];
+            @endphp
+
+            <div class="row g-3">
+                @for($c = 1; $c <= 4; $c++)
+                    @php
+                        $cDef = $standDefaults[$c];
+                        $cTitle = setting("stand_card{$c}_title", $cDef['title']);
+                        $cDesc = setting("stand_card{$c}_desc", $cDef['desc']);
+                    @endphp
+                    <div class="col-md-6 col-lg-3">
+                        <div class="p-3 border rounded bg-light h-100">
+                            <h6 class="fw-bold text-dark mb-2">Pillar Card #{{ $c }}</h6>
+                            <div class="mb-2">
+                                <label class="form-label micro fw-bold">Title</label>
+                                <input type="text" name="stand_card{{ $c }}_title" class="form-control form-control-sm" value="{{ $cTitle }}">
+                            </div>
+                            <div>
+                                <label class="form-label micro fw-bold">Description</label>
+                                <textarea name="stand_card{{ $c }}_desc" class="form-control form-control-sm" rows="3">{{ $cDesc }}</textarea>
+                            </div>
                         </div>
                     </div>
+                @endfor
+            </div>
+        </div>
+    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Company Skills / Pillars List</label>
-                        @for($s = 0; $s < 4; $s++)
-                            @php
-                                $skillVal = isset($about->skills[$s]) ? $about->skills[$s] : '';
-                            @endphp
-                            <input type="text" class="form-control form-control-sm mb-2" name="skills[{{ $s }}]" value="{{ $skillVal }}" placeholder="Pillar #{{ $s + 1 }}">
-                        @endfor
+    <!-- 3. The Mark We Make Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-award me-2 text-primary"></i> 3. The Mark We Make (Emblem Section)</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Section Eyebrow</label>
+                    <input type="text" name="mark_eyebrow" class="form-control form-control-sm" value="{{ setting('mark_eyebrow', 'THE MARK WE MAKE') }}">
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                    <input type="text" name="mark_heading" class="form-control form-control-sm" value="{{ setting('mark_heading', 'An heirloom mark,<br>not a <em>startup logo.</em>') }}">
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Paragraph 1 (Emblem Loom Explanation)</label>
+                    <textarea name="mark_p1" class="form-control form-control-sm" rows="4">{{ setting('mark_p1', 'Look closely at our emblem. At the top, a loom — vertical posts with threads strung between them: a family\'s scattered moments, still unformed. Below, those same threads fall and open into the pages of a book. One becomes the other.') }}</textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Paragraph 2 (Double Ring & Seals Explanation)</label>
+                    <textarea name="mark_p2" class="form-control form-control-sm" rows="4">{{ setting('mark_p2', 'The double ring borrows from seals and crests — marks that have always signified craftsmanship and things made to be handed down. It only reveals itself on a second look. So do our books.') }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. A Note from the Founder Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-quote me-2 text-success"></i> 4. A Note from the Founder</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Section Eyebrow</label>
+                    <input type="text" name="founder_eyebrow" class="form-control form-control-sm" value="{{ setting('founder_eyebrow', 'A NOTE FROM THE FOUNDER') }}">
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">Founder Author Signature</label>
+                    <input type="text" name="founder_author" class="form-control form-control-sm" value="{{ setting('founder_author', 'MANAN · FOUNDER, STORYLOOM') }}">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Founder Quote Text</label>
+                    <textarea name="founder_quote" class="form-control form-control-sm" rows="3">{{ setting('founder_quote', '“I started Storyloom after watching my mother re-read a forty-year-old letter until the folds wore through. We keep almost nothing now. I wanted to build the thing families keep.”') }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. About Page Final CTA Banner Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-megaphone me-2 text-danger"></i> 5. About Page Final CTA Banner</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">CTA Banner Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                    <input type="text" name="about_cta_heading" class="form-control form-control-sm" value="{{ setting('about_cta_heading', 'Your family\'s chapter<br>is <em>ready</em> to be written.') }}">
+                    <div class="form-text">Supports HTML formatting tags like <code>&lt;em&gt;word&lt;/em&gt;</code> for brand terracotta italic script.</div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Primary Button Label</label>
+                    <input type="text" name="about_cta_btn1" class="form-control form-control-sm" value="{{ setting('about_cta_btn1', 'BEGIN YOUR STORY') }}">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">CTA Banner Description</label>
+                    <textarea name="about_cta_desc" class="form-control form-control-sm" rows="2">{{ setting('about_cta_desc', 'Somewhere a memory is waiting to be told and painted into a book. Tell us your story to begin, or read a storyloom.') }}</textarea>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold"><i class="bi bi-image me-1 text-primary"></i> Background Artwork Image</label>
+                    <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <img id="about_cta_bg_preview" src="{{ asset(setting('about_cta_bg', 'assets/img/spread-alone-bench.webp')) }}" alt="CTA Background Preview" width="120" height="60" class="rounded border object-fit-cover shadow-sm">
+                        </div>
+                        <div class="col">
+                            <input type="file" class="form-control form-control-sm mb-1" name="about_cta_bg_file" accept="image/*" onchange="previewImg(this, 'about_cta_bg_preview')">
+                            <input type="text" class="form-control form-control-sm" name="about_cta_bg" value="{{ setting('about_cta_bg', 'assets/img/spread-alone-bench.webp') }}">
+                            <div class="form-text" style="font-size: 0.74rem;"><span class="badge bg-secondary">Recommended</span> 1920&times;1080 px &bull; WEBP or JPG &bull; Max 3 MB</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Image Asset Card -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-image me-2 text-warning"></i> Featured Artwork Image</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="image" class="form-label fw-bold">Artwork Image Path</label>
-                        <input type="text" class="form-control mb-2" id="image_path" name="image" value="{{ old('image', $about->image) }}" placeholder="assets/img/spread-home-morning.webp">
-                        
-                        <div class="mb-2 text-center p-2 bg-light border rounded">
-                            <img id="about_img_preview" src="{{ asset($about->image ?: 'assets/img/spread-home-morning.webp') }}" alt="About Preview" class="img-fluid rounded shadow-sm" style="max-height: 160px; object-fit: cover;">
-                        </div>
-
-                        <label class="form-label small fw-bold mt-2">Upload New Image File</label>
-                        <input type="file" class="form-control form-control-sm" name="image_file" id="image_file" accept="image/jpeg,image/png,image/webp,image/avif" onchange="previewFileImage(this, 'about_img_preview')">
-                        <div class="form-text mt-1" style="font-size: 0.76rem;">
-                            <span class="badge bg-secondary me-1">Recommended Specs</span> 1200 &times; 800 px &bull; WEBP or PNG &bull; Max 3 MB
-                        </div>
-                    </div>
-                </div>
+            <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-sm btn-primary fw-bold px-4">
+                    <i class="bi bi-save me-1"></i> Save About Page Settings &amp; CTA
+                </button>
             </div>
         </div>
     </div>
@@ -193,7 +229,7 @@
 
 @section('scripts')
 <script>
-function previewFileImage(input, previewId) {
+function previewImg(input, previewId) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
