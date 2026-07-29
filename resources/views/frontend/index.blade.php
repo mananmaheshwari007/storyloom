@@ -117,27 +117,27 @@
   </section>
 
   <!-- ================= REVEAL (LEFT-JUSTIFIED TEXT ON CLEAN BG & SEAMLESS RIGHT ARTWORK) ================= -->
-  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f0eade; min-height: clamp(620px, 80vh, 900px); display: flex; align-items: center; padding: 0;">
+  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f0eade; min-height: clamp(640px, 82vh, 920px); display: flex; align-items: center; padding: 0;">
     <!-- Edge-to-Edge Right Artwork Image (Fades cleanly before reaching the left text column) -->
     <div class="reveal-right-img" style="position: absolute; top: 0; right: 0; bottom: 0; width: 62%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center right; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 12%, rgba(0,0,0,0.8) 38%, black 60%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 12%, rgba(0,0,0,0.8) 38%, black 60%);"></div>
 
-    <div class="reveal-container" style="max-width: 1380px; width: 100%; margin: 0 auto; padding: clamp(56px, 9vh, 108px) clamp(24px, 4.5vw, 64px); position: relative; z-index: 2;">
+    <div class="reveal-container" style="max-width: 1380px; width: 100%; margin: 0 auto; padding: clamp(60px, 9.5vh, 110px) clamp(24px, 4.5vw, 64px); position: relative; z-index: 2;">
       <div class="row align-items-stretch">
-        <!-- Left Text Column: Pulled left with explicit vertical flex space-between anchored to top text & bottom button -->
-        <div class="col-lg-5 col-md-6 text-start d-flex flex-column justify-content-between" data-reveal style="min-height: clamp(480px, 64vh, 720px);">
+        <!-- Left Text Column: Pulled left with explicit flex layout (no data-reveal on parent to avoid display:block override) -->
+        <div class="col-lg-5 col-md-6 text-start" style="display: flex !important; flex-direction: column !important; justify-content: space-between !important; min-height: clamp(480px, 62vh, 700px);">
           <!-- Top Text Content Block -->
-          <div class="reveal-text-top">
+          <div class="reveal-text-top" data-reveal>
             <p class="eyebrow" style="text-align: left; margin-bottom: 18px; letter-spacing: 0.12em; color: #B55B29; font-weight: 600;">{{ setting('reveal_eyebrow', 'INTRODUCING STORYLOOM') }}</p>
             <h2 style="text-align: left; font-family: var(--font-display); font-size: clamp(2.5rem, 4.4vw, 4.0rem); font-weight: 500; line-height: 1.15; color: #1C222B; margin-bottom: 24px;">
               {!! setting('reveal_heading', 'Your story,<br>woven into a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; color: #B55B29;">book.</em>') !!}
             </h2>
-            <p class="sub" style="text-align: left; font-family: 'Libre Caslon Text', Georgia, serif; font-size: clamp(1.05rem, 1.35vw, 1.18rem); line-height: 1.75; color: rgba(28, 34, 43, 0.85); max-width: 480px; margin-bottom: 0;">
+            <p class="sub" style="text-align: left; font-family: 'Libre Caslon Text', Georgia, serif; font-size: clamp(1.05rem, 1.35vw, 1.18rem); line-height: 1.72; color: rgba(28, 34, 43, 0.85); max-width: 480px; margin-bottom: 0;">
               {{ setting('reveal_lede', 'A completely personalised, hand-illustrated book created from your memories — an original story where every detail belongs to your family alone.') }}
             </p>
           </div>
 
           <!-- Bottom Button Block Anchored at Section Bottom -->
-          <div class="reveal-btn-bottom mt-auto" style="padding-top: 48px;">
+          <div class="reveal-btn-bottom mt-auto" data-reveal style="padding-top: 60px;">
             <a class="btn btn-primary" href="{{ setting('reveal_btn_link', route('library')) }}" style="padding: 16px 36px; font-weight: 600; font-size: 0.95rem;">
               {{ setting('reveal_btn_text', 'READ A STORYLOOM') }}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width: 18px; height: 18px; margin-left: 6px;"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
