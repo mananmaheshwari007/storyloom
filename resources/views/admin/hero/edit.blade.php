@@ -183,7 +183,7 @@
 
                     <div id="mobileHeroCardsContainer">
                         @foreach($mobileHeroCards as $mi => $mCard)
-                        <div class="mobile-hero-card-row mb-3 p-3 bg-light rounded border">
+                        <div class="mobile-hero-card-row mb-3 p-3 bg-light rounded border img-upload-block">
                             <div class="row g-2 align-items-center">
                                 <div class="col-auto text-center">
                                     <img src="{{ asset($mCard['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}" alt="Slide {{ $mi + 1 }}" width="60" height="80" class="rounded shadow-sm object-fit-cover img-preview-el">
@@ -637,14 +637,15 @@
                                         <label class="form-label font-weight-bold">Fate <span class="badge bg-info text-dark ms-1">HTML</span></label>
                                         <input type="text" class="form-control form-control-sm" name="problem_gift{{ $n }}_fate" value="{{ setting('problem_gift'.$n.'_fate', $defFate) }}">
                                     </div>
-                                    <div class="mb-0">
+                                    {{-- .img-upload-block is required: the uploader JS finds the
+                                         file input via uploadBtn.closest('.img-upload-block'). --}}
+                                    <div class="mb-0 img-upload-block">
                                         <label class="form-label font-weight-bold">Icon <span class="badge bg-secondary ms-1">Optional</span></label>
                                         <div class="text-center mb-2">
-                                            @if(setting('problem_gift'.$n.'_icon'))
-                                                <img src="{{ asset(setting('problem_gift'.$n.'_icon')) }}" alt="Gift {{ $n }} icon" width="48" height="48" class="border rounded bg-white p-1 img-preview-el" style="object-fit:contain;">
-                                            @else
-                                                <span class="d-inline-flex align-items-center justify-content-center border rounded bg-white text-muted" style="width:48px;height:48px;font-size:.62rem;">none</span>
-                                            @endif
+                                            <img src="{{ setting('problem_gift'.$n.'_icon') ? asset(setting('problem_gift'.$n.'_icon')) : asset('assets/img/logo-emblem.png') }}"
+                                                 alt="Gift {{ $n }} icon" width="48" height="48"
+                                                 class="border rounded bg-white p-1 img-preview-el"
+                                                 style="object-fit:contain; {{ setting('problem_gift'.$n.'_icon') ? '' : 'opacity:.25;' }}">
                                         </div>
                                         <div class="input-group input-group-sm">
                                             <input type="text" class="form-control img-path-input" name="problem_gift{{ $n }}_icon" value="{{ setting('problem_gift'.$n.'_icon') }}" placeholder="optional">
@@ -693,15 +694,16 @@
                                 <label class="form-label font-weight-bold">Description <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                                 <textarea class="form-control form-control-sm" name="process_step{{ $n }}_desc" rows="2">{{ setting('process_step'.$n.'_desc', $defDesc) }}</textarea>
                             </div>
-                            <div class="mb-0">
+                            {{-- .img-upload-block is required: the uploader JS finds the
+                                 file input via uploadBtn.closest('.img-upload-block'). --}}
+                            <div class="mb-0 img-upload-block">
                                 <label class="form-label font-weight-bold">Step Icon <span class="badge bg-secondary ms-1">Optional</span></label>
                                 <div class="row g-2 align-items-center">
                                     <div class="col-auto text-center">
-                                        @if(setting('process_step'.$n.'_icon'))
-                                            <img src="{{ asset(setting('process_step'.$n.'_icon')) }}" alt="Step {{ $n }} icon" width="48" height="48" class="border rounded bg-white p-1 img-preview-el" style="object-fit:contain;">
-                                        @else
-                                            <span class="d-inline-flex align-items-center justify-content-center border rounded bg-white text-muted" style="width:48px;height:48px;font-size:.62rem;">none</span>
-                                        @endif
+                                        <img src="{{ setting('process_step'.$n.'_icon') ? asset(setting('process_step'.$n.'_icon')) : asset('assets/img/logo-emblem.png') }}"
+                                             alt="Step {{ $n }} icon" width="48" height="48"
+                                             class="border rounded bg-white p-1 img-preview-el"
+                                             style="object-fit:contain; {{ setting('process_step'.$n.'_icon') ? '' : 'opacity:.25;' }}">
                                     </div>
                                     <div class="col">
                                         <div class="input-group input-group-sm">
