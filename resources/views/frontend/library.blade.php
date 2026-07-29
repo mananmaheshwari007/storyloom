@@ -2,33 +2,16 @@
 
 @section('content')
   <!-- ================= HERO ================= -->
-  <section class="section grain" style="background: #f7f4ed; padding-top: clamp(65px, 7vh, 90px); padding-bottom: clamp(50px, 6vh, 70px);">
+  <section class="section grain" style="background: #f7f4ed; padding-top: clamp(70px, 8vh, 100px); padding-bottom: clamp(45px, 5vh, 65px);">
     <div class="container-narrow">
       <div class="section-head center" style="margin-bottom: 0;">
-        <div class="hero-eyebrow-center">{{ setting('library_hero_eyebrow', 'THE STORYLOOM LIBRARY') }}</div>
-        <h1 style="font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 4.4rem); font-weight: 600; line-height: 1.15; margin-bottom: 24px; color: #1C222B;">
+        <div class="hero-eyebrow-center" data-reveal>{{ setting('library_hero_eyebrow', 'THE STORYLOOM LIBRARY') }}</div>
+        <h1 data-reveal style="font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 4.4rem); font-weight: 600; line-height: 1.15; margin-bottom: 24px; color: #1C222B;">
           {!! setting('library_hero_heading', 'Read one. Then<br>imagine <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">yours.</em>') !!}
         </h1>
-        <p class="lede" style="font-family: 'Libre Caslon Text', 'Adobe Caslon Pro', Georgia, serif; font-style: normal; font-weight: 400; font-size: 18px; line-height: 32px; color: rgba(29, 42, 68, 0.74); max-width: 780px; width: 100%; margin-inline: auto;">
+        <p class="lede" data-reveal style="font-family: 'Libre Caslon Text', 'Adobe Caslon Pro', Georgia, serif; font-style: normal; font-weight: 400; font-size: 18px; line-height: 32px; color: rgba(29, 42, 68, 0.74); max-width: 780px; width: 100%; margin-inline: auto;">
           {{ setting('library_hero_lede', 'Real books, made for real families, shared with their blessing. Take your time — this room is quiet.') }}
         </p>
-
-        <div class="hero-library-badges" data-reveal style="margin-top: 32px;">
-          <span class="hl-badge">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            Full Spreads Available
-          </span>
-          <span class="hl-dot" aria-hidden="true"></span>
-          <span class="hl-badge">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Tap Any Book To Open
-          </span>
-          <span class="hl-dot" aria-hidden="true"></span>
-          <span class="hl-badge">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            Shared With Permission
-          </span>
-        </div>
       </div>
     </div>
   </section>
