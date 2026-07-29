@@ -14,10 +14,6 @@
     </nav>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
-
 <div class="alert alert-light border d-flex gap-3 align-items-start">
     <i class="bi bi-info-circle text-primary fs-5"></i>
     <div>

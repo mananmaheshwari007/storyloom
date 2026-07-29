@@ -21,16 +21,18 @@
             @method('PUT')
             
             <div class="mb-3">
-                <label for="question" class="form-label">Question</label>
+                <label for="question" class="form-label fw-bold">Question <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                 <input type="text" class="form-control @error('question') is-invalid @enderror" id="question" name="question" value="{{ old('question', $faq->question) }}" required>
+                <div class="form-text">Supports HTML formatting like <code>&lt;em&gt;word&lt;/em&gt;</code> for brand italic style.</div>
                 @error('question')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="mb-3">
-                <label for="answer" class="form-label">Answer</label>
+                <label for="answer" class="form-label fw-bold">Answer <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                 <textarea class="form-control @error('answer') is-invalid @enderror" id="answer" name="answer" rows="6" required>{{ old('answer', $faq->answer) }}</textarea>
+                <div class="form-text">Supports HTML tags like <code>&lt;strong&gt;</code>, <code>&lt;a href="..."&gt;</code>, and paragraph line breaks.</div>
                 @error('answer')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

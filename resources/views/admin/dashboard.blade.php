@@ -67,14 +67,6 @@
     </div>
 </div>
 
-<!-- Success Alert -->
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
-
 <!-- ================= KPI METRIC CARDS GRID ================= -->
 <div class="row g-3 mb-4">
     <!-- Library Books -->

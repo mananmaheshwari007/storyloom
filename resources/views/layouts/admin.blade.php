@@ -253,35 +253,39 @@
             
             <a href="{{ route('admin.hero.edit') }}" class="sidebar-link {{ request()->routeIs('admin.hero.*') ? 'active' : '' }}">
                 <i class="bi bi-house-door"></i>
-                <span>Home Page</span>
+                <span>1. Homepage</span>
             </a>
             <a href="{{ route('admin.how.edit') }}" class="sidebar-link {{ request()->routeIs('admin.how.*') ? 'active' : '' }}">
                 <i class="bi bi-clock-history"></i>
-                <span>How It Works</span>
+                <span>2. How It Works</span>
             </a>
             <a href="{{ route('admin.library.index') }}" class="sidebar-link {{ request()->routeIs('admin.library.*') ? 'active' : '' }}">
                 <i class="bi bi-book-half"></i>
-                <span>Read a Storyloom (Library)</span>
+                <span>3. Read a Storyloom</span>
             </a>
             <a href="{{ route('admin.services.index') }}" class="sidebar-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                 <i class="bi bi-heart"></i>
-                <span>Occasions & Milestones</span>
-            </a>
-            <a href="{{ route('admin.pricing.index') }}" class="sidebar-link {{ request()->routeIs('admin.pricing.*') ? 'active' : '' }}">
-                <i class="bi bi-tags"></i>
-                <span>Pricing & Packages</span>
-            </a>
-            <a href="{{ route('admin.about.edit') }}" class="sidebar-link {{ request()->routeIs('admin.about.*') ? 'active' : '' }}">
-                <i class="bi bi-file-person"></i>
-                <span>About Storyloom</span>
-            </a>
-            <a href="{{ route('admin.faqs.index') }}" class="sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
-                <i class="bi bi-question-circle"></i>
-                <span>FAQ Page</span>
+                <span>4. Occasions</span>
             </a>
             <a href="{{ route('admin.blog.index') }}" class="sidebar-link {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}">
                 <i class="bi bi-journal-text"></i>
-                <span>Blog & Articles</span>
+                <span>5. Journal</span>
+            </a>
+            <a href="{{ route('admin.pricing.index') }}" class="sidebar-link {{ request()->routeIs('admin.pricing.*') ? 'active' : '' }}">
+                <i class="bi bi-tags"></i>
+                <span>6. Pricing</span>
+            </a>
+            <a href="{{ route('admin.about.edit') }}" class="sidebar-link {{ request()->routeIs('admin.about.*') ? 'active' : '' }}">
+                <i class="bi bi-file-person"></i>
+                <span>7. About</span>
+            </a>
+            <a href="{{ route('admin.faqs.index') }}" class="sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
+                <i class="bi bi-question-circle"></i>
+                <span>8. FAQ</span>
+            </a>
+            <a href="{{ route('admin.begin.edit') }}" class="sidebar-link {{ request()->routeIs('admin.begin.*') ? 'active' : '' }}">
+                <i class="bi bi-rocket-takeoff"></i>
+                <span>9. Begin a Story</span>
             </a>
 
             <div class="sidebar-menu-header">Global Site Controls</div>

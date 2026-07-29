@@ -95,6 +95,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/about', [AboutController::class, 'edit'])->name('about.edit');
     Route::post('/about', [AboutController::class, 'update'])->name('about.update');
 
+    // Begin a Story Page
+    Route::get('/begin', [\App\Http\Controllers\Admin\BeginController::class, 'edit'])->name('begin.edit');
+    Route::post('/begin', [\App\Http\Controllers\Admin\BeginController::class, 'update'])->name('begin.update');
+
     // Read a Storyloom (Library)
     Route::post('/library/reorder', [\App\Http\Controllers\Admin\LibraryController::class, 'reorder'])->name('library.reorder');
     Route::post('/library/settings', [\App\Http\Controllers\Admin\LibraryController::class, 'updateSettings'])->name('library.settings');

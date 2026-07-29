@@ -16,13 +16,6 @@
     </nav>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
-
 <form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
     

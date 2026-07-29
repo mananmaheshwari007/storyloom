@@ -19,12 +19,12 @@
         @forelse($faqs as $index => $faq)
           <div class="faq-item">
             <button class="faq-q" aria-expanded="false">
-              <span>{{ $faq->question }}</span>
+              <span>{!! $faq->question !!}</span>
               <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></span>
             </button>
             <div class="faq-a">
               <div>
-                <p style="white-space: pre-wrap;">{{ $faq->answer }}</p>
+                <p style="white-space: pre-line;">{!! $faq->answer !!}</p>
               </div>
             </div>
           </div>
