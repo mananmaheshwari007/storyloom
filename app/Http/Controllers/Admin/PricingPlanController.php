@@ -20,19 +20,30 @@ class PricingPlanController extends Controller
     }
 
     /**
-     * Update Pricing Page Hero & Custom CTA Settings.
+     * Update Pricing Page Hero, Stats, Essay & CTA Settings.
      */
     public function updateSettings(Request $request)
     {
         $keys = [
             'pricing_hero_eyebrow',
-            'pricing_hero_heading',
+            'pricing_hero_title',
             'pricing_hero_lede',
-            'pricing_note_text',
-            'pricing_custom_title',
-            'pricing_custom_desc',
-            'pricing_custom_btn_text',
-            'pricing_custom_btn_link',
+            'pricing_stat1_num',
+            'pricing_stat1_lbl',
+            'pricing_stat2_num',
+            'pricing_stat2_lbl',
+            'pricing_stat3_num',
+            'pricing_stat3_lbl',
+            'pricing_grid_subnote',
+            'price_note_eyebrow',
+            'price_note_heading',
+            'price_note_p1',
+            'price_note_p2',
+            'pricing_cta_heading',
+            'pricing_cta_desc',
+            'pricing_cta_btn1_text',
+            'pricing_cta_btn1_link',
+            'pricing_cta_bg',
         ];
 
         foreach ($keys as $key) {
@@ -42,7 +53,19 @@ class PricingPlanController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Pricing page header & CTA settings updated successfully.');
+        if ($request->hasFile('pricing_cta_bg_file')) {
+            $destinationPath = public_path('assets/img/uploads');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file = $request->file('pricing_cta_bg_file');
+            $filename = 'pricing_cta_' . time() . '_' . \Illuminate\Support\Str::random(5) . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $filename);
+            Setting::updateOrCreate(['key' => 'pricing_cta_bg'], ['value' => 'assets/img/uploads/' . $filename]);
+            Cache::forget('setting.pricing_cta_bg');
+        }
+
+        return redirect()->back()->with('success', 'Pricing page hero, stats, essay, and CTA settings updated successfully.');
     }
 
     /**
