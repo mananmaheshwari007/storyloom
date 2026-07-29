@@ -363,7 +363,7 @@
 
                     <div class="mb-3">
                         <label class="form-label font-weight-bold">Main Heading (HTML allowed)</label>
-                        <input type="text" class="form-control form-control-sm" name="reveal_heading" value="{{ setting('reveal_heading', 'Your memories, woven into a <em>storybook.</em>') }}">
+                        <input type="text" class="form-control form-control-sm" name="reveal_heading" value="{{ setting('reveal_heading', 'Your story,<br>woven into a <em>book.</em>') }}">
                     </div>
 
                     <div class="mb-3">
