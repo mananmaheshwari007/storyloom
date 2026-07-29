@@ -96,28 +96,28 @@
         @csrf
         <label class="skip-link" for="news-email">Your email address</label>
         <input id="news-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
-        <button class="btn btn-primary" type="submit">Send it to me
+        <button class="btn btn-primary" type="submit">{{ setting('newsletter_btn', 'Send it to me') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
         </button>
       </form>
       @if(session('newsletter_success'))
         <p style="color: #68D391; font-size: 0.9rem; margin-top: 10px;">{{ session('newsletter_success') }}</p>
       @endif
-      <p class="newsletter-note" data-reveal>Unsubscribe in one click. We never share your email.</p>
+      <p class="newsletter-note" data-reveal>{{ setting('newsletter_note', 'Unsubscribe in one click. We never share your email.') }}</p>
     </div>
   </section>
 
   <!-- ============ FINAL CTA ============ -->
   <section class="final-cta">
-    <div class="bg" style="background-image:url('{{ asset('assets/img/spread-under-stars.webp') }}')" role="img" aria-label="Illustration of a starry night sky over the city"></div>
+    <div class="bg" style="background-image:url('{{ asset(setting('journal_cta_bg_image', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a starry night sky over the city"></div>
     <div class="container inner">
-      <h2 data-reveal>Reading about it is nice. <em style="color:#E88B52;">Holding it</em> is better.</h2>
-      <p data-reveal>Every book in our library started with someone who wasn't sure where to begin. One memory is enough to start.</p>
+      <h2 data-reveal>{!! setting('journal_cta_heading', 'Reading about it is nice. <em style="color:#E88B52;">Holding it</em> is better.') !!}</h2>
+      <p data-reveal>{{ setting('journal_cta_desc', 'Every book in our library started with someone who wasn\'t sure where to begin. One memory is enough to start.') }}</p>
       <div class="btn-row" style="justify-content:center;" data-reveal>
-        <a class="btn btn-primary" href="{{ route('begin') }}">BEGIN YOUR STORY
+        <a class="btn btn-primary" href="{{ setting('journal_cta_btn1_link', route('begin')) }}">{{ setting('journal_cta_btn1_text', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-ghost-light" href="{{ route('library') }}">Read a Storyloom</a>
+        <a class="btn btn-ghost-light" href="{{ setting('journal_cta_btn2_link', route('library')) }}">{{ setting('journal_cta_btn2_text', 'Read a Storyloom') }}</a>
       </div>
     </div>
   </section>

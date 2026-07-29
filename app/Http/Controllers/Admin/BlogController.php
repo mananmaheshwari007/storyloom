@@ -21,17 +21,26 @@ class BlogController extends Controller
     }
 
     /**
-     * Update Journal Page Hero & Newsletter CTA Settings.
+     * Update Journal Page Hero, Newsletter & Final CTA Settings.
      */
     public function updateSettings(Request $request)
     {
         $keys = [
-            'blog_hero_eyebrow',
-            'blog_hero_heading',
-            'blog_hero_lede',
-            'blog_newsletter_heading',
-            'blog_newsletter_sub',
-            'blog_newsletter_btn',
+            'journal_hero_eyebrow',
+            'journal_hero_heading',
+            'journal_hero_lede',
+            'newsletter_eyebrow',
+            'newsletter_heading',
+            'newsletter_desc',
+            'newsletter_btn',
+            'newsletter_note',
+            'journal_cta_heading',
+            'journal_cta_desc',
+            'journal_cta_btn1_text',
+            'journal_cta_btn1_link',
+            'journal_cta_btn2_text',
+            'journal_cta_btn2_link',
+            'journal_cta_bg_image',
         ];
 
         foreach ($keys as $key) {
@@ -41,7 +50,19 @@ class BlogController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Journal page header & newsletter CTA settings updated successfully.');
+        if ($request->hasFile('journal_cta_bg_image_file')) {
+            $destinationPath = public_path('assets/img/uploads');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file = $request->file('journal_cta_bg_image_file');
+            $filename = 'journal_cta_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $filename);
+            \App\Models\Setting::updateOrCreate(['key' => 'journal_cta_bg_image'], ['value' => 'assets/img/uploads/' . $filename]);
+            \Illuminate\Support\Facades\Cache::forget('setting.journal_cta_bg_image');
+        }
+
+        return redirect()->back()->with('success', 'Journal page hero, newsletter, and final CTA settings updated successfully.');
     }
 
     /**
