@@ -52,7 +52,17 @@ class HeroController extends Controller
             ];
         }
 
-        return view('admin.hero.edit', compact('hero', 'carouselCards', 'storyForCards'));
+        // Mobile Hero Carousel Cards
+        $rawMobileCards = setting('mobile_hero_cards');
+        $mobileHeroCards = [];
+        if ($rawMobileCards) {
+            $mobileHeroCards = is_array($rawMobileCards) ? $rawMobileCards : json_decode($rawMobileCards, true);
+        }
+        if (empty($mobileHeroCards)) {
+            $mobileHeroCards = $carouselCards; // Default to desktop carousel cards
+        }
+
+        return view('admin.hero.edit', compact('hero', 'carouselCards', 'storyForCards', 'mobileHeroCards'));
     }
 
     /**
@@ -66,6 +76,7 @@ class HeroController extends Controller
             'description' => 'nullable|string',
             'hero_cards_file.*' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:2048',
             'story_for_cards_file.*' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:2048',
+            'mobile_hero_cards_file.*' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:2048',
             'site_emblem_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif,svg|max:2048',
             'cta_bg_image_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:4096',
             'reveal_plate1_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:3072',
@@ -110,6 +121,13 @@ class HeroController extends Controller
 
         // Process Text & Copy Homepage Settings
         $extraSettings = [
+            // Promo Bar
+            'promo_bar_enabled' => $request->has('promo_bar_enabled') ? '1' : '0',
+            'promo_bar_text' => $request->input('promo_bar_text'),
+            'promo_bar_link' => $request->input('promo_bar_link'),
+            'promo_bar_bg_color' => $request->input('promo_bar_bg_color'),
+            'promo_bar_text_color' => $request->input('promo_bar_text_color'),
+
             // Hero
             'hero_subheading' => $request->input('subheading'),
             'hero_heading' => $request->input('heading'),
@@ -120,6 +138,13 @@ class HeroController extends Controller
             'hero_btn2_link' => $request->input('hero_btn2_link'),
             'hero_note' => $request->input('hero_note'),
             'hero_carousel_speed' => $request->input('hero_carousel_speed'),
+
+            // Mobile Hero
+            'mobile_hero_heading' => $request->input('mobile_hero_heading'),
+            'mobile_hero_description' => $request->input('mobile_hero_description'),
+            'mobile_hero_btn_text' => $request->input('mobile_hero_btn_text'),
+            'mobile_hero_btn_link' => $request->input('mobile_hero_btn_link'),
+            'mobile_hero_slide_speed' => $request->input('mobile_hero_slide_speed'),
 
             // Problem
             'problem_eyebrow' => $request->input('problem_eyebrow'),
@@ -220,6 +245,32 @@ class HeroController extends Controller
                 ['value' => json_encode($sCards)]
             );
             Cache::forget('setting.story_for_cards');
+        }
+
+        // Process Mobile Hero Carousel Cards Array
+        if ($request->has('mobile_hero_cards')) {
+            $mCards = [];
+            foreach ($request->input('mobile_hero_cards') as $index => $cardData) {
+                $imagePath = $cardData['image'] ?? 'assets/img/hero-reading-hilltop.webp';
+
+                if ($request->hasFile("mobile_hero_cards_file.{$index}")) {
+                    $file = $request->file("mobile_hero_cards_file.{$index}");
+                    $filename = 'mobile_hero_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+                    $file->move($destinationPath, $filename);
+                    $imagePath = 'assets/img/uploads/' . $filename;
+                }
+
+                if (!empty($cardData['image']) || !empty($imagePath)) {
+                    $mCards[] = [
+                        'image' => $imagePath,
+                    ];
+                }
+            }
+            Setting::updateOrCreate(
+                ['key' => 'mobile_hero_cards'],
+                ['value' => json_encode($mCards)]
+            );
+            Cache::forget('setting.mobile_hero_cards');
         }
 
         Cache::forget('home_hero');

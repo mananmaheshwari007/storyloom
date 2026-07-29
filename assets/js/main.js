@@ -42,14 +42,161 @@
     });
   }
 
-  /* ---------- Hero entrance ---------- */
-  var hero = document.querySelector(".hero");
-  if (hero) {
-    var heroReady = function () { hero.classList.add("is-ready"); };
-    requestAnimationFrame(function () {
-      requestAnimationFrame(heroReady);
-    });
-    window.setTimeout(heroReady, 800); // fallback when rAF is throttled (hidden/background tab)
+  /* ---------- Hero entrance ----------
+     The reveal itself is pure CSS (@keyframes hero-rise) so the hero — and
+     the LCP element — paints as soon as the stylesheet lands, rather than
+     waiting on this deferred script. This is only a safety net: if those
+     animations never advanced (a tab backgrounded for the whole load), snap
+     them to the end so the copy can't sit invisible. It can only ever
+     reveal content, never hide it. */
+  var heroBits = document.querySelectorAll(".hero [data-hero]");
+  if (heroBits.length) {
+    window.setTimeout(function () {
+      Array.prototype.forEach.call(heroBits, function (el) {
+        if (!el.getAnimations) return;
+        el.getAnimations().forEach(function (a) {
+          if (a.playState !== "finished" && !a.currentTime) a.finish();
+        });
+      });
+    }, 1500);
+  }
+
+  /* ---------- Arc Carousel Controller ---------- */
+  var arcStage = document.getElementById("heroArcCarousel");
+  if (arcStage && !arcStage.getAttribute("data-initialized")) {
+    arcStage.setAttribute("data-initialized", "true");
+    var cards = Array.prototype.slice.call(arcStage.querySelectorAll(".arc-card"));
+    if (cards.length > 0) {
+      var total = cards.length;
+      var currentIndex = 0;
+      var timer = null;
+      var rawSpeed = parseFloat(arcStage.getAttribute("data-speed"));
+      var intervalTime = 3000;
+
+      if (!isNaN(rawSpeed) && rawSpeed > 0) {
+        if (rawSpeed < 100) {
+          intervalTime = rawSpeed * 1000;
+        } else {
+          intervalTime = rawSpeed;
+        }
+      }
+
+      // Safety guard: Never allow rotation faster than 1.5 seconds per card
+      if (intervalTime < 1500) {
+        intervalTime = 1500;
+      }
+
+      var isAnimating = false;
+
+      var updatePositions = function () {
+        cards.forEach(function (card, i) {
+          var diff = i - currentIndex;
+          if (diff > total / 2) diff -= total;
+          if (diff < -total / 2) diff += total;
+
+          if (diff === 0) {
+            card.setAttribute("data-pos", "0");
+          } else if (diff === -1) {
+            card.setAttribute("data-pos", "-1");
+          } else if (diff === 1) {
+            card.setAttribute("data-pos", "1");
+          } else if (diff === -2) {
+            card.setAttribute("data-pos", "-2");
+          } else if (diff === 2) {
+            card.setAttribute("data-pos", "2");
+          } else if (diff < -2) {
+            card.setAttribute("data-pos", "hidden-left");
+          } else {
+            card.setAttribute("data-pos", "hidden-right");
+          }
+        });
+      };
+
+      var goToIndex = function (targetIndex) {
+        if (isAnimating) return;
+        isAnimating = true;
+        currentIndex = (targetIndex + total) % total;
+        updatePositions();
+        window.setTimeout(function () {
+          isAnimating = false;
+        }, 380);
+      };
+
+      var next = function () {
+        goToIndex(currentIndex + 1);
+      };
+
+      var prev = function () {
+        goToIndex(currentIndex - 1);
+      };
+
+      var startAutoplay = function () {
+        stopAutoplay();
+        timer = window.setInterval(function () {
+          next();
+        }, intervalTime);
+      };
+
+      var stopAutoplay = function () {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      cards.forEach(function (card, index) {
+        card.addEventListener("click", function () {
+          goToIndex(index);
+          startAutoplay();
+        });
+      });
+
+      var prevBtn = arcStage.querySelector(".arc-prev");
+      var nextBtn = arcStage.querySelector(".arc-next");
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          prev();
+          startAutoplay();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          next();
+          startAutoplay();
+        });
+      }
+
+      arcStage.addEventListener("mouseenter", stopAutoplay);
+      arcStage.addEventListener("mouseleave", startAutoplay);
+
+      var startX = 0;
+      arcStage.addEventListener("touchstart", function (e) {
+        startX = e.touches[0].clientX;
+        stopAutoplay();
+      }, { passive: true });
+
+      arcStage.addEventListener("touchend", function (e) {
+        var endX = e.changedTouches[0].clientX;
+        var diffX = startX - endX;
+        if (Math.abs(diffX) > 40) {
+          if (diffX > 0) next();
+          else prev();
+        }
+        startAutoplay();
+      }, { passive: true });
+
+      // The opening positions are already rendered server-side, so this just
+      // re-asserts them before handing over to the rotation.
+      updatePositions();
+      // Hold the first card still for a beat: rotating while the page is still
+      // loading swaps which image counts as the largest paint, which made LCP
+      // jump around between loads.
+      window.setTimeout(startAutoplay, 2500);
+    }
   }
 
   /* ---------- Scroll reveals ---------- */
@@ -95,7 +242,10 @@
     var show = function (n) {
       idx = (n + items.length) % items.length;
       items.forEach(function (el, i) { el.classList.toggle("is-active", i === idx); });
-      dots.forEach(function (d, i) { d.setAttribute("aria-current", String(i === idx)); });
+      dots.forEach(function (d, i) {
+        d.setAttribute("aria-current", String(i === idx));
+        d.setAttribute("aria-selected", String(i === idx));
+      });
     };
     var play = function () {
       if (reduceMotion) return;
@@ -360,4 +510,88 @@
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
   });
+
+  /* ---------- Auto-open & deep-link to library book ---------- */
+  var checkAutoOpenBook = function () {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var bookId = params.get("book") || params.get("read");
+      var hash = window.location.hash;
+      if (!bookId && hash) {
+        var match = hash.match(/(?:#|\/)(?:open-book-|book-)?(\d+)/);
+        if (match) bookId = match[1];
+      }
+      if (bookId) {
+        var btn = document.querySelector("#open-book-" + bookId) || document.querySelector("[data-open-book='#open-book-" + bookId + "']");
+        var section = document.querySelector("#book-" + bookId);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        if (btn) {
+          setTimeout(function () {
+            btn.click();
+          }, 350);
+        }
+      }
+    } catch (e) {}
+  };
+  checkAutoOpenBook();
+
+  /* ---------- Image Protection (Anti-Right-Click & Anti-Drag) ---------- */
+  document.addEventListener("contextmenu", function (e) {
+    if (e.target.tagName === "IMG") {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  document.addEventListener("dragstart", function (e) {
+    if (e.target.tagName === "IMG") {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  /* ---------- Promotional Top Bar — Dismiss Handler ---------- */
+  var promoBar = document.getElementById("promoBar");
+  if (promoBar) {
+    // Check if already dismissed this session
+    if (sessionStorage.getItem("promoBarDismissed") === "1") {
+      promoBar.classList.add("is-dismissed");
+      document.documentElement.classList.remove("has-promo-bar");
+    }
+
+    var closeBtn = promoBar.querySelector(".promo-bar-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        promoBar.classList.add("is-dismissed");
+        document.documentElement.classList.remove("has-promo-bar");
+        sessionStorage.setItem("promoBarDismissed", "1");
+      });
+    }
+  }
+
+  /* ---------- Mobile Hero — Crossfade Slideshow ---------- */
+  var mobileHero = document.getElementById("heroMobile");
+  if (mobileHero) {
+    var slides = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-slide"));
+    if (slides.length > 1) {
+      var currentSlide = 0;
+      var rawSlideSpeed = parseFloat(mobileHero.getAttribute("data-slide-speed"));
+      var slideInterval = 4000;
+
+      if (!isNaN(rawSlideSpeed) && rawSlideSpeed > 0) {
+        slideInterval = rawSlideSpeed < 100 ? rawSlideSpeed * 1000 : rawSlideSpeed;
+      }
+      if (slideInterval < 2000) slideInterval = 2000;
+
+      window.setInterval(function () {
+        slides[currentSlide].classList.remove("is-active");
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add("is-active");
+      }, slideInterval);
+    }
+  }
 })();

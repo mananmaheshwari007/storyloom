@@ -1,3 +1,19 @@
+@if(setting('promo_bar_enabled', '0') === '1')
+<div class="promo-bar" id="promoBar" style="background: {{ setting('promo_bar_bg_color', '#B55B29') }}; color: {{ setting('promo_bar_text_color', '#FFFFFF') }};">
+  <div class="container promo-bar-inner">
+    @if(setting('promo_bar_link'))
+      <a href="{{ setting('promo_bar_link') }}" class="promo-bar-link" style="color: {{ setting('promo_bar_text_color', '#FFFFFF') }};">
+        {!! setting('promo_bar_text', '🎉 Launch offer — 15% off your first Storyloom!') !!}
+      </a>
+    @else
+      <span class="promo-bar-text">{!! setting('promo_bar_text', '🎉 Launch offer — 15% off your first Storyloom!') !!}</span>
+    @endif
+    <button class="promo-bar-close" aria-label="Dismiss promotion" style="color: {{ setting('promo_bar_text_color', '#FFFFFF') }};">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+</div>
+@endif
 <header class="site-header">
   <div class="container nav-bar">
     <a class="brand" href="{{ route('home') }}" aria-label="Storyloom home">

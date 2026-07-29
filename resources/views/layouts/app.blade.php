@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ setting('promo_bar_enabled', '0') === '1' ? 'has-promo-bar' : '' }}">
 <head>
   @include('layouts.analytics')
   <meta charset="UTF-8">

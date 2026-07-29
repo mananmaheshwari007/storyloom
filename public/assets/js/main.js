@@ -551,4 +551,51 @@
       return false;
     }
   });
+
+  /* ---------- Promotional Top Bar — Dismiss Handler ---------- */
+  var promoBar = document.getElementById("promoBar");
+  if (promoBar) {
+    // Check if already dismissed this session
+    if (sessionStorage.getItem("promoBarDismissed") === "1") {
+      promoBar.classList.add("is-dismissed");
+      document.documentElement.classList.remove("has-promo-bar");
+    }
+
+    var closeBtn = promoBar.querySelector(".promo-bar-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        promoBar.classList.add("is-dismissed");
+        document.documentElement.classList.remove("has-promo-bar");
+        sessionStorage.setItem("promoBarDismissed", "1");
+      });
+    }
+  }
+
+  /* ---------- Mobile Hero — Crossfade Slideshow ---------- */
+  var mobileHero = document.getElementById("heroMobile");
+  if (mobileHero) {
+    var slides = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-slide"));
+    if (slides.length > 1) {
+      var currentSlide = 0;
+      var rawSlideSpeed = parseFloat(mobileHero.getAttribute("data-slide-speed"));
+      var slideInterval = 4000;
+
+      if (!isNaN(rawSlideSpeed) && rawSlideSpeed > 0) {
+        slideInterval = rawSlideSpeed < 100 ? rawSlideSpeed * 1000 : rawSlideSpeed;
+      }
+      if (slideInterval < 2000) slideInterval = 2000;
+
+      // Hold on the first slide for visitors who ask for reduced motion,
+      // matching how the rest of the site treats auto-playing movement.
+      if (!reduceMotion) {
+        window.setInterval(function () {
+          slides[currentSlide].classList.remove("is-active");
+          currentSlide = (currentSlide + 1) % slides.length;
+          slides[currentSlide].classList.add("is-active");
+        }, slideInterval);
+      }
+    }
+  }
 })();

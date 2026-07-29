@@ -19,7 +19,51 @@
     }
   @endphp
   <section class="hero hero-arc-carousel" aria-label="Storyloom introduction">
-    <div class="container hero-arc-container">
+
+    <!-- ===== MOBILE HERO (≤ 767px) ===== -->
+    @php
+      $rawMobileCards = setting('mobile_hero_cards');
+      $mobileSlides = [];
+      if ($rawMobileCards) {
+          $mobileSlides = is_array($rawMobileCards) ? $rawMobileCards : json_decode($rawMobileCards, true);
+      }
+      if (empty($mobileSlides)) {
+          $mobileSlides = $carouselCards ?? [
+              ['image' => 'assets/img/hero-reading-hilltop.webp'],
+              ['image' => 'assets/img/spread-home-morning.webp'],
+              ['image' => 'assets/img/spread-flower-street.webp'],
+              ['image' => 'assets/img/spread-shared-fries.webp'],
+              ['image' => 'assets/img/spread-under-stars.webp'],
+          ];
+      }
+    @endphp
+    <div class="hero-mobile" id="heroMobile" data-slide-speed="{{ setting('mobile_hero_slide_speed', '4') }}">
+      <div class="hero-mobile-slides">
+        @foreach($mobileSlides as $si => $slide)
+          <div class="hero-mobile-slide {{ $si === 0 ? 'is-active' : '' }}">
+            {{-- Not lazy-loaded: every slide is inside the opening viewport and
+                 gets shown within seconds, so lazy risks a blank hero mid-rotation.
+                 Low priority keeps them behind the first slide, which is the LCP. --}}
+            <img src="{{ asset($slide['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}"
+                 alt="" width="750" height="1000" decoding="async"
+                 @if($si === 0) fetchpriority="high" @else fetchpriority="low" @endif>
+          </div>
+        @endforeach
+      </div>
+      <div class="hero-mobile-overlay"></div>
+      <div class="hero-mobile-copy">
+        <h1 data-hero="1">{!! setting('mobile_hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
+        <p class="hero-mobile-body" data-hero="2">{{ setting('mobile_hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
+        <a class="btn btn-primary hero-mobile-btn" href="{{ setting('mobile_hero_btn_link', '/begin') }}" data-hero="3">
+          {{ setting('mobile_hero_btn_text', 'BEGIN YOUR STORY') }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===== DESKTOP HERO (≥ 768px) ===== -->
+    <div class="hero-desktop">
+      <div class="container hero-arc-container">
       
       <!-- Arc Carousel Stage -->
       <div class="arc-carousel-stage" id="heroArcCarousel" data-speed="{{ setting('hero_carousel_speed', '3.5') }}">
@@ -86,6 +130,7 @@
         </p>
       </div>
 
+      </div>
     </div>
   </section>
 

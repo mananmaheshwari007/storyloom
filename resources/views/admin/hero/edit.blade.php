@@ -32,11 +32,54 @@
     <div class="row g-4">
         <!-- Left Column: Copy & Text Content -->
         <div class="col-lg-5">
+
+            <!-- 0. Promotional Top Bar -->
+            <div class="card shadow-sm border-0 mb-4" style="border-left: 4px solid #B55B29 !important;">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-megaphone me-2 text-warning"></i> 0. Promotional Top Bar</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="promo_bar_enabled" name="promo_bar_enabled" value="1" {{ setting('promo_bar_enabled', '0') === '1' ? 'checked' : '' }}>
+                        <label class="form-check-label fw-bold" for="promo_bar_enabled">Enable Promotional Bar</label>
+                        <small class="text-muted d-block">When enabled, a colored strip appears at the top of every page with your promotional text.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="promo_bar_text" class="form-label fw-bold">Promo Text <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                        <input type="text" class="form-control" id="promo_bar_text" name="promo_bar_text" value="{{ setting('promo_bar_text', '🎉 Launch offer — 15% off your first Storyloom!') }}">
+                        <small class="text-muted">Supports HTML (e.g. <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>). Keep it concise — one line works best.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="promo_bar_link" class="form-label fw-bold">Link URL (optional)</label>
+                        <input type="text" class="form-control" id="promo_bar_link" name="promo_bar_link" value="{{ setting('promo_bar_link', '/begin') }}" placeholder="/begin or https://...">
+                        <small class="text-muted">If set, the entire text becomes a clickable link.</small>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="promo_bar_bg_color" class="form-label fw-bold">Background Color</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" id="promo_bar_bg_color" name="promo_bar_bg_color" value="{{ setting('promo_bar_bg_color', '#B55B29') }}">
+                                <input type="text" class="form-control" value="{{ setting('promo_bar_bg_color', '#B55B29') }}" onchange="document.getElementById('promo_bar_bg_color').value = this.value" oninput="document.getElementById('promo_bar_bg_color').value = this.value">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="promo_bar_text_color" class="form-label fw-bold">Text Color</label>
+                            <div class="input-group">
+                                <input type="color" class="form-control form-control-color" id="promo_bar_text_color" name="promo_bar_text_color" value="{{ setting('promo_bar_text_color', '#FFFFFF') }}">
+                                <input type="text" class="form-control" value="{{ setting('promo_bar_text_color', '#FFFFFF') }}" onchange="document.getElementById('promo_bar_text_color').value = this.value" oninput="document.getElementById('promo_bar_text_color').value = this.value">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <!-- Hero Copy -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white border-0 py-3">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-fonts me-2 text-primary"></i> 1. Hero Content & Copy</h5>
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-fonts me-2 text-primary"></i> 1. Hero Content & Copy <span class="badge bg-secondary ms-2">Desktop</span></h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -88,6 +131,76 @@
                             <input type="number" step="0.5" min="1" max="15" class="form-control" id="hero_carousel_speed" name="hero_carousel_speed" value="{{ setting('hero_carousel_speed', 3.0) }}">
                             <span class="input-group-text">seconds / card</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1b. Mobile Hero Content -->
+            <div class="card shadow-sm border-0 mb-4" style="border-left: 4px solid #3F4E3A !important;">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-phone me-2 text-success"></i> 1b. Mobile Hero Content <span class="badge bg-success ms-2">Mobile Only</span></h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info py-2 mb-3" style="font-size: 0.82rem;">
+                        <i class="bi bi-info-circle me-1"></i> These controls set the <strong>mobile-only</strong> hero layout (≤ 767px). Text is left-aligned over a full-bleed crossfading image slideshow. Desktop hero content is controlled separately above.
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mobile_hero_heading" class="form-label fw-bold">Mobile Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                        <input type="text" class="form-control" id="mobile_hero_heading" name="mobile_hero_heading" value="{{ setting('mobile_hero_heading', 'The story only <em>you</em> could give.') }}">
+                        <small class="text-muted">Use <code>&lt;em&gt;word&lt;/em&gt;</code> for terracotta italic accent.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mobile_hero_description" class="form-label fw-bold">Mobile Body Text</label>
+                        <textarea class="form-control" id="mobile_hero_description" name="mobile_hero_description" rows="3">{{ setting('mobile_hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="mobile_hero_btn_text" class="form-label fw-bold">Button Text</label>
+                            <input type="text" class="form-control" id="mobile_hero_btn_text" name="mobile_hero_btn_text" value="{{ setting('mobile_hero_btn_text', 'BEGIN YOUR STORY') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="mobile_hero_btn_link" class="form-label fw-bold">Button Link</label>
+                            <input type="text" class="form-control" id="mobile_hero_btn_link" name="mobile_hero_btn_link" value="{{ setting('mobile_hero_btn_link', '/begin') }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mobile_hero_slide_speed" class="form-label fw-bold"><i class="bi bi-speedometer2 me-1 text-success"></i> Slideshow Speed</label>
+                        <div class="input-group">
+                            <input type="number" step="0.5" min="2" max="15" class="form-control" id="mobile_hero_slide_speed" name="mobile_hero_slide_speed" value="{{ setting('mobile_hero_slide_speed', 4) }}">
+                            <span class="input-group-text">seconds / image</span>
+                        </div>
+                    </div>
+
+                    <hr class="my-3">
+                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-images me-2 text-success"></i> Mobile Hero Background Images</h6>
+                    <small class="text-muted d-block mb-3" style="font-size: 0.78rem;">
+                        <i class="bi bi-info-circle me-1"></i> These images crossfade as a full-bleed background slideshow behind the mobile hero text. Portrait orientation (3:4 or 9:16) works best.
+                    </small>
+
+                    <div id="mobileHeroCardsContainer">
+                        @foreach($mobileHeroCards as $mi => $mCard)
+                        <div class="mobile-hero-card-row mb-3 p-3 bg-light rounded border">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-auto text-center">
+                                    <img src="{{ asset($mCard['image'] ?? 'assets/img/hero-reading-hilltop.webp') }}" alt="Slide {{ $mi + 1 }}" width="60" height="80" class="rounded shadow-sm object-fit-cover img-preview-el">
+                                </div>
+                                <div class="col">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text">{{ $mi + 1 }}</span>
+                                        <input type="text" class="form-control img-path-input" name="mobile_hero_cards[{{ $mi }}][image]" value="{{ $mCard['image'] ?? '' }}" placeholder="assets/img/...">
+                                        <button type="button" class="btn btn-outline-success upload-trigger-btn">
+                                            <i class="bi bi-cloud-upload me-1"></i> Upload
+                                        </button>
+                                        <input type="file" class="d-none hidden-file-input" name="mobile_hero_cards_file[{{ $mi }}]" accept="image/jpeg,image/png,image/webp,image/avif">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

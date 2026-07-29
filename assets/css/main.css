@@ -454,7 +454,83 @@ h3 em {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--dur-quick), box-shadow var(--dur-quick);
+  transition: border-color var(--dur-quick), box-shadow var(--dur-quick), top var(--dur-quick);
+}
+
+/* ============================================================
+   PROMOTIONAL TOP BAR
+   ============================================================ */
+.promo-bar {
+  position: relative;
+  z-index: 130;
+  padding: 9px 0;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  line-height: 1.4;
+  transition: transform 0.35s var(--ease-out), opacity 0.35s var(--ease-out);
+}
+
+.promo-bar.is-dismissed {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.promo-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+}
+
+.promo-bar-link {
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.promo-bar-link:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+}
+
+.promo-bar-text {
+  font-weight: 600;
+}
+
+.promo-bar-close {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  line-height: 0;
+}
+
+.promo-bar-close:hover {
+  opacity: 1;
+}
+
+.promo-bar-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Adjust header stacking when promo bar is present */
+.has-promo-bar .site-header {
+  position: sticky;
+  top: 0;
 }
 
 .site-header.is-scrolled {
@@ -760,7 +836,7 @@ h3 em {
   height: 100%;
   background: var(--paper);
   background-color: #FFFFFF;
-  padding: 6px 6px 10px 6px;
+  padding: 6px 6px 16px 6px;
   border: 1px solid var(--hairline);
   box-shadow: 0 16px 40px rgba(29, 42, 68, 0.09), 0 4px 12px rgba(29, 42, 68, 0.04);
   border-radius: 4px;
@@ -773,18 +849,20 @@ h3 em {
 
 .arc-card-inner img {
   width: 100%;
-  height: 81%;
+  flex: 1;
+  min-height: 0;
   object-fit: cover;
   border-radius: 2px;
   display: block;
 }
 
 .arc-card-caption {
-  padding-top: 6px;
+  padding-top: 8px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: none;
 }
 
 .arc-card-caption strong {
@@ -986,6 +1064,146 @@ h3 em {
 
 .js .hero .hero-plate-wrap[data-hero] {
   animation-duration: 0.6s;
+}
+
+/* ============================================================
+   MOBILE HERO — Full-bleed crossfading background slideshow
+   Hidden on desktop, shown on mobile ≤ 767px
+   ============================================================ */
+.hero-mobile {
+  display: none;
+}
+
+.hero-desktop {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .hero-mobile {
+    display: block;
+    position: relative;
+    min-height: 92vh;
+    min-height: 92svh;
+    overflow: hidden;
+  }
+
+  .hero-desktop {
+    display: none !important;
+  }
+
+  .hero-arc-carousel {
+    padding-block: 0;
+  }
+
+  /* Slide images — each fills the entire hero */
+  .hero-mobile-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-mobile-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+  }
+
+  .hero-mobile-slide.is-active {
+    opacity: 1;
+  }
+
+  .hero-mobile-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* Dark gradient overlay for text readability */
+  .hero-mobile-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      to top,
+      rgba(20, 18, 12, 0.88) 0%,
+      rgba(20, 18, 12, 0.62) 35%,
+      rgba(20, 18, 12, 0.30) 60%,
+      rgba(20, 18, 12, 0.08) 100%
+    );
+  }
+
+  /* Left-justified copy over the image */
+  .hero-mobile-copy {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    min-height: 92vh;
+    min-height: 92svh;
+    padding: 0 clamp(22px, 6vw, 36px) clamp(60px, 10vh, 90px);
+  }
+
+  .hero-mobile-copy h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 8.5vw, 3.2rem);
+    font-weight: 500;
+    line-height: 1.12;
+    color: #FFFDF8;
+    margin: 0 0 18px;
+    max-width: 10em;
+  }
+
+  .hero-mobile-copy h1 em {
+    font-style: italic;
+    color: #E8A87C;
+    font-weight: 500;
+  }
+
+  .hero-mobile-body {
+    font-family: var(--font-body);
+    font-size: clamp(0.95rem, 3.8vw, 1.06rem);
+    line-height: 1.72;
+    color: rgba(255, 253, 248, 0.82);
+    margin: 0 0 28px;
+    max-width: 28em;
+  }
+
+  .hero-mobile-btn {
+    font-size: 0.95rem !important;
+    padding: 14px 28px !important;
+    border-radius: 8px;
+  }
+
+  /* Slide indicator dots */
+  .hero-mobile::after {
+    content: '';
+    display: none; /* reserved for indicator dots if needed */
+  }
+}
+
+/* Promo bar mobile adjustments */
+@media (max-width: 767px) {
+  .promo-bar {
+    font-size: 0.8rem;
+    padding: 8px 0;
+  }
+
+  .promo-bar-inner {
+    padding-right: 28px;
+  }
+
+  .promo-bar-close {
+    right: -4px;
+  }
+
+  .promo-bar-close svg {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 /* ---------- Scroll reveal (gated on .js so content survives without JS) ---------- */
