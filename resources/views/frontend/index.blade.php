@@ -116,10 +116,10 @@
     </div>
   </section>
 
-  <!-- ================= REVEAL (LEFT-JUSTIFIED TEXT ON CLEAN BG & SEAMLESS RIGHT ARTWORK) ================= -->
-  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f0eade; min-height: clamp(640px, 82vh, 920px); display: flex; align-items: center; padding: 0;">
-    <!-- Edge-to-Edge Right Artwork Image (Fades cleanly before reaching the left text column) -->
-    <div class="reveal-right-img" style="position: absolute; top: 0; right: 0; bottom: 0; width: 62%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center right; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 12%, rgba(0,0,0,0.8) 38%, black 60%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 12%, rgba(0,0,0,0.8) 38%, black 60%);"></div>
+  <!-- ================= REVEAL (FULL-BLEED BACKGROUND ARTWORK IMAGE) ================= -->
+  <section class="section reveal-split-section" style="position: relative; overflow: hidden; min-height: clamp(640px, 82vh, 920px); display: flex; align-items: center; padding: 0;">
+    <!-- Full-Bleed Background Artwork Image Across Whole Section (No Opacity Mask) -->
+    <div class="reveal-right-img" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center; pointer-events: none;"></div>
 
     <div class="reveal-container" style="max-width: 1380px; width: 100%; margin: 0 auto; padding: clamp(60px, 9.5vh, 110px) clamp(24px, 4.5vw, 64px); position: relative; z-index: 2;">
       <div class="row align-items-stretch">
@@ -131,7 +131,7 @@
             <h2 style="text-align: left; font-family: var(--font-display); font-size: clamp(2.5rem, 4.4vw, 4.0rem); font-weight: 500; line-height: 1.15; color: #1C222B; margin-bottom: 24px;">
               {!! setting('reveal_heading', 'Your story,<br>woven into a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; color: #B55B29;">book.</em>') !!}
             </h2>
-            <p class="sub" style="text-align: left; font-family: 'Libre Caslon Text', Georgia, serif; font-size: clamp(1.05rem, 1.35vw, 1.18rem); line-height: 1.72; color: rgba(28, 34, 43, 0.85); max-width: 480px; margin-bottom: 0;">
+            <p class="sub" style="text-align: left; font-family: 'Libre Caslon Text', Georgia, serif; font-size: clamp(1.05rem, 1.35vw, 1.18rem); line-height: 1.72; color: rgba(28, 34, 43, 0.88); max-width: 480px; margin-bottom: 0;">
               {{ setting('reveal_lede', 'A completely personalised, hand-illustrated book created from your memories — an original story where every detail belongs to your family alone.') }}
             </p>
           </div>
