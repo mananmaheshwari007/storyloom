@@ -978,7 +978,6 @@ h3 em {
 }
 
 .hero-copy-centered h1 {
-  max-width: 14em;
   margin-inline: auto;
 }
 
@@ -1146,7 +1145,6 @@ h3 em {
     line-height: 1.12;
     color: #FFFDF8;
     margin: 0 0 18px;
-    max-width: 10em;
   }
 
   .hero-mobile-copy h1 em {

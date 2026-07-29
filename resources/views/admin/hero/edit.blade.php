@@ -88,9 +88,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="heading" class="form-label font-weight-bold">Main Heading (HTML allowed like &lt;em&gt;)</label>
+                        <label for="heading" class="form-label font-weight-bold">Main Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                         <input type="text" class="form-control" id="heading" name="heading" value="{{ old('heading', $hero->heading ?? setting('hero_heading', 'The story only <em>you</em> could give.')) }}" required>
-                        <small class="text-muted">Use <code>&lt;em&gt;word&lt;/em&gt;</code> for terracotta italic script font highlighting.</small>
+                        <small class="text-muted">Use <code>&lt;em&gt;word&lt;/em&gt;</code> for terracotta script font highlighting, and <code>&lt;br&gt;</code> to control exact line breaks.</small>
                     </div>
 
                     <div class="mb-3">
@@ -148,7 +148,7 @@
                     <div class="mb-3">
                         <label for="mobile_hero_heading" class="form-label fw-bold">Mobile Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                         <input type="text" class="form-control" id="mobile_hero_heading" name="mobile_hero_heading" value="{{ setting('mobile_hero_heading', 'The story only <em>you</em> could give.') }}">
-                        <small class="text-muted">Use <code>&lt;em&gt;word&lt;/em&gt;</code> for terracotta italic accent.</small>
+                        <small class="text-muted">Use <code>&lt;em&gt;word&lt;/em&gt;</code> for script accent, and <code>&lt;br&gt;</code> to control exact line breaks.</small>
                     </div>
 
                     <div class="mb-3">

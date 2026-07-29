@@ -472,15 +472,6 @@ h3 em {
   transition: transform 0.35s var(--ease-out), opacity 0.35s var(--ease-out);
 }
 
-.promo-bar.is-dismissed {
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
 .promo-bar-inner {
   display: flex;
   align-items: center;
@@ -504,33 +495,24 @@ h3 em {
   font-weight: 600;
 }
 
-.promo-bar-close {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  line-height: 0;
-}
-
-.promo-bar-close:hover {
-  opacity: 1;
-}
-
-.promo-bar-close svg {
-  width: 16px;
-  height: 16px;
-}
-
 /* Adjust header stacking when promo bar is present */
 .has-promo-bar .site-header {
   position: sticky;
   top: 0;
+}
+
+/* How much vertical space the promo bar is eating. Sections that size
+   themselves against the viewport subtract this so nothing gets pushed
+   below the fold when the bar is switched on. JS overwrites it with the
+   measured height; these are the no-JS fallbacks. */
+.has-promo-bar {
+  --promo-h: 38px;
+}
+
+@media (max-width: 767px) {
+  .has-promo-bar {
+    --promo-h: 52px;
+  }
 }
 
 .site-header.is-scrolled {
@@ -996,7 +978,6 @@ h3 em {
 }
 
 .hero-copy-centered h1 {
-  max-width: 14em;
   margin-inline: auto;
 }
 
@@ -1083,7 +1064,9 @@ h3 em {
     display: block;
     position: relative;
     min-height: 92vh;
-    min-height: 92svh;
+    /* Subtract the promo bar, otherwise turning it on pushes the CTA and the
+       slide dots below the fold. --promo-h is 0 unless the bar is showing. */
+    min-height: calc(92svh - var(--promo-h, 0px));
     overflow: hidden;
   }
 
@@ -1120,31 +1103,39 @@ h3 em {
     object-position: center top;
   }
 
-  /* Dark gradient overlay for text readability */
+  /* Dark at both ends — the copy sits at the top and the button/dots at the
+     bottom, so both need cover. The middle stays clear so the artwork reads. */
   .hero-mobile-overlay {
     position: absolute;
     inset: 0;
     z-index: 2;
     background: linear-gradient(
-      to top,
-      rgba(20, 18, 12, 0.88) 0%,
-      rgba(20, 18, 12, 0.62) 35%,
-      rgba(20, 18, 12, 0.30) 60%,
-      rgba(20, 18, 12, 0.08) 100%
+      to bottom,
+      rgba(20, 18, 12, 0.86) 0%,
+      rgba(20, 18, 12, 0.60) 26%,
+      rgba(20, 18, 12, 0.28) 48%,
+      rgba(20, 18, 12, 0.58) 76%,
+      rgba(20, 18, 12, 0.88) 100%
     );
   }
 
-  /* Left-justified copy over the image */
+  /* Left-justified copy: headline block pinned to the top, action block to
+     the bottom, artwork breathing in between. */
   .hero-mobile-copy {
     position: relative;
     z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end;
+    justify-content: space-between;
     min-height: 92vh;
-    min-height: 92svh;
-    padding: 0 clamp(22px, 6vw, 36px) clamp(60px, 10vh, 90px);
+    min-height: calc(92svh - var(--promo-h, 0px));
+    padding: clamp(28px, 5vh, 44px) clamp(22px, 6vw, 36px) clamp(34px, 5vh, 52px);
+  }
+
+  .hero-mobile-top,
+  .hero-mobile-bottom {
+    width: 100%;
   }
 
   .hero-mobile-copy h1 {
@@ -1154,7 +1145,6 @@ h3 em {
     line-height: 1.12;
     color: #FFFDF8;
     margin: 0 0 18px;
-    max-width: 10em;
   }
 
   .hero-mobile-copy h1 em {
@@ -1172,16 +1162,49 @@ h3 em {
     max-width: 28em;
   }
 
+  .hero-mobile-body {
+    margin-bottom: 0;
+  }
+
   .hero-mobile-btn {
     font-size: 0.95rem !important;
     padding: 14px 28px !important;
     border-radius: 8px;
   }
 
-  /* Slide indicator dots */
-  .hero-mobile::after {
+  /* Slide indicators — which frame of the slideshow is showing */
+  .hero-mobile-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .hero-mobile-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.38);
+    cursor: pointer;
+    transition: width 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+
+  .hero-mobile-dot.is-active {
+    width: 26px;
+    background: #FFFDF8;
+  }
+
+  /* Keep the tap target finger-friendly without enlarging the visual dot */
+  .hero-mobile-dot::before {
     content: '';
-    display: none; /* reserved for indicator dots if needed */
+    position: absolute;
+    inset: -12px;
+  }
+
+  .hero-mobile-dot {
+    position: relative;
   }
 }
 
@@ -1196,14 +1219,6 @@ h3 em {
     padding-right: 28px;
   }
 
-  .promo-bar-close {
-    right: -4px;
-  }
-
-  .promo-bar-close svg {
-    width: 14px;
-    height: 14px;
-  }
 }
 
 /* ---------- Scroll reveal (gated on .js so content survives without JS) ---------- */
