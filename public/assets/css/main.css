@@ -2580,8 +2580,19 @@ a.chip:hover {
   }
 }
 
-/* Mobile-only styling for Introducing Storyloom section */
+/* Mobile-only styling for homepage hero section and introducing section */
 @media (max-width: 767px) {
+  /* Mobile view hero card subcaptions & hero copy subcaption */
+  .arc-card-caption span {
+    font-size: 0.78rem;
+  }
+  .arc-card-caption strong {
+    font-size: 0.92rem;
+  }
+  .hero-copy .sub {
+    font-size: 0.96rem;
+  }
+
   .reveal-split-section {
     min-height: auto !important;
     padding: 60px 0 !important;
