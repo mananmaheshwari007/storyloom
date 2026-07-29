@@ -70,8 +70,25 @@
                                     <input type="text" name="how_step{{ $i }}_title" class="form-control form-control-sm" value="{{ setting('how_step'.$i.'_title', $defaultTitles[$i]) }}" required>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="form-label small fw-bold">Description</label>
+                                    <label class="form-label small fw-bold">Description <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                                     <textarea name="how_step{{ $i }}_desc" class="form-control form-control-sm" rows="2" required>{{ setting('how_step'.$i.'_desc', $defaultDescs[$i]) }}</textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Step Icon <span class="badge bg-secondary ms-1">Optional</span></label>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if(setting('how_step'.$i.'_icon'))
+                                            <img src="{{ asset(setting('how_step'.$i.'_icon')) }}" alt="Step {{ $i }} icon" width="44" height="44" class="border rounded bg-white p-1" style="object-fit:contain; flex:none;">
+                                        @else
+                                            <span class="d-inline-flex align-items-center justify-content-center border rounded bg-white text-muted" style="width:44px;height:44px;font-size:.6rem;flex:none;">none</span>
+                                        @endif
+                                        <div class="flex-grow-1">
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" name="how_step{{ $i }}_icon" class="form-control" value="{{ setting('how_step'.$i.'_icon') }}" placeholder="optional — leave blank for no icon">
+                                                <input type="file" name="how_step{{ $i }}_icon_file" class="form-control" accept=".png,.webp,.svg">
+                                            </div>
+                                            <small class="text-muted d-block mt-1" style="font-size:.7rem;">Transparent <strong>PNG / WEBP / SVG</strong> &bull; square approx <strong>128&times;128 px</strong> &bull; max 1 MB</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

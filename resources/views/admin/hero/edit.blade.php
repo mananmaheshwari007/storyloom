@@ -608,6 +608,64 @@
                 ];
             @endphp
 
+            <!-- "Most gifts are forgotten" Section -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-emoji-frown me-2 text-secondary"></i> "Most Gifts Are Forgotten" — Problem Section</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label font-weight-bold">Eyebrow</label>
+                            <input type="text" class="form-control form-control-sm" name="problem_eyebrow" value="{{ setting('problem_eyebrow', 'The trouble with gifts') }}">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label font-weight-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                            <input type="text" class="form-control form-control-sm" name="problem_heading" value="{{ setting('problem_heading', 'Most gifts are <em>forgotten.</em>') }}">
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        @foreach([1 => ['Flowers','fade in a week'], 2 => ['Chocolates','disappear in a day'], 3 => ['Gadgets','are replaced next year']] as $n => [$defWord, $defFate])
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 h-100 bg-light">
+                                    <div class="fw-bold text-muted mb-2" style="font-size:.78rem; letter-spacing:.08em;">GIFT {{ $n }}</div>
+                                    <div class="mb-2">
+                                        <label class="form-label font-weight-bold">Word</label>
+                                        <input type="text" class="form-control form-control-sm" name="problem_gift{{ $n }}_word" value="{{ setting('problem_gift'.$n.'_word', $defWord) }}">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label font-weight-bold">Fate <span class="badge bg-info text-dark ms-1">HTML</span></label>
+                                        <input type="text" class="form-control form-control-sm" name="problem_gift{{ $n }}_fate" value="{{ setting('problem_gift'.$n.'_fate', $defFate) }}">
+                                    </div>
+                                    <div class="mb-0">
+                                        <label class="form-label font-weight-bold">Icon <span class="badge bg-secondary ms-1">Optional</span></label>
+                                        <div class="text-center mb-2">
+                                            @if(setting('problem_gift'.$n.'_icon'))
+                                                <img src="{{ asset(setting('problem_gift'.$n.'_icon')) }}" alt="Gift {{ $n }} icon" width="48" height="48" class="border rounded bg-white p-1 img-preview-el" style="object-fit:contain;">
+                                            @else
+                                                <span class="d-inline-flex align-items-center justify-content-center border rounded bg-white text-muted" style="width:48px;height:48px;font-size:.62rem;">none</span>
+                                            @endif
+                                        </div>
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control img-path-input" name="problem_gift{{ $n }}_icon" value="{{ setting('problem_gift'.$n.'_icon') }}" placeholder="optional">
+                                            <button type="button" class="btn btn-outline-primary upload-trigger-btn"><i class="bi bi-cloud-upload"></i></button>
+                                            <input type="file" class="d-none hidden-file-input" name="problem_gift{{ $n }}_icon_file" accept=".png,.webp,.svg">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label font-weight-bold">Closing Line <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                        <textarea class="form-control form-control-sm" name="problem_lede" rows="2">{{ setting('problem_lede', 'The people who shaped your life deserve something that says exactly what they mean to you — and keeps saying it, for years.') }}</textarea>
+                    </div>
+                    <div class="form-text mt-2">
+                        <i class="bi bi-info-circle me-1"></i> Icons: transparent <strong>PNG / WEBP / SVG</strong>, square, approx <strong>144&times;144 px</strong>, max 1 MB. Leave blank for text only.
+                    </div>
+                </div>
+            </div>
+
             <!-- The Plan (process) Section -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white border-0 py-3">
@@ -631,9 +689,31 @@
                                 <label class="form-label font-weight-bold">Title</label>
                                 <input type="text" class="form-control form-control-sm" name="process_step{{ $n }}_title" value="{{ setting('process_step'.$n.'_title', $defTitle) }}">
                             </div>
-                            <div class="mb-0">
+                            <div class="mb-2">
                                 <label class="form-label font-weight-bold">Description <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                                 <textarea class="form-control form-control-sm" name="process_step{{ $n }}_desc" rows="2">{{ setting('process_step'.$n.'_desc', $defDesc) }}</textarea>
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label font-weight-bold">Step Icon <span class="badge bg-secondary ms-1">Optional</span></label>
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-auto text-center">
+                                        @if(setting('process_step'.$n.'_icon'))
+                                            <img src="{{ asset(setting('process_step'.$n.'_icon')) }}" alt="Step {{ $n }} icon" width="48" height="48" class="border rounded bg-white p-1 img-preview-el" style="object-fit:contain;">
+                                        @else
+                                            <span class="d-inline-flex align-items-center justify-content-center border rounded bg-white text-muted" style="width:48px;height:48px;font-size:.62rem;">none</span>
+                                        @endif
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control img-path-input" name="process_step{{ $n }}_icon" value="{{ setting('process_step'.$n.'_icon') }}" placeholder="leave blank to show the roman numeral">
+                                            <button type="button" class="btn btn-outline-primary upload-trigger-btn"><i class="bi bi-cloud-upload me-1"></i> Upload</button>
+                                            <input type="file" class="d-none hidden-file-input" name="process_step{{ $n }}_icon_file" accept=".png,.webp,.svg">
+                                        </div>
+                                        <small class="text-muted d-block mt-1" style="font-size:.72rem;">
+                                            <i class="bi bi-info-circle me-1"></i> Transparent <strong>PNG / WEBP / SVG</strong> &bull; square, approx <strong>144&times;144 px</strong> &bull; max 1 MB. Blank = show the roman numeral instead.
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endforeach

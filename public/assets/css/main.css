@@ -2768,6 +2768,56 @@ a.chip:hover {
     grid-template-columns: 1fr 1fr;
   }
 
+  /* ---- Relationship cards on touch devices ----
+     No hover state: :hover sticks after a tap on touch and left the
+     tags + "Explore Stories" permanently overlapping the artwork.
+     Instead the card is static — just the image with its title always
+     on it, and the duplicate label underneath removed. */
+  /* .img-wrap is a <span>, so it needs display:block before aspect-ratio
+     applies at all — as an inline box it just took its size from the image. */
+  .story-card .img-wrap {
+    display: block;
+    aspect-ratio: 3 / 5;
+  }
+
+  /* Take the image out of flow too, or its own 4:5 intrinsic size wins. */
+  .story-card .img-wrap > img {
+    position: absolute;
+    inset: 0;
+  }
+
+  .story-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .story-card:hover img,
+  .story-card:active img {
+    transform: none;
+  }
+
+  /* Title reads permanently, so the scrim is permanent too */
+  .story-card .card-overlay-gradient,
+  .story-card:hover .card-overlay-gradient {
+    opacity: 1;
+  }
+
+  .story-card .card-hover-content,
+  .story-card:hover .card-hover-content {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Title only — no tags, no "Explore Stories" */
+  .story-card .card-hover-content .hint-text,
+  .story-card .card-hover-content .explore-btn {
+    display: none;
+  }
+
+  .story-card .story-label {
+    display: none;
+  }
+
   .fading-gifts {
     grid-template-columns: 1fr;
     gap: 14px;
@@ -4585,6 +4635,50 @@ html:not(.js) .loom-hint,
   .inline-cta {
     flex-direction: column;
     text-align: center;
+  }
+}
+
+/* ============================================================
+   SECTION ICONS — decorative transparent illustrations
+   Optional per section; nothing renders unless one is uploaded.
+   Sized from a single token so every icon stays consistent.
+   ============================================================ */
+:root {
+  --icon-size: 72px;
+  --icon-size-sm: 56px;
+}
+
+.section-icon {
+  display: block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+/* Centred sections centre their icon too */
+.fading-gift .section-icon {
+  margin-inline: auto;
+}
+
+.process-step .section-icon {
+  margin-bottom: 18px;
+}
+
+.timeline-item .section-icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  margin-bottom: 10px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --icon-size: 56px;
+    --icon-size-sm: 44px;
+  }
+
+  .section-icon {
+    margin-bottom: 12px;
   }
 }
 

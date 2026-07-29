@@ -67,6 +67,19 @@ class HowItWorksController extends Controller
             'how_cta_btn2_link',
         ]);
 
+        // Optional decorative icon per timeline step (transparent PNG/WEBP/SVG).
+        // Accepts either an uploaded file or a typed path.
+        for ($i = 1; $i <= 6; $i++) {
+            $key = "how_step{$i}_icon";
+            if ($request->hasFile("{$key}_file")) {
+                $request->validate(["{$key}_file" => 'image|mimes:png,webp,svg|max:1024']);
+                $path = $request->file("{$key}_file")->store('uploads/how', 'public');
+                $data[$key] = 'storage/' . $path;
+            } elseif ($request->has($key)) {
+                $data[$key] = $request->input($key);
+            }
+        }
+
         if ($request->hasFile('craft_artwork_img_file')) {
             $path = $request->file('craft_artwork_img_file')->store('uploads/how', 'public');
             $data['craft_artwork_img'] = 'storage/' . $path;

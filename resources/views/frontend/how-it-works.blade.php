@@ -13,31 +13,49 @@
     <div class="container" style="max-width: 900px;">
       <div class="timeline">
         <div class="timeline-item" data-reveal>
+          @if(setting('how_step1_icon'))
+            <img class="section-icon timeline-icon" src="{{ asset(setting('how_step1_icon')) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+          @endif
           <span class="week">{{ setting('how_step1_badge', 'Week 1 · Days 1–3') }}</span>
           <h3>{{ setting('how_step1_title', 'The Consultation') }}</h3>
           <p>{!! setting('how_step1_desc', 'A relaxed conversation — call, WhatsApp, voice notes. Whatever you have is enough.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
+          @if(setting('how_step2_icon'))
+            <img class="section-icon timeline-icon" src="{{ asset(setting('how_step2_icon')) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+          @endif
           <span class="week">{{ setting('how_step2_badge', 'Week 1–2') }}</span>
           <h3>{{ setting('how_step2_title', 'The Story Takes Shape') }}</h3>
           <p>{!! setting('how_step2_desc', 'Our writers shape your memories into a story, and you refine every line with us.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
+          @if(setting('how_step3_icon'))
+            <img class="section-icon timeline-icon" src="{{ asset(setting('how_step3_icon')) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+          @endif
           <span class="week">{{ setting('how_step3_badge', 'Week 2–4') }}</span>
           <h3>{{ setting('how_step3_title', 'The Illustrations Are Painted') }}</h3>
           <p>{!! setting('how_step3_desc', 'Your real places and real faces, painted spread by spread in our house style.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
+          @if(setting('how_step4_icon'))
+            <img class="section-icon timeline-icon" src="{{ asset(setting('how_step4_icon')) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+          @endif
           <span class="week">{{ setting('how_step4_badge', 'Week 4') }}</span>
           <h3>{{ setting('how_step4_title', 'Layout & Your Final Review') }}</h3>
           <p>{!! setting('how_step4_desc', 'You review the complete book. Nothing prints until you say it\'s perfect.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
+          @if(setting('how_step5_icon'))
+            <img class="section-icon timeline-icon" src="{{ asset(setting('how_step5_icon')) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+          @endif
           <span class="week">{{ setting('how_step5_badge', 'Week 4–5') }}</span>
           <h3>{{ setting('how_step5_title', 'Printing & Binding') }}</h3>
           <p>{!! setting('how_step5_desc', 'Archival paper, casebound hardcover — built for decades of bedtime readings.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
+          @if(setting('how_step6_icon'))
+            <img class="section-icon timeline-icon" src="{{ asset(setting('how_step6_icon')) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
+          @endif
           <span class="week">{{ setting('how_step6_badge', 'Week 5') }}</span>
           <h3>{{ setting('how_step6_title', 'Wrapped, Sealed, Delivered') }}</h3>
           <p>{!! setting('how_step6_desc', 'Wrapped, ribbon-tied, sealed — delivered anywhere in India, and worldwide.') !!}</p>

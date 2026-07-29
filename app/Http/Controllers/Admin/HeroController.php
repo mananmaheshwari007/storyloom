@@ -82,6 +82,13 @@ class HeroController extends Controller
             'reveal_plate1_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:3072',
             'reveal_plate2_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:3072',
             'reveal_plate3_file' => 'nullable|image|mimes:jpeg,jpg,png,webp,avif|max:3072',
+            // Section icons — svg allowed since these are flat decorative marks
+            'problem_gift1_icon_file' => 'nullable|image|mimes:png,webp,svg|max:1024',
+            'problem_gift2_icon_file' => 'nullable|image|mimes:png,webp,svg|max:1024',
+            'problem_gift3_icon_file' => 'nullable|image|mimes:png,webp,svg|max:1024',
+            'process_step1_icon_file' => 'nullable|image|mimes:png,webp,svg|max:1024',
+            'process_step2_icon_file' => 'nullable|image|mimes:png,webp,svg|max:1024',
+            'process_step3_icon_file' => 'nullable|image|mimes:png,webp,svg|max:1024',
         ]);
 
         $hero = Hero::first();
@@ -104,6 +111,14 @@ class HeroController extends Controller
             'reveal_plate1_file' => 'reveal_plate1_image',
             'reveal_plate2_file' => 'reveal_plate2_image',
             'reveal_plate3_file' => 'reveal_plate3_image',
+
+            // Decorative section icons (transparent PNG/WEBP/SVG)
+            'problem_gift1_icon_file' => 'problem_gift1_icon',
+            'problem_gift2_icon_file' => 'problem_gift2_icon',
+            'problem_gift3_icon_file' => 'problem_gift3_icon',
+            'process_step1_icon_file' => 'process_step1_icon',
+            'process_step2_icon_file' => 'process_step2_icon',
+            'process_step3_icon_file' => 'process_step3_icon',
         ];
 
         foreach ($imageUploadKeys as $fileInputName => $settingKey) {
@@ -181,6 +196,17 @@ class HeroController extends Controller
             'cta_btn2_text' => $request->input('cta_btn2_text'),
             'cta_btn2_link' => $request->input('cta_btn2_link'),
             'cta_subnote_text' => $request->input('cta_subnote_text'),
+
+            // "Most gifts are forgotten" — problem section
+            'problem_eyebrow' => $request->input('problem_eyebrow'),
+            'problem_heading' => $request->input('problem_heading'),
+            'problem_gift1_word' => $request->input('problem_gift1_word'),
+            'problem_gift1_fate' => $request->input('problem_gift1_fate'),
+            'problem_gift2_word' => $request->input('problem_gift2_word'),
+            'problem_gift2_fate' => $request->input('problem_gift2_fate'),
+            'problem_gift3_word' => $request->input('problem_gift3_word'),
+            'problem_gift3_fate' => $request->input('problem_gift3_fate'),
+            'problem_lede' => $request->input('problem_lede'),
 
             // "The Plan" — three steps
             'process_eyebrow' => $request->input('process_eyebrow'),

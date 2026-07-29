@@ -158,14 +158,23 @@
       </div>
       <div class="fading-gifts">
         <div class="fading-gift" data-reveal style="--stagger:0">
+          @if(setting('problem_gift1_icon'))
+            <img class="section-icon" src="{{ asset(setting('problem_gift1_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          @endif
           <span class="word">{{ setting('problem_gift1_word', 'Flowers') }}</span>
           <span class="fate">{{ setting('problem_gift1_fate', 'fade in a week') }}</span>
         </div>
         <div class="fading-gift" data-reveal style="--stagger:1">
+          @if(setting('problem_gift2_icon'))
+            <img class="section-icon" src="{{ asset(setting('problem_gift2_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          @endif
           <span class="word">{{ setting('problem_gift2_word', 'Chocolates') }}</span>
           <span class="fate">{{ setting('problem_gift2_fate', 'disappear in a day') }}</span>
         </div>
         <div class="fading-gift" data-reveal style="--stagger:2">
+          @if(setting('problem_gift3_icon'))
+            <img class="section-icon" src="{{ asset(setting('problem_gift3_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          @endif
           <span class="word">{{ setting('problem_gift3_word', 'Gadgets') }}</span>
           <span class="fate">{{ setting('problem_gift3_fate', 'are replaced next year') }}</span>
         </div>
@@ -258,19 +267,31 @@
       </div>
       <div class="process-grid">
         <div class="process-step" data-reveal style="--stagger:0">
-          <div class="step-no">I</div>
+          @if(setting('process_step1_icon'))
+            <img class="section-icon" src="{{ asset(setting('process_step1_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          @else
+            <div class="step-no">I</div>
+          @endif
           <h3>{{ setting('process_step1_title', 'Share Your Story') }}</h3>
           <p>{!! setting('process_step1_desc', 'Tell us about them — the memories, the inside jokes, the places, the photographs. A gentle conversation, not a form. Whatever you have is enough.') !!}</p>
           <span class="process-line" aria-hidden="true"></span>
         </div>
         <div class="process-step" data-reveal style="--stagger:1">
-          <div class="step-no">II</div>
+          @if(setting('process_step2_icon'))
+            <img class="section-icon" src="{{ asset(setting('process_step2_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          @else
+            <div class="step-no">II</div>
+          @endif
           <h3>{{ setting('process_step2_title', 'Refine It Together') }}</h3>
           <p>{!! setting('process_step2_desc', 'Our writers shape your memories into a story; our illustrators paint your world into its pages. You review everything and we refine it until it feels exactly right.') !!}</p>
           <span class="process-line" aria-hidden="true"></span>
         </div>
         <div class="process-step" data-reveal style="--stagger:2">
-          <div class="step-no">III</div>
+          @if(setting('process_step3_icon'))
+            <img class="section-icon" src="{{ asset(setting('process_step3_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          @else
+            <div class="step-no">III</div>
+          @endif
           <h3>{{ setting('process_step3_title', 'Receive Your Storyloom') }}</h3>
           <p>{!! setting('process_step3_desc', 'A hardbound, archival-quality book arrives at your door — wrapped, sealed, and ready for the moment they open it.') !!}</p>
         </div>
