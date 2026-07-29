@@ -4,17 +4,45 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PricingPlan;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PricingPlanController extends Controller
 {
     /**
-     * Display a listing of pricing plans.
+     * Display a listing of pricing plans & page settings.
      */
     public function index()
     {
         $plans = PricingPlan::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.pricing.index', compact('plans'));
+    }
+
+    /**
+     * Update Pricing Page Hero & Custom CTA Settings.
+     */
+    public function updateSettings(Request $request)
+    {
+        $keys = [
+            'pricing_hero_eyebrow',
+            'pricing_hero_heading',
+            'pricing_hero_lede',
+            'pricing_note_text',
+            'pricing_custom_title',
+            'pricing_custom_desc',
+            'pricing_custom_btn_text',
+            'pricing_custom_btn_link',
+        ];
+
+        foreach ($keys as $key) {
+            if ($request->has($key)) {
+                Setting::updateOrCreate(['key' => $key], ['value' => $request->input($key)]);
+                Cache::forget("setting.{$key}");
+            }
+        }
+
+        return redirect()->back()->with('success', 'Pricing page header & CTA settings updated successfully.');
     }
 
     /**
@@ -44,8 +72,6 @@ class PricingPlanController extends Controller
 
         $data = $request->all();
         $data['popular_plan'] = $request->has('popular_plan');
-        
-        // Clean array values
         $data['features'] = array_values(array_filter($request->input('features')));
 
         PricingPlan::create($data);
@@ -80,8 +106,6 @@ class PricingPlanController extends Controller
 
         $data = $request->all();
         $data['popular_plan'] = $request->has('popular_plan');
-        
-        // Clean array values
         $data['features'] = array_values(array_filter($request->input('features')));
 
         $pricing->update($data);

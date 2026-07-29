@@ -105,14 +105,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('library', \App\Http\Controllers\Admin\LibraryController::class);
 
     // Dynamic CRUD Modules
+    Route::post('/services/settings', [ServiceController::class, 'updateSettings'])->name('services.settings');
     Route::resource('services', ServiceController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('portfolio', PortfolioController::class);
     Route::resource('products', ProductController::class);
+    Route::post('/pricing/settings', [PricingPlanController::class, 'updateSettings'])->name('pricing.settings');
     Route::resource('pricing', PricingPlanController::class);
     Route::resource('faqs', FaqController::class);
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('team', TeamMemberController::class);
+    Route::post('/blog/settings', [BlogController::class, 'updateSettings'])->name('blog.settings');
     Route::resource('blog', BlogController::class);
 
     // Communications

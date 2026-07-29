@@ -12,12 +12,36 @@ use Illuminate\Support\Facades\Storage;
 class BlogController extends Controller
 {
     /**
-     * Display a listing of blog posts.
+     * Display a listing of blog posts & page settings.
      */
     public function index()
     {
         $blogs = Blog::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.blog.index', compact('blogs'));
+    }
+
+    /**
+     * Update Journal Page Hero & Newsletter CTA Settings.
+     */
+    public function updateSettings(Request $request)
+    {
+        $keys = [
+            'blog_hero_eyebrow',
+            'blog_hero_heading',
+            'blog_hero_lede',
+            'blog_newsletter_heading',
+            'blog_newsletter_sub',
+            'blog_newsletter_btn',
+        ];
+
+        foreach ($keys as $key) {
+            if ($request->has($key)) {
+                \App\Models\Setting::updateOrCreate(['key' => $key], ['value' => $request->input($key)]);
+                \Illuminate\Support\Facades\Cache::forget("setting.{$key}");
+            }
+        }
+
+        return redirect()->back()->with('success', 'Journal page header & newsletter CTA settings updated successfully.');
     }
 
     /**

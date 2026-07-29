@@ -409,6 +409,76 @@
                 </div>
             </div>
 
+            <!-- Homepage Final CTA Banner Section -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-megaphone me-2 text-danger"></i> Homepage Final CTA Banner</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">CTA Eyebrow</label>
+                        <input type="text" class="form-control form-control-sm" name="cta_eyebrow" value="{{ setting('cta_eyebrow', 'BEGIN YOUR STORYLOOM') }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">CTA Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                        <input type="text" class="form-control form-control-sm" name="cta_heading" value="{{ setting('cta_heading', 'Every family has a story. What\'s yours?') }}">
+                        <div class="form-text">Supports HTML tags like <code>&lt;em&gt;word&lt;/em&gt;</code> for brand italic accent.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">CTA Description Text</label>
+                        <textarea class="form-control form-control-sm" name="cta_desc" rows="3">{{ setting('cta_desc', setting('cta_description', 'Tell us about your people, your places, and the moments that made you. We\'ll help you turn them into a storybook that lasts forever.')) }}</textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">Primary Button Text</label>
+                            <input type="text" class="form-control form-control-sm" name="cta_btn1_text" value="{{ setting('cta_btn1_text', 'BEGIN YOUR STORY') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">Primary Button Link</label>
+                            <input type="text" class="form-control form-control-sm" name="cta_btn1_link" value="{{ setting('cta_btn1_link', '/begin') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">Secondary Button Text</label>
+                            <input type="text" class="form-control form-control-sm" name="cta_btn2_text" value="{{ setting('cta_btn2_text', 'READ A STORYLOOM') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">Secondary Button Link</label>
+                            <input type="text" class="form-control form-control-sm" name="cta_btn2_link" value="{{ setting('cta_btn2_link', '/library') }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">Sub-note / Studio Hours Tagline</label>
+                        <input type="text" class="form-control form-control-sm" name="cta_subnote_text" value="{{ setting('cta_subnote_text', setting('cta_subnote', 'Voice notes welcome · Delivered worldwide')) }}">
+                    </div>
+
+                    <!-- Background Artwork Image Upload -->
+                    <div class="p-3 bg-light rounded border img-upload-block">
+                        <label class="form-label font-weight-bold mb-1"><i class="bi bi-image me-1 text-primary"></i> CTA Background Artwork Image</label>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto text-center">
+                                <img src="{{ asset(setting('cta_bg_image', 'assets/img/hero-reading-hilltop.webp')) }}" alt="CTA Background" width="100" height="60" class="rounded border img-preview-el shadow-sm object-fit-cover">
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control img-path-input" name="cta_bg_image" value="{{ setting('cta_bg_image', 'assets/img/hero-reading-hilltop.webp') }}" placeholder="assets/img/hero-reading-hilltop.webp">
+                                    <button type="button" class="btn btn-outline-primary upload-trigger-btn">
+                                        <i class="bi bi-cloud-upload me-1"></i> Upload Image
+                                    </button>
+                                    <input type="file" class="d-none hidden-file-input" name="cta_bg_image_file" accept="image/*">
+                                </div>
+                                <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                    <i class="bi bi-info-circle me-1"></i> Specs: <strong>1920&times;1080 px</strong> &bull; WEBP / JPG &bull; <strong>Max 4 MB</strong>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </form>

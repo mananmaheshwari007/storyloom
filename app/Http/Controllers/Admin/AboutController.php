@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\About;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class AboutController extends Controller
 {
     /**
-     * Show the form for editing the About section.
+     * Show the form for editing the About page section & content settings.
      */
     public function edit()
     {
@@ -19,7 +21,7 @@ class AboutController extends Controller
     }
 
     /**
-     * Update the About section.
+     * Update the About section and page settings.
      */
     public function update(Request $request)
     {
@@ -53,6 +55,30 @@ class AboutController extends Controller
             About::create($data);
         }
 
-        return back()->with('success', 'About section content updated successfully.');
+        // Process About Page settings
+        $aboutSettingsKeys = [
+            'about_hero_eyebrow',
+            'about_hero_heading',
+            'about_hero_lede',
+            'about_val1_title',
+            'about_val1_desc',
+            'about_val2_title',
+            'about_val2_desc',
+            'about_val3_title',
+            'about_val3_desc',
+            'about_cta_heading',
+            'about_cta_desc',
+            'about_cta_btn_text',
+            'about_cta_btn_link',
+        ];
+
+        foreach ($aboutSettingsKeys as $key) {
+            if ($request->has($key)) {
+                Setting::updateOrCreate(['key' => $key], ['value' => $request->input($key)]);
+                Cache::forget("setting.{$key}");
+            }
+        }
+
+        return back()->with('success', 'About page content & settings updated successfully.');
     }
 }

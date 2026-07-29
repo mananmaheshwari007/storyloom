@@ -4,18 +4,43 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of Occasions & page settings.
      */
     public function index()
     {
         $services = Service::orderBy('display_order')->paginate(10);
         return view('admin.services.index', compact('services'));
+    }
+
+    /**
+     * Update Occasions Page Hero & Header Settings.
+     */
+    public function updateSettings(Request $request)
+    {
+        $keys = [
+            'occasions_hero_eyebrow',
+            'occasions_hero_heading',
+            'occasions_hero_lede',
+            'festivals_eyebrow',
+            'festivals_heading',
+        ];
+
+        foreach ($keys as $key) {
+            if ($request->has($key)) {
+                Setting::updateOrCreate(['key' => $key], ['value' => $request->input($key)]);
+                Cache::forget("setting.{$key}");
+            }
+        }
+
+        return redirect()->back()->with('success', 'Occasions page header & section settings updated successfully.');
     }
 
     /**
@@ -49,7 +74,7 @@ class ServiceController extends Controller
 
         Service::create($data);
 
-        return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');
+        return redirect()->route('admin.services.index')->with('success', 'Occasion created successfully.');
     }
 
     /**
@@ -77,18 +102,16 @@ class ServiceController extends Controller
         $data = $request->except('image_file');
 
         if ($request->hasFile('image_file')) {
-            // Delete old file
-            if ($service->image && str_starts_with($service->image, 'storage/')) {
+            if ($service->image && str_contains($service->image, 'storage/services/')) {
                 Storage::disk('public')->delete(str_replace('storage/', '', $service->image));
             }
-            
             $path = $request->file('image_file')->store('services', 'public');
             $data['image'] = 'storage/' . $path;
         }
 
         $service->update($data);
 
-        return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
+        return redirect()->route('admin.services.index')->with('success', 'Occasion updated successfully.');
     }
 
     /**
@@ -96,12 +119,12 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        if ($service->image && str_starts_with($service->image, 'storage/')) {
+        if ($service->image && str_contains($service->image, 'storage/services/')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $service->image));
         }
 
         $service->delete();
 
-        return redirect()->route('admin.services.index')->with('success', 'Service deleted successfully.');
+        return redirect()->route('admin.services.index')->with('success', 'Occasion deleted successfully.');
     }
 }
