@@ -117,7 +117,7 @@
   </section>
 
   <!-- ================= REVEAL (LEFT-JUSTIFIED TEXT ON CLEAN BG & SEAMLESS RIGHT ARTWORK) ================= -->
-  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f0eade; min-height: clamp(560px, 75vh, 850px); display: flex; align-items: center; padding: 0;">
+  <section class="section reveal-split-section" style="position: relative; overflow: hidden; background: #f7f4ed; min-height: clamp(560px, 75vh, 850px); display: flex; align-items: center; padding: 0;">
     <!-- Edge-to-Edge Right Artwork Image (Fades cleanly before reaching the left text column) -->
     <div class="reveal-right-img" style="position: absolute; top: 0; right: 0; bottom: 0; width: 62%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center right; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 12%, rgba(0,0,0,0.8) 38%, black 60%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 12%, rgba(0,0,0,0.8) 38%, black 60%);"></div>
 
