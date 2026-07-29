@@ -173,7 +173,15 @@
       <div class="story-grid">
         @foreach($storyForCards as $index => $card)
           <a class="story-card" href="{{ $card['link'] ?? route('occasions') }}" data-reveal style="--stagger:{{ $index % 3 }}">
-            <span class="img-wrap"><img src="{{ asset($card['image'] ?? 'assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="300" alt="{{ $card['title'] ?? '' }}"></span>
+            <span class="img-wrap">
+              <img src="{{ asset($card['image'] ?? 'assets/img/spread-bench-sunset.webp') }}" loading="lazy" decoding="async" width="400" height="500" alt="{{ $card['title'] ?? '' }}">
+              <span class="card-overlay-gradient"></span>
+              <span class="card-hover-content">
+                <span class="for-title">{{ $card['title'] ?? '' }}</span>
+                <span class="hint-text">{{ $card['hint'] ?? '' }}</span>
+                <span class="explore-btn">Explore Stories &rarr;</span>
+              </span>
+            </span>
             <span class="story-label"><span class="for">{{ $card['title'] ?? '' }}</span><span class="hint">{{ $card['hint'] ?? '' }}</span></span>
           </a>
         @endforeach
