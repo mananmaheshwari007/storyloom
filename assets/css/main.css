@@ -1664,11 +1664,16 @@ a.chip:hover {
   color: var(--cream-on-dark);
   text-align: center;
   background-color: #0F1626;
+  border: none;
+  margin-bottom: -1px;
 }
 
 .final-cta .bg {
   position: absolute;
-  inset: 0;
+  top: -2px;
+  bottom: -2px;
+  left: 0;
+  right: 0;
   background-size: cover;
   background-position: center center;
   filter: saturate(1.1) brightness(0.85);
@@ -1677,7 +1682,10 @@ a.chip:hover {
 .final-cta .bg::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: -2px;
+  bottom: -2px;
+  left: 0;
+  right: 0;
   background: radial-gradient(circle at 50% 45%, rgba(29, 42, 68, 0.42) 0%, rgba(15, 22, 38, 0.86) 75%, rgba(10, 15, 26, 0.96) 100%);
 }
 
