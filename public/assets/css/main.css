@@ -2580,6 +2580,45 @@ a.chip:hover {
   }
 }
 
+/* Mobile-only styling for Introducing Storyloom section */
+@media (max-width: 767px) {
+  .reveal-split-section {
+    min-height: auto !important;
+    padding: 60px 0 !important;
+    background: #f0eade !important;
+  }
+
+  .reveal-split-section .reveal-right-img {
+    opacity: 0.28 !important;
+    filter: contrast(0.95) brightness(1.05) !important;
+  }
+
+  .reveal-split-section .reveal-container {
+    padding: 0 24px !important;
+  }
+
+  .reveal-split-section .col-lg-5 {
+    min-height: auto !important;
+    gap: 32px !important;
+  }
+
+  .reveal-split-section .reveal-text-top h2 {
+    font-size: 2.15rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .reveal-split-section .reveal-text-top .sub {
+    font-size: 1.02rem !important;
+    line-height: 1.68 !important;
+    color: #1C222B !important;
+    font-weight: 500 !important;
+  }
+
+  .reveal-split-section .reveal-btn-bottom {
+    padding-top: 12px !important;
+  }
+}
+
 @media (max-width: 640px) {
   .story-grid {
     grid-template-columns: repeat(2, 1fr) !important;
