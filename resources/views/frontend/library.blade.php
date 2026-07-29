@@ -42,7 +42,7 @@
           </figure>
           <div class="book-meta" data-reveal="@if($index % 2 === 0) right @else left @endif">
             <p class="eyebrow">Featured Storyloom</p>
-            <h2>{!! preg_replace('/(\w+)$/', '<em>$1</em>', e($book->title)) !!}</h2>
+            <h2>{!! str_contains($book->title, '<') ? $book->title : preg_replace('/(\w+)$/', '<em>$1</em>', e($book->title)) !!}</h2>
             <div class="book-tags">
               @if($book->relation_tag)<span class="book-tag">{{ $book->relation_tag }}</span>@endif
               @if($book->occasion_tag)<span class="book-tag">{{ $book->occasion_tag }}</span>@endif
@@ -52,7 +52,7 @@
             <p class="synopsis">{{ $book->synopsis }}</p>
             <div class="btn-row">
               <button class="btn btn-primary" id="open-book-{{ $book->id }}"
-                data-book-title="{{ $book->title }}"
+                data-book-title="{{ strip_tags($book->title) }}"
                 data-book-sub="{{ $book->subtitle }}"
                 data-book-cover="{{ $coverUrl }}"
                 data-book-back="{{ $backUrl }}"
@@ -93,9 +93,9 @@
               $sPagesJson = json_encode($sFormattedPages, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             @endphp
             <div class="shelf-card" data-reveal style="--stagger:{{ $sIndex % 4 }}; cursor: default;">
-              <span class="sc-bg" style="background-image:url('{{ $sCover }}')" role="img" aria-label="{{ $sBook->title }}"></span>
+              <span class="sc-bg" style="background-image:url('{{ $sCover }}')" role="img" aria-label="{{ strip_tags($sBook->title) }}"></span>
               <div class="content">
-                <span class="sc-title">{{ $sBook->title }}</span>
+                <span class="sc-title">{!! $sBook->title !!}</span>
                 <span class="sc-copy">{{ $sBook->synopsis }}</span>
                 <span class="sc-tag">{{ $sBook->relation_tag ?: $sBook->subtitle }}</span>
               </div>

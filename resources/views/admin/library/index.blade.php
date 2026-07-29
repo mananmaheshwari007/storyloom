@@ -71,7 +71,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="fw-bold text-dark">{{ $book->title }}</div>
+                                    <div class="fw-bold text-dark">{!! $book->title !!}</div>
                                     <small class="text-muted">{{ $book->subtitle ?: 'No subtitle' }}</small>
                                 </td>
                                 <td>

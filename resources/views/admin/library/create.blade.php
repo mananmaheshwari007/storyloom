@@ -37,8 +37,9 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-8">
-                            <label class="form-label fw-bold">Book Title <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">Book Title <span class="text-danger">*</span> <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                             <input type="text" name="title" class="form-control" placeholder="e.g. The First Home" value="{{ old('title') }}" required>
+                            <div class="form-text">Supports HTML formatting like <code>&lt;em&gt;word&lt;/em&gt;</code> for terracotta italic script or <code>&lt;br&gt;</code>.</div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold">Display Mode <span class="text-danger">*</span></label>
