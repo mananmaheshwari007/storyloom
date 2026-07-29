@@ -112,6 +112,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('products', ProductController::class);
     Route::post('/pricing/settings', [PricingPlanController::class, 'updateSettings'])->name('pricing.settings');
     Route::resource('pricing', PricingPlanController::class);
+    Route::post('/faqs/settings', [FaqController::class, 'updateSettings'])->name('faqs.settings');
     Route::resource('faqs', FaqController::class);
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('team', TeamMemberController::class);

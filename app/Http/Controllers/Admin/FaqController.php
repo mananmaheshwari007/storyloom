@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 
+use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+
 class FaqController extends Controller
 {
     /**
@@ -15,6 +19,44 @@ class FaqController extends Controller
     {
         $faqs = Faq::orderBy('display_order')->paginate(10);
         return view('admin.faqs.index', compact('faqs'));
+    }
+
+    /**
+     * Update FAQ Page Hero & CTA Settings.
+     */
+    public function updateSettings(Request $request)
+    {
+        $keys = [
+            'faq_hero_eyebrow',
+            'faq_hero_heading',
+            'faq_hero_lede',
+            'faq_cta_heading',
+            'faq_cta_desc',
+            'faq_cta_btn1_text',
+            'faq_cta_btn1_link',
+            'faq_cta_bg',
+        ];
+
+        foreach ($keys as $key) {
+            if ($request->has($key)) {
+                Setting::updateOrCreate(['key' => $key], ['value' => $request->input($key)]);
+                Cache::forget("setting.{$key}");
+            }
+        }
+
+        if ($request->hasFile('faq_cta_bg_file')) {
+            $destinationPath = public_path('assets/img/uploads');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file = $request->file('faq_cta_bg_file');
+            $filename = 'faq_cta_' . time() . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $filename);
+            Setting::updateOrCreate(['key' => 'faq_cta_bg'], ['value' => 'assets/img/uploads/' . $filename]);
+            Cache::forget('setting.faq_cta_bg');
+        }
+
+        return redirect()->back()->with('success', 'FAQ page hero header & CTA settings updated successfully.');
     }
 
     /**
