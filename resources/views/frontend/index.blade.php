@@ -52,12 +52,27 @@
       </div>
       <div class="hero-mobile-overlay"></div>
       <div class="hero-mobile-copy">
-        <h1 data-hero="1">{!! setting('mobile_hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
-        <p class="hero-mobile-body" data-hero="2">{{ setting('mobile_hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
-        <a class="btn btn-primary hero-mobile-btn" href="{{ setting('mobile_hero_btn_link', '/begin') }}" data-hero="3">
-          {{ setting('mobile_hero_btn_text', 'BEGIN YOUR STORY') }}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
-        </a>
+        <div class="hero-mobile-top">
+          <h1 data-hero="1">{!! setting('mobile_hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
+          <p class="hero-mobile-body" data-hero="2">{{ setting('mobile_hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
+        </div>
+        <div class="hero-mobile-bottom">
+          <a class="btn btn-primary hero-mobile-btn" href="{{ setting('mobile_hero_btn_link', '/begin') }}" data-hero="3">
+            {{ setting('mobile_hero_btn_text', 'BEGIN YOUR STORY') }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+          </a>
+          @if(count($mobileSlides) > 1)
+            <div class="hero-mobile-dots" id="heroMobileDots">
+              @foreach($mobileSlides as $si => $slide)
+                <button type="button"
+                        class="hero-mobile-dot {{ $si === 0 ? 'is-active' : '' }}"
+                        data-slide="{{ $si }}"
+                        aria-label="Show slide {{ $si + 1 }} of {{ count($mobileSlides) }}"
+                        aria-current="{{ $si === 0 ? 'true' : 'false' }}"></button>
+              @endforeach
+            </div>
+          @endif
+        </div>
       </div>
     </div>
 

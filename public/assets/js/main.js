@@ -552,33 +552,30 @@
     }
   });
 
-  /* ---------- Promotional Top Bar — Dismiss Handler ---------- */
-  var promoBar = document.getElementById("promoBar");
-  if (promoBar) {
-    // Check if already dismissed this session
-    if (sessionStorage.getItem("promoBarDismissed") === "1") {
-      promoBar.classList.add("is-dismissed");
-      document.documentElement.classList.remove("has-promo-bar");
-    }
-
-    var closeBtn = promoBar.querySelector(".promo-bar-close");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        promoBar.classList.add("is-dismissed");
-        document.documentElement.classList.remove("has-promo-bar");
-        sessionStorage.setItem("promoBarDismissed", "1");
-      });
-    }
+  /* The promotional top bar is controlled only from Admin → Home Page.
+     It is deliberately not dismissible by visitors, so there is no
+     dismiss handler here. All we do is publish its real height to CSS
+     (--promo-h) so viewport-sized sections can subtract it — the CSS
+     fallback assumes one line, and long promo text can wrap to two. */
+  var promoBarEl = document.getElementById("promoBar");
+  if (promoBarEl) {
+    var syncPromoHeight = function () {
+      document.documentElement.style.setProperty(
+        "--promo-h", promoBarEl.offsetHeight + "px"
+      );
+    };
+    syncPromoHeight();
+    window.addEventListener("resize", syncPromoHeight, { passive: true });
   }
 
   /* ---------- Mobile Hero — Crossfade Slideshow ---------- */
   var mobileHero = document.getElementById("heroMobile");
   if (mobileHero) {
     var slides = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-slide"));
+    var dots = Array.prototype.slice.call(mobileHero.querySelectorAll(".hero-mobile-dot"));
     if (slides.length > 1) {
       var currentSlide = 0;
+      var slideTimer = null;
       var rawSlideSpeed = parseFloat(mobileHero.getAttribute("data-slide-speed"));
       var slideInterval = 4000;
 
@@ -587,15 +584,38 @@
       }
       if (slideInterval < 2000) slideInterval = 2000;
 
+      var showSlide = function (n) {
+        slides[currentSlide].classList.remove("is-active");
+        if (dots[currentSlide]) {
+          dots[currentSlide].classList.remove("is-active");
+          dots[currentSlide].setAttribute("aria-current", "false");
+        }
+        currentSlide = (n + slides.length) % slides.length;
+        slides[currentSlide].classList.add("is-active");
+        if (dots[currentSlide]) {
+          dots[currentSlide].classList.add("is-active");
+          dots[currentSlide].setAttribute("aria-current", "true");
+        }
+      };
+
       // Hold on the first slide for visitors who ask for reduced motion,
       // matching how the rest of the site treats auto-playing movement.
-      if (!reduceMotion) {
-        window.setInterval(function () {
-          slides[currentSlide].classList.remove("is-active");
-          currentSlide = (currentSlide + 1) % slides.length;
-          slides[currentSlide].classList.add("is-active");
+      var startSlideshow = function () {
+        if (reduceMotion) return;
+        window.clearInterval(slideTimer);
+        slideTimer = window.setInterval(function () {
+          showSlide(currentSlide + 1);
         }, slideInterval);
-      }
+      };
+
+      dots.forEach(function (dot, i) {
+        dot.addEventListener("click", function () {
+          showSlide(i);
+          startSlideshow(); // restart the clock after a manual pick
+        });
+      });
+
+      startSlideshow();
     }
   }
 })();
