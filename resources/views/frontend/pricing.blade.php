@@ -90,7 +90,7 @@
     <div class="bg" style="background-image:url('{{ asset(setting('pricing_cta_bg', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a couple beneath a starry night sky"></div>
     <div class="container inner">
       <h2 data-reveal>{!! setting('pricing_cta_heading', 'Begin with a conversation, not a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: #E88B52;">payment.</em>') !!}</h2>
-      <p data-reveal style="max-width: 620px; width: 100%; margin-inline: auto; font-size: 1.05rem; line-height: 1.65; color: rgba(255, 255, 255, 0.78);">{{ setting('pricing_cta_desc', 'Tell us your story first. You\'ll get a plan, a timeline, and a quote — and you decide only when you can already picture the book.') }}</p>
+      <p data-reveal style="max-width: 620px; width: 100%; margin-inline: auto; font-size: 1.05rem; line-height: 1.65; color: rgba(255, 255, 255, 0.78);">{!! setting('pricing_cta_desc', 'Tell us your story first. You\'ll get a plan, a timeline, and a quote — and you decide only when you can already picture the book.') !!}</p>
       <div class="btn-row" style="justify-content:center;" data-reveal>
         <a class="btn btn-primary" href="{{ setting('pricing_cta_btn1_link', route('begin')) }}">{{ setting('pricing_cta_btn1_text', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>

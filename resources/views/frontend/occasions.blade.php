@@ -225,7 +225,7 @@
           <div class="card-content">
             <span class="pill-badge">{{ setting('fest1_tag', 'FESTIVAL') }}</span>
             <h3>{{ setting('fest1_title', 'Diwali') }}</h3>
-            <p>{{ setting('fest1_desc', 'Your family\'s own festival — opened together, kept forever.') }}</p>
+            <p>{!! setting('fest1_desc', 'Your family\'s own festival — opened together, kept forever.') !!}</p>
           </div>
         </div>
 
@@ -237,7 +237,7 @@
           <div class="card-content">
             <span class="pill-badge">{{ setting('fest2_tag', 'FESTIVAL') }}</span>
             <h3>{{ setting('fest2_title', 'Raksha Bandhan') }}</h3>
-            <p>{{ setting('fest2_desc', 'The rakhi fades by winter. The story of a brother and sister doesn\'t.') }}</p>
+            <p>{!! setting('fest2_desc', 'The rakhi fades by winter. The story of a brother and sister doesn\'t.') !!}</p>
           </div>
         </div>
 
@@ -249,7 +249,7 @@
           <div class="card-content">
             <span class="pill-badge">{{ setting('fest3_tag', 'FESTIVAL') }}</span>
             <h3>{{ setting('fest3_title', 'Mother\'s Day & Father\'s Day') }}</h3>
-            <p>{{ setting('fest3_desc', 'Everything never said across the dinner table — said page by page.') }}</p>
+            <p>{!! setting('fest3_desc', 'Everything never said across the dinner table — said page by page.') !!}</p>
           </div>
         </div>
 
@@ -261,7 +261,7 @@
           <div class="card-content">
             <span class="pill-badge">{{ setting('fest4_tag', 'FESTIVAL') }}</span>
             <h3>{{ setting('fest4_title', 'Valentine\'s Day') }}</h3>
-            <p>{{ setting('fest4_desc', 'How you actually fell in love — including the parts only you two know.') }}</p>
+            <p>{!! setting('fest4_desc', 'How you actually fell in love — including the parts only you two know.') !!}</p>
           </div>
         </div>
       </div>
@@ -285,7 +285,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms1_title', 'Anniversaries') }}</h3>
-            <p>{{ setting('ms1_desc', 'Ten years, or fifty — written around the years you built together.') }}</p>
+            <p>{!! setting('ms1_desc', 'Ten years, or fifty — written around the years you built together.') !!}</p>
           </div>
         </div>
 
@@ -296,7 +296,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms2_title', 'Weddings') }}</h3>
-            <p>{{ setting('ms2_desc', 'The story of how two hand-written paths came to intertwine together.') }}</p>
+            <p>{!! setting('ms2_desc', 'The story of how two hand-written paths came to intertwine together.') !!}</p>
           </div>
         </div>
 
@@ -307,7 +307,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms3_title', 'Proposals') }}</h3>
-            <p>{{ setting('ms3_desc', 'The moment you asked. The initial spark before the question.') }}</p>
+            <p>{!! setting('ms3_desc', 'The moment you asked. The initial spark before the question.') !!}</p>
           </div>
         </div>
 
@@ -318,7 +318,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms4_title', 'Birthdays') }}</h3>
-            <p>{{ setting('ms4_desc', 'Every landmark milestone, bound in one book.') }}</p>
+            <p>{!! setting('ms4_desc', 'Every landmark milestone, bound in one book.') !!}</p>
           </div>
         </div>
 
@@ -329,7 +329,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms5_title', 'Retirement') }}</h3>
-            <p>{{ setting('ms5_desc', 'Forty years of work bound into more than a plaque and a pen.') }}</p>
+            <p>{!! setting('ms5_desc', 'Forty years of work bound into more than a plaque and a pen.') !!}</p>
           </div>
         </div>
 
@@ -340,7 +340,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms6_title', 'Baby\'s First Year') }}</h3>
-            <p>{{ setting('ms6_desc', 'The small, fleeting moments recorded before they fade.') }}</p>
+            <p>{!! setting('ms6_desc', 'The small, fleeting moments recorded before they fade.') !!}</p>
           </div>
         </div>
 
@@ -351,7 +351,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms7_title', 'Farewells & Long Distance') }}</h3>
-            <p>{{ setting('ms7_desc', 'A piece of home for someone who is moving across oceans.') }}</p>
+            <p>{!! setting('ms7_desc', 'A piece of home for someone who is moving across oceans.') !!}</p>
           </div>
         </div>
 
@@ -362,7 +362,7 @@
           </div>
           <div class="card-content">
             <h3>{{ setting('ms8_title', 'Graduation') }}</h3>
-            <p>{{ setting('ms8_desc', 'From first desk to first degree, recorded in a book.') }}</p>
+            <p>{!! setting('ms8_desc', 'From first desk to first degree, recorded in a book.') !!}</p>
           </div>
         </div>
       </div>
@@ -403,7 +403,7 @@
     <div class="bg" style="background-image:url('{{ asset(setting('occasion_cta_bg', 'assets/img/spread-bench-dusk.webp')) }}')" role="img" aria-label="Illustration of a couple watching dusk city lights"></div>
     <div class="container inner">
       <h2 data-reveal>{!! setting('occasion_banner_heading', 'Which occasion is coming <em>next?</em>') !!}</h2>
-      <p data-reveal style="max-width: 58ch; margin-inline: auto;">{{ setting('occasion_banner_desc', 'A Storyloom takes three to four weeks to craft. Cover books take 3 weeks from draft... Tell us your story, and return with the perfect custom gift saved in time.') }}</p>
+      <p data-reveal style="max-width: 58ch; margin-inline: auto;">{!! setting('occasion_banner_desc', 'A Storyloom takes three to four weeks to craft. Cover books take 3 weeks from draft... Tell us your story, and return with the perfect custom gift saved in time.') !!}</p>
       <div class="btn-row" style="justify-content:center; margin-top: 28px;" data-reveal>
         <a class="btn btn-primary" href="{{ route('begin') }}">{{ setting('cta_btn1_text', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>

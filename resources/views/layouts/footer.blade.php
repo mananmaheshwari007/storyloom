@@ -3,7 +3,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <img src="{{ asset(setting('site_logo_light', 'assets/img/logo-primary-light.png')) }}" alt="{{ setting('site_name', 'Storyloom') }}" width="120" height="118">
-        <p>{{ setting('site_description', "Personalised, hand-illustrated keepsake storybooks. Your memories, woven into a book your family will treasure for generations. Crafted in India, delivered worldwide.") }}</p>
+        <p>{!! setting('site_description', "Personalised, hand-illustrated keepsake storybooks. Your memories, woven into a book your family will treasure for generations. Crafted in India, delivered worldwide.") !!}</p>
       </div>
       <div class="footer-col">
         <p class="footer-heading">Explore</p>

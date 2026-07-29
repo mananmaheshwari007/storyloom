@@ -15,32 +15,32 @@
         <div class="timeline-item" data-reveal>
           <span class="week">{{ setting('how_step1_badge', 'Week 1 · Days 1–3') }}</span>
           <h3>{{ setting('how_step1_title', 'The Consultation') }}</h3>
-          <p>{{ setting('how_step1_desc', 'A relaxed conversation — call, WhatsApp, voice notes. Whatever you have is enough.') }}</p>
+          <p>{!! setting('how_step1_desc', 'A relaxed conversation — call, WhatsApp, voice notes. Whatever you have is enough.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
           <span class="week">{{ setting('how_step2_badge', 'Week 1–2') }}</span>
           <h3>{{ setting('how_step2_title', 'The Story Takes Shape') }}</h3>
-          <p>{{ setting('how_step2_desc', 'Our writers shape your memories into a story, and you refine every line with us.') }}</p>
+          <p>{!! setting('how_step2_desc', 'Our writers shape your memories into a story, and you refine every line with us.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
           <span class="week">{{ setting('how_step3_badge', 'Week 2–4') }}</span>
           <h3>{{ setting('how_step3_title', 'The Illustrations Are Painted') }}</h3>
-          <p>{{ setting('how_step3_desc', 'Your real places and real faces, painted spread by spread in our house style.') }}</p>
+          <p>{!! setting('how_step3_desc', 'Your real places and real faces, painted spread by spread in our house style.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
           <span class="week">{{ setting('how_step4_badge', 'Week 4') }}</span>
           <h3>{{ setting('how_step4_title', 'Layout & Your Final Review') }}</h3>
-          <p>{{ setting('how_step4_desc', 'You review the complete book. Nothing prints until you say it\'s perfect.') }}</p>
+          <p>{!! setting('how_step4_desc', 'You review the complete book. Nothing prints until you say it\'s perfect.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
           <span class="week">{{ setting('how_step5_badge', 'Week 4–5') }}</span>
           <h3>{{ setting('how_step5_title', 'Printing & Binding') }}</h3>
-          <p>{{ setting('how_step5_desc', 'Archival paper, casebound hardcover — built for decades of bedtime readings.') }}</p>
+          <p>{!! setting('how_step5_desc', 'Archival paper, casebound hardcover — built for decades of bedtime readings.') !!}</p>
         </div>
         <div class="timeline-item" data-reveal>
           <span class="week">{{ setting('how_step6_badge', 'Week 5') }}</span>
           <h3>{{ setting('how_step6_title', 'Wrapped, Sealed, Delivered') }}</h3>
-          <p>{{ setting('how_step6_desc', 'Wrapped, ribbon-tied, sealed — delivered anywhere in India, and worldwide.') }}</p>
+          <p>{!! setting('how_step6_desc', 'Wrapped, ribbon-tied, sealed — delivered anywhere in India, and worldwide.') !!}</p>
         </div>
       </div>
       <p class="timeline-note" data-reveal style="text-align: left; margin-top: clamp(28px, 4vh, 40px); font-size: 0.92rem; color: var(--ink-soft); font-style: italic;">
@@ -100,7 +100,7 @@
          aria-label="Illustration of a lamplit street at night"></div>
     <div class="container inner">
       <h2 data-reveal>{!! setting('how_cta_heading', 'The first step is one <em style="color: #E88B52;">conversation.</em>') !!}</h2>
-      <p data-reveal>{{ setting('how_cta_desc', 'Tell us who the story is for. We\'ll tell you exactly how we\'d bring it to life — no commitment until you\'ve seen the plan.') }}</p>
+      <p data-reveal>{!! setting('how_cta_desc', 'Tell us who the story is for. We\'ll tell you exactly how we\'d bring it to life — no commitment until you\'ve seen the plan.') !!}</p>
       <div class="btn-row" style="justify-content:center;" data-reveal>
         <a class="btn btn-primary" href="{{ setting('how_cta_btn1_link', route('begin')) }}">{{ setting('how_cta_btn1', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>

@@ -91,7 +91,7 @@
     <div class="container-narrow newsletter-band">
       <p class="eyebrow eyebrow-center" data-reveal>{{ setting('newsletter_eyebrow', 'The Loom Letter') }}</p>
       <h2 data-reveal>{!! setting('newsletter_heading', 'One good gift idea, <em>once a month.</em>') !!}</h2>
-      <p data-reveal>{{ setting('newsletter_desc', 'No sale blasts. Just one thoughtful idea, one real family story, and a heads-up before the occasions that sneak up on everyone.') }}</p>
+      <p data-reveal>{!! setting('newsletter_desc', 'No sale blasts. Just one thoughtful idea, one real family story, and a heads-up before the occasions that sneak up on everyone.') !!}</p>
       <form class="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST" data-reveal>
         @csrf
         <label class="skip-link" for="news-email">Your email address</label>
@@ -112,7 +112,7 @@
     <div class="bg" style="background-image:url('{{ asset(setting('journal_cta_bg_image', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a starry night sky over the city"></div>
     <div class="container inner">
       <h2 data-reveal>{!! setting('journal_cta_heading', 'Reading about it is nice. <em style="color:#E88B52;">Holding it</em> is better.') !!}</h2>
-      <p data-reveal>{{ setting('journal_cta_desc', 'Every book in our library started with someone who wasn\'t sure where to begin. One memory is enough to start.') }}</p>
+      <p data-reveal>{!! setting('journal_cta_desc', 'Every book in our library started with someone who wasn\'t sure where to begin. One memory is enough to start.') !!}</p>
       <div class="btn-row" style="justify-content:center;" data-reveal>
         <a class="btn btn-primary" href="{{ setting('journal_cta_btn1_link', route('begin')) }}">{{ setting('journal_cta_btn1_text', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>

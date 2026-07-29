@@ -115,7 +115,7 @@
          aria-label="Illustration of a couple on a bench at dusk, city lights below"></div>
     <div class="container inner">
       <h2 data-reveal>{!! setting('library_cta_heading', 'Imagine your story <em style="color:#E88B52;">here.</em>') !!}</h2>
-      <p data-reveal>{{ setting('library_cta_desc', 'Every book in this library began with someone saying “I don\'t know where to start.” Start there. We\'ll take it from that sentence.') }}</p>
+      <p data-reveal>{!! setting('library_cta_desc', 'Every book in this library began with someone saying “I don\'t know where to start.” Start there. We\'ll take it from that sentence.') !!}</p>
       <div class="btn-row" style="justify-content:center;" data-reveal>
         <a class="btn btn-primary" href="{{ route('begin') }}">{{ setting('library_cta_btn', 'BEGIN YOUR STORY') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>

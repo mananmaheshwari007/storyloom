@@ -181,6 +181,37 @@ class HeroController extends Controller
             'cta_btn2_text' => $request->input('cta_btn2_text'),
             'cta_btn2_link' => $request->input('cta_btn2_link'),
             'cta_subnote_text' => $request->input('cta_subnote_text'),
+
+            // "The Plan" — three steps
+            'process_eyebrow' => $request->input('process_eyebrow'),
+            'process_heading' => $request->input('process_heading'),
+            'process_step1_title' => $request->input('process_step1_title'),
+            'process_step1_desc' => $request->input('process_step1_desc'),
+            'process_step2_title' => $request->input('process_step2_title'),
+            'process_step2_desc' => $request->input('process_step2_desc'),
+            'process_step3_title' => $request->input('process_step3_title'),
+            'process_step3_desc' => $request->input('process_step3_desc'),
+
+            // "Why Storyloom" — value cards
+            'why_eyebrow' => $request->input('why_eyebrow'),
+            'why_heading' => $request->input('why_heading'),
+            'why_card1_title' => $request->input('why_card1_title'),
+            'why_card1_desc' => $request->input('why_card1_desc'),
+            'why_card2_title' => $request->input('why_card2_title'),
+            'why_card2_desc' => $request->input('why_card2_desc'),
+            'why_card3_title' => $request->input('why_card3_title'),
+            'why_card3_desc' => $request->input('why_card3_desc'),
+            'why_card4_title' => $request->input('why_card4_title'),
+            'why_card4_desc' => $request->input('why_card4_desc'),
+
+            // "The Moment It Opens" — testimonials heading
+            'testimonial_eyebrow' => $request->input('testimonial_eyebrow'),
+            'testimonial_heading' => $request->input('testimonial_heading'),
+
+            // "For Every Occasion" — marquee
+            'marquee_eyebrow' => $request->input('marquee_eyebrow'),
+            'marquee_heading' => $request->input('marquee_heading'),
+            'marquee_chips' => $request->input('marquee_chips'),
         ];
 
         foreach ($extraSettings as $key => $val) {

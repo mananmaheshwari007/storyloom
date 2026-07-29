@@ -266,25 +266,25 @@
         <!-- Card 1 -->
         <div class="stand-card" data-reveal style="--stagger:0">
           <h3>{{ setting('stand_card1_title', 'Every detail belongs to you') }}</h3>
-          <p>{{ setting('stand_card1_desc', 'It\'s not a generic template. Every illustration — every street, corner, face — belongs to your story.') }}</p>
+          <p>{!! setting('stand_card1_desc', 'It\'s not a generic template. Every illustration — every street, corner, face — belongs to your story.') !!}</p>
         </div>
 
         <!-- Card 2 -->
         <div class="stand-card" data-reveal style="--stagger:1">
           <h3>{{ setting('stand_card2_title', 'The book is the monument') }}</h3>
-          <p>{{ setting('stand_card2_desc', 'Not a photo album. A custom hardbound book built to last longer than the memories inside it.') }}</p>
+          <p>{!! setting('stand_card2_desc', 'Not a photo album. A custom hardbound book built to last longer than the memories inside it.') !!}</p>
         </div>
 
         <!-- Card 3 -->
         <div class="stand-card" data-reveal style="--stagger:2">
           <h3>{{ setting('stand_card3_title', 'Paper, not plastic') }}</h3>
-          <p>{{ setting('stand_card3_desc', 'Archival-quality paper, cloth-bound covers, true hot-stamped foil.') }}</p>
+          <p>{!! setting('stand_card3_desc', 'Archival-quality paper, cloth-bound covers, true hot-stamped foil.') !!}</p>
         </div>
 
         <!-- Card 4 -->
         <div class="stand-card" data-reveal style="--stagger:3">
           <h3>{{ setting('stand_card4_title', 'Made to be handed down') }}</h3>
-          <p>{{ setting('stand_card4_desc', 'Built for living rooms — built to be kept for generations.') }}</p>
+          <p>{!! setting('stand_card4_desc', 'Built for living rooms — built to be kept for generations.') !!}</p>
         </div>
       </div>
     </div>
@@ -339,7 +339,7 @@
     <div class="container inner">
       <h2 data-reveal>{!! setting('about_cta_heading', 'Your family\'s chapter<br>is <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: #E88B52;">ready</em> to be written.') !!}</h2>
       <p data-reveal style="max-width: 620px; width: 100%; margin-inline: auto; font-size: 1.05rem; line-height: 1.65; color: rgba(255, 255, 255, 0.78);">
-        {{ setting('about_cta_desc', 'Somewhere a memory is waiting to be told and painted into a book. Tell us your story to begin, or read a storyloom.') }}
+        {!! setting('about_cta_desc', 'Somewhere a memory is waiting to be told and painted into a book. Tell us your story to begin, or read a storyloom.') !!}
       </p>
       <div class="btn-row" style="justify-content:center; gap: 16px; margin-top: 28px;" data-reveal>
         <a class="btn btn-primary" href="{{ route('begin') }}">{{ setting('about_cta_btn1', 'BEGIN YOUR STORY') }}

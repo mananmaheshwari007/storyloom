@@ -592,6 +592,136 @@
                 </div>
             </div>
 
+            @php
+                // Same defaults the homepage falls back to, so these boxes show the
+                // live copy instead of appearing empty. Blank saves fall back too.
+                $planDefaults = [
+                    1 => ['Share Your Story',       'Tell us about them — the memories, the inside jokes, the places, the photographs. A gentle conversation, not a form. Whatever you have is enough.'],
+                    2 => ['Refine It Together',     'Our writers shape your memories into a story; our illustrators paint your world into its pages. You review everything and we refine it until it feels exactly right.'],
+                    3 => ['Receive Your Storyloom', 'A hardbound, archival-quality book arrives at your door — wrapped, sealed, and ready for the moment they open it.'],
+                ];
+                $whyDefaults = [
+                    1 => ['A story, not a spec',      'Not “32 pages” — a complete story they\'ll return to again and again, with a beginning, a middle, and your ending.'],
+                    2 => ['Made to be handed down',   'Not “premium paper” — a book crafted to survive decades of bedtime readings, and still be there for the grandchildren.'],
+                    3 => ['Unmistakably them',        'Their likeness, their street, their chai stall. A Storyloom could never belong to any other family — every detail on the page belongs to this one.'],
+                    4 => ['Painterly, calm, classic', 'Closer to fine illustration than bright cartoon templates — art that belongs on a shelf, and in a will.'],
+                ];
+            @endphp
+
+            <!-- The Plan (process) Section -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-signpost-split me-2 text-primary"></i> "The Plan" — Three Steps Section</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label font-weight-bold">Eyebrow</label>
+                            <input type="text" class="form-control form-control-sm" name="process_eyebrow" value="{{ setting('process_eyebrow', 'The plan') }}">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label font-weight-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                            <input type="text" class="form-control form-control-sm" name="process_heading" value="{{ setting('process_heading', 'Three steps to a story they\'ll <em>never forget.</em>') }}">
+                        </div>
+                    </div>
+                    @foreach($planDefaults as $n => [$defTitle, $defDesc])
+                        <div class="border rounded p-3 mb-3 bg-light">
+                            <div class="fw-bold text-muted mb-2" style="font-size:.78rem; letter-spacing:.08em;">STEP {{ $n }}</div>
+                            <div class="mb-2">
+                                <label class="form-label font-weight-bold">Title</label>
+                                <input type="text" class="form-control form-control-sm" name="process_step{{ $n }}_title" value="{{ setting('process_step'.$n.'_title', $defTitle) }}">
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label font-weight-bold">Description <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                                <textarea class="form-control form-control-sm" name="process_step{{ $n }}_desc" rows="2">{{ setting('process_step'.$n.'_desc', $defDesc) }}</textarea>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Why Storyloom Section -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-patch-check me-2 text-success"></i> "Why Storyloom" — Value Cards</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label font-weight-bold">Eyebrow</label>
+                            <input type="text" class="form-control form-control-sm" name="why_eyebrow" value="{{ setting('why_eyebrow', 'Why Storyloom') }}">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label font-weight-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                            <input type="text" class="form-control form-control-sm" name="why_heading" value="{{ setting('why_heading', 'Not a product. A <em>moment.</em>') }}">
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        @foreach($whyDefaults as $n => [$defTitle, $defDesc])
+                            <div class="col-md-6">
+                                <div class="border rounded p-3 h-100 bg-light">
+                                    <div class="fw-bold text-muted mb-2" style="font-size:.78rem; letter-spacing:.08em;">CARD {{ $n }}</div>
+                                    <div class="mb-2">
+                                        <label class="form-label font-weight-bold">Title</label>
+                                        <input type="text" class="form-control form-control-sm" name="why_card{{ $n }}_title" value="{{ setting('why_card'.$n.'_title', $defTitle) }}">
+                                    </div>
+                                    <div class="mb-0">
+                                        <label class="form-label font-weight-bold">Description <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                                        <textarea class="form-control form-control-sm" name="why_card{{ $n }}_desc" rows="3">{{ setting('why_card'.$n.'_desc', $defDesc) }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Moment It Opens (testimonials heading) -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-chat-quote me-2 text-warning"></i> "The Moment It Opens" — Testimonials Heading</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label font-weight-bold">Eyebrow</label>
+                            <input type="text" class="form-control form-control-sm" name="testimonial_eyebrow" value="{{ setting('testimonial_eyebrow', 'The moment it opens') }}">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label font-weight-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                            <input type="text" class="form-control form-control-sm" name="testimonial_heading" value="{{ setting('testimonial_heading', 'Some gifts get a thank-you. <em>These get tears.</em>') }}">
+                        </div>
+                    </div>
+                    <div class="form-text mt-2">
+                        <i class="bi bi-info-circle me-1"></i> The quotes themselves are managed under <strong>Testimonials</strong> in the sidebar.
+                    </div>
+                </div>
+            </div>
+
+            <!-- For Every Occasion (marquee) -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-tags me-2 text-info"></i> "For Every Occasion" — Scrolling Chips</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label font-weight-bold">Eyebrow</label>
+                            <input type="text" class="form-control form-control-sm" name="marquee_eyebrow" value="{{ setting('marquee_eyebrow', 'For every occasion') }}">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label font-weight-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                            <input type="text" class="form-control form-control-sm" name="marquee_heading" value="{{ setting('marquee_heading', 'Whenever words aren\'t <em>enough.</em>') }}">
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label font-weight-bold">Occasion Chips</label>
+                        <textarea class="form-control form-control-sm" name="marquee_chips" rows="3">{{ setting('marquee_chips', 'Anniversaries, Birthdays, Weddings, Diwali, Raksha Bandhan, Mother\'s Day, Father\'s Day, Valentine\'s Day, Proposals, Retirement, Graduation, Baby\'s First Year, Farewells') }}</textarea>
+                        <div class="form-text">Separate each occasion with a <strong>comma</strong>. They scroll continuously and each links to the Occasions page.</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </form>

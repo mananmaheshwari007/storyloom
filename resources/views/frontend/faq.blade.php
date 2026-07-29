@@ -43,7 +43,7 @@
     <div class="container inner">
       <h2 data-reveal>{!! setting('faq_cta_heading', 'Have a question that\'s <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: #E88B52;">not here?</em>') !!}</h2>
       <p data-reveal style="max-width: 620px; width: 100%; margin-inline: auto; font-size: 1.05rem; line-height: 1.65; color: rgba(255, 255, 255, 0.78);">
-        {{ setting('faq_cta_desc', 'Tell us about your story idea or ask anything directly — we reply personally to every inquiry.') }}
+        {!! setting('faq_cta_desc', 'Tell us about your story idea or ask anything directly — we reply personally to every inquiry.') !!}
       </p>
       <div class="btn-row" style="justify-content:center; gap: 16px; margin-top: 28px;" data-reveal>
         <a class="btn btn-primary" href="{{ setting('faq_cta_btn1_link', route('begin')) }}">{{ setting('faq_cta_btn1_text', 'BEGIN YOUR STORY') }}

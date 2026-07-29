@@ -54,7 +54,7 @@
       <div class="hero-mobile-copy">
         <div class="hero-mobile-top">
           <h1 data-hero="1">{!! setting('mobile_hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
-          <p class="hero-mobile-body" data-hero="2">{{ setting('mobile_hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
+          <p class="hero-mobile-body" data-hero="2">{!! setting('mobile_hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') !!}</p>
         </div>
         <div class="hero-mobile-bottom">
           <a class="btn btn-primary hero-mobile-btn" href="{{ setting('mobile_hero_btn_link', '/begin') }}" data-hero="3">
@@ -127,7 +127,7 @@
       <div class="hero-copy hero-copy-centered">
         <p class="eyebrow eyebrow-center" data-hero="1">{{ $hero?->subheading ?? setting('hero_subheading', 'PERSONALISED KEEPSAKE STORYBOOKS') }}</p>
         <h1 data-hero="2">{!! $hero?->heading ?? setting('hero_heading', 'The story only <em>you</em> could give.') !!}</h1>
-        <p class="sub" data-hero="3">{{ $hero?->description ?? setting('hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') }}</p>
+        <p class="sub" data-hero="3">{!! $hero?->description ?? setting('hero_description', 'We transform your memories into a beautifully illustrated keepsake book — every page painted around your people, your places, and the moments that made you a family.') !!}</p>
         <div class="btn-row btn-row-center" data-hero="4">
           <a class="btn btn-primary" href="{{ $hero?->button_link ?? setting('hero_btn1_link', route('begin')) }}">
             {{ $hero?->button_text ?? setting('hero_btn1_text', 'BEGIN YOUR STORY') }}
@@ -260,19 +260,19 @@
         <div class="process-step" data-reveal style="--stagger:0">
           <div class="step-no">I</div>
           <h3>{{ setting('process_step1_title', 'Share Your Story') }}</h3>
-          <p>{{ setting('process_step1_desc', 'Tell us about them — the memories, the inside jokes, the places, the photographs. A gentle conversation, not a form. Whatever you have is enough.') }}</p>
+          <p>{!! setting('process_step1_desc', 'Tell us about them — the memories, the inside jokes, the places, the photographs. A gentle conversation, not a form. Whatever you have is enough.') !!}</p>
           <span class="process-line" aria-hidden="true"></span>
         </div>
         <div class="process-step" data-reveal style="--stagger:1">
           <div class="step-no">II</div>
           <h3>{{ setting('process_step2_title', 'Refine It Together') }}</h3>
-          <p>{{ setting('process_step2_desc', 'Our writers shape your memories into a story; our illustrators paint your world into its pages. You review everything and we refine it until it feels exactly right.') }}</p>
+          <p>{!! setting('process_step2_desc', 'Our writers shape your memories into a story; our illustrators paint your world into its pages. You review everything and we refine it until it feels exactly right.') !!}</p>
           <span class="process-line" aria-hidden="true"></span>
         </div>
         <div class="process-step" data-reveal style="--stagger:2">
           <div class="step-no">III</div>
           <h3>{{ setting('process_step3_title', 'Receive Your Storyloom') }}</h3>
-          <p>{{ setting('process_step3_desc', 'A hardbound, archival-quality book arrives at your door — wrapped, sealed, and ready for the moment they open it.') }}</p>
+          <p>{!! setting('process_step3_desc', 'A hardbound, archival-quality book arrives at your door — wrapped, sealed, and ready for the moment they open it.') !!}</p>
         </div>
       </div>
       <div style="text-align:center; margin-top: clamp(40px, 6vh, 60px)" data-reveal>
@@ -293,19 +293,19 @@
       <div class="occasion-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
         <div class="card" data-reveal style="--stagger:0">
           <h3 style="font-size:1.3rem; margin-bottom:10px;">{{ setting('why_card1_title', 'A story, not a spec') }}</h3>
-          <p style="font-size:.95rem; color:var(--ink-soft);">{{ setting('why_card1_desc', 'Not “32 pages” — a complete story they\'ll return to again and again, with a beginning, a middle, and your ending.') }}</p>
+          <p style="font-size:.95rem; color:var(--ink-soft);">{!! setting('why_card1_desc', 'Not “32 pages” — a complete story they\'ll return to again and again, with a beginning, a middle, and your ending.') !!}</p>
         </div>
         <div class="card" data-reveal style="--stagger:1">
           <h3 style="font-size:1.3rem; margin-bottom:10px;">{{ setting('why_card2_title', 'Made to be handed down') }}</h3>
-          <p style="font-size:.95rem; color:var(--ink-soft);">{{ setting('why_card2_desc', 'Not “premium paper” — a book crafted to survive decades of bedtime readings, and still be there for the grandchildren.') }}</p>
+          <p style="font-size:.95rem; color:var(--ink-soft);">{!! setting('why_card2_desc', 'Not “premium paper” — a book crafted to survive decades of bedtime readings, and still be there for the grandchildren.') !!}</p>
         </div>
         <div class="card" data-reveal style="--stagger:2">
           <h3 style="font-size:1.3rem; margin-bottom:10px;">{{ setting('why_card3_title', 'Unmistakably them') }}</h3>
-          <p style="font-size:.95rem; color:var(--ink-soft);">{{ setting('why_card3_desc', 'Their likeness, their street, their chai stall. A Storyloom could never belong to any other family — every detail on the page belongs to this one.') }}</p>
+          <p style="font-size:.95rem; color:var(--ink-soft);">{!! setting('why_card3_desc', 'Their likeness, their street, their chai stall. A Storyloom could never belong to any other family — every detail on the page belongs to this one.') !!}</p>
         </div>
         <div class="card" data-reveal style="--stagger:3">
           <h3 style="font-size:1.3rem; margin-bottom:10px;">{{ setting('why_card4_title', 'Painterly, calm, classic') }}</h3>
-          <p style="font-size:.95rem; color:var(--ink-soft);">{{ setting('why_card4_desc', 'Closer to fine illustration than bright cartoon templates — art that belongs on a shelf, and in a will.') }}</p>
+          <p style="font-size:.95rem; color:var(--ink-soft);">{!! setting('why_card4_desc', 'Closer to fine illustration than bright cartoon templates — art that belongs on a shelf, and in a will.') !!}</p>
         </div>
       </div>
 
@@ -412,7 +412,7 @@
     <div class="container inner">
       <p class="eyebrow eyebrow-center" data-reveal>{{ setting('cta_eyebrow', 'BEGIN TONIGHT') }}</p>
       <h2 data-reveal>{!! setting('cta_heading', 'Every relationship has a story worth <em>preserving.</em>') !!}</h2>
-      <p data-reveal>{{ setting('cta_desc', 'Another occasion will come around soon. This time, give them something that says everything — and stays said, forever.') }}</p>
+      <p data-reveal>{!! setting('cta_desc', 'Another occasion will come around soon. This time, give them something that says everything — and stays said, forever.') !!}</p>
       <div class="btn-row" data-reveal>
         <a class="btn btn-primary" href="{{ setting('cta_btn1_link', route('begin')) }}">
           {{ setting('cta_btn1_text', 'BEGIN YOUR STORY') }}
