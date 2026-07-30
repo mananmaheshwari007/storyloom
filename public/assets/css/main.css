@@ -293,6 +293,22 @@ h3 em {
   opacity: 0.85;
 }
 
+/* On narrow screens the two 34px rules plus the 14px gaps ate enough width to
+   split four-word eyebrows mid-phrase ("The trouble with / gifts"). Shrinking
+   the rules and easing the tracking keeps them on one line; where a break is
+   actually wanted, the admin puts a <br> in the field. */
+@media (max-width: 767px) {
+  .eyebrow {
+    gap: 10px;
+    letter-spacing: 0.22em;
+  }
+
+  .eyebrow::before,
+  .eyebrow-center::after {
+    width: 20px;
+  }
+}
+
 .section-dark .eyebrow {
   color: #D98A5A;
 }
@@ -1286,18 +1302,13 @@ a.plate:hover,
   box-shadow: var(--shadow-lift);
 }
 
+/* Read-only panel, never a link: outline only, and no hover state at all, so
+   nothing about it suggests it can be clicked. */
 .card {
-  background: var(--paper);
-  border: 1px solid var(--hairline);
+  background: transparent;
+  border: 1px solid var(--hairline-strong, var(--hairline));
   padding: clamp(28px, 3.4vw, 40px);
   position: relative;
-  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med);
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lift);
-  border-color: rgba(181, 91, 41, 0.35);
 }
 
 /* ---------- Problem strip ---------- */
@@ -1314,16 +1325,9 @@ a.plate:hover,
 .fading-gift {
   text-align: center;
   padding: 36px 20px 32px;
-  border: 1px solid var(--hairline);
-  background: var(--paper);
-  box-shadow: 0 4px 16px rgba(29, 42, 68, 0.03);
+  border: 1px solid var(--hairline-strong, var(--hairline));
+  background: transparent;
   border-radius: 2px;
-  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
-}
-
-.fading-gift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(29, 42, 68, 0.07);
 }
 
 .fading-gift .word {
@@ -1378,7 +1382,8 @@ a.plate:hover,
   transform: rotate(-0.6deg);
 }
 
-.weave-gallery .plate:hover {
+.weave-gallery a.plate:hover,
+.weave-gallery .plate.hoverable:hover {
   transform: translateY(-6px) rotate(0deg);
 }
 
@@ -1500,14 +1505,20 @@ a.plate:hover,
 }
 
 /* ---------- Story index (for whom) ---------- */
+/* Fits the card count instead of forcing three per row, so the fourth
+   relationship card no longer sits alone on a second row. */
 .story-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: clamp(18px, 2.4vw, 28px);
 }
 
 .story-card {
-  display: block;
+  /* Flex, not block: with the label hidden the whitespace text nodes between
+     the spans were still generating line boxes and leaving ~87px of dead space
+     under the artwork. A flex container drops whitespace-only children. */
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   border-radius: 16px;
   overflow: hidden;
@@ -1520,7 +1531,11 @@ a.plate:hover,
   box-shadow: 0 18px 40px rgba(29, 42, 68, 0.15);
 }
 
+/* .img-wrap is a <span>. Left inline it ignores aspect-ratio and its box bottom
+   lands on the text baseline, which put the absolutely-positioned caption
+   partway up the card and clipped everything under the title. */
 .story-card .img-wrap {
+  display: block;
   position: relative;
   overflow: hidden;
   aspect-ratio: 4 / 5;
@@ -1535,14 +1550,16 @@ a.plate:hover,
 }
 
 .story-card:hover img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
+/* Desktop resting state: a soft scrim so the title on the artwork stays
+   readable. Hover deepens it to carry the extra copy that slides in. */
 .story-card .card-overlay-gradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(28, 34, 43, 0.88) 0%, rgba(28, 34, 43, 0.35) 45%, transparent 100%);
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
@@ -1551,6 +1568,8 @@ a.plate:hover,
   opacity: 1;
 }
 
+/* The block itself is always on the card — only the secondary lines inside it
+   wait for hover (see .hint-text / .explore-btn below). */
 .story-card .card-hover-content {
   position: absolute;
   bottom: 0;
@@ -1561,16 +1580,8 @@ a.plate:hover,
   display: flex;
   flex-direction: column;
   gap: 6px;
-  transform: translateY(16px);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   z-index: 2;
   pointer-events: none;
-}
-
-.story-card:hover .card-hover-content {
-  transform: translateY(0);
-  opacity: 1;
 }
 
 .story-card .card-hover-content .for-title {
@@ -1599,13 +1610,48 @@ a.plate:hover,
   color: #E88B52;
 }
 
+/* Everything below the title animates in on hover / keyboard focus. They
+   collapse to zero height at rest, so the block — anchored to the card's bottom
+   edge — sits with just the title on it, and the title rides upward as the
+   details expand underneath. */
+.story-card .card-hover-content .hint-text,
+.story-card .card-hover-content .explore-btn {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, max-height 0.4s var(--ease-out),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.4s var(--ease-out);
+}
+
+.story-card .card-hover-content .explore-btn {
+  margin-top: 0;
+}
+
+.story-card:hover .card-hover-content .hint-text,
+.story-card:focus-visible .card-hover-content .hint-text {
+  opacity: 1;
+  max-height: 3.6em;
+  transform: translateY(0);
+}
+
+.story-card:hover .card-hover-content .explore-btn,
+.story-card:focus-visible .card-hover-content .explore-btn {
+  opacity: 1;
+  max-height: 2.4em;
+  margin-top: 6px;
+  transform: translateY(0);
+  transition-delay: 0.06s;
+}
+
+/* The title now lives on the artwork, so the duplicate label underneath is
+   redundant on desktop. Touch layouts re-hide it for their own reasons. */
 .story-card .story-label {
-  display: flex;
+  display: none;
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
   padding: 16px 4px 4px;
-  transition: color 0.3s ease;
 }
 
 .story-card .story-label .for {
@@ -1628,12 +1674,14 @@ a.plate:hover,
 .testimonial-band {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.6fr) auto;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.7fr) auto;
   align-items: stretch;
   background: var(--ink);
   border-radius: 6px;
   overflow: hidden;
-  min-height: 340px;
+  /* A thin horizontal band, roughly 4.5:1 — the quote should read as a strip
+     across the section, not as a panel. */
+  min-height: clamp(215px, 20vw, 258px);
 }
 
 /* Photo column */
@@ -1662,8 +1710,9 @@ a.plate:hover,
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(29, 42, 68, 0) 38%,
-    rgba(29, 42, 68, 0.72) 74%,
+    rgba(29, 42, 68, 0) 18%,
+    rgba(29, 42, 68, 0.4) 52%,
+    rgba(29, 42, 68, 0.82) 80%,
     var(--ink) 100%
   );
 }
@@ -1671,24 +1720,24 @@ a.plate:hover,
 /* Copy column */
 .tb-body {
   position: relative;
-  padding: clamp(30px, 4vw, 52px) clamp(24px, 3.5vw, 56px);
+  padding: clamp(24px, 2.6vw, 34px) clamp(22px, 3vw, 46px);
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .tb-quote {
-  width: 30px;
-  height: 22px;
+  width: 26px;
+  height: 19px;
   fill: #D98A5A;
   opacity: 0.85;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   flex: none;
 }
 
 .testimonial-stage {
   position: relative;
-  min-height: 150px;
+  min-height: 108px;
 }
 
 .testimonial {
@@ -1714,14 +1763,14 @@ a.plate:hover,
 .testimonial blockquote {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(1.12rem, 1.7vw, 1.5rem);
-  line-height: 1.55;
-  max-width: 26em;
+  font-size: clamp(1.02rem, 1.35vw, 1.24rem);
+  line-height: 1.5;
+  max-width: 34em;
   color: var(--cream-on-dark);
 }
 
 .testimonial cite {
-  margin-top: 16px;
+  margin-top: 12px;
   font-style: normal;
   font-family: var(--font-body);
   font-size: 0.86rem;
@@ -1731,7 +1780,7 @@ a.plate:hover,
 }
 
 .tb-more {
-  margin-top: 26px;
+  margin-top: 18px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -1782,6 +1831,25 @@ a.plate:hover,
 .testimonial-dots button[aria-current="true"]::after {
   background: #E8A87C;
   transform: scale(1.35);
+  animation: tb-dot-pulse 2.6s var(--ease-out) infinite;
+}
+
+/* Soft halo on the live dot so the rail reads as moving with the quote. */
+@keyframes tb-dot-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 168, 124, 0.5);
+  }
+
+  55% {
+    box-shadow: 0 0 0 5px rgba(232, 168, 124, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-dots button[aria-current="true"]::after {
+    animation: none;
+  }
 }
 
 @media (max-width: 860px) {
@@ -1805,7 +1873,7 @@ a.plate:hover,
   }
 
   .testimonial-stage {
-    min-height: 190px;
+    min-height: 170px;
   }
 
   .testimonial-dots {
@@ -2565,12 +2633,48 @@ a.chip:hover {
   margin-bottom: 6px;
 }
 
+/* "Was" row sits above the amount charged: struck-through original on the left,
+   saving badge beside it. Rendered only when a compare price is set. */
+.price-card .price-was {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 0;
+}
+
+.price-card .was-amount {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-card .save-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #2F6A46;
+  background: rgba(47, 106, 70, 0.1);
+  border: 1px solid rgba(47, 106, 70, 0.28);
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
 .price-card .price {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 2.1rem;
   margin: 14px 0 4px;
   font-variant-numeric: tabular-nums;
+}
+
+/* With a "was" row above it the amount needs less air over it. */
+.price-card .price-was + .price {
+  margin-top: 4px;
 }
 
 .price-card .price small {
@@ -3791,19 +3895,22 @@ html:not(.js) .loom-hint,
   border-radius: 999px;
 }
 
+/* On a pointer device the cover is the whole attraction, so at rest the card is
+   nothing but the artwork — no copy, no scrim. Hover brings the dark scrim up
+   from below and the copy in with it, so the text always lands on a background
+   dark enough to read against.
+   Touch devices keep the base state above (scrim + copy always visible), since
+   there is no hover there to reveal anything. */
 @media (hover: hover) and (min-width: 600px) {
   .shelf-card::after {
+    /* Scrim parked below the card: invisible until hover pulls it up. */
     transform: translateY(0);
   }
 
   .shelf-card .content {
-    transform: translateY(calc(100% - 2.8rem));
-  }
-
-  .shelf-card .content>*:not(.sc-title) {
     opacity: 0;
-    transform: translateY(1rem);
-    transition: transform var(--d) var(--e), opacity var(--d) var(--e);
+    transform: translateY(0.9rem);
+    transition: transform var(--d) var(--e), opacity calc(var(--d) * 0.7) var(--e);
   }
 
   .shelf-card:hover::after,
@@ -3818,14 +3925,17 @@ html:not(.js) .loom-hint,
 
   .shelf-card:hover .content,
   .shelf-card:focus-within .content {
-    transform: translateY(0);
-  }
-
-  .shelf-card:hover .content>*:not(.sc-title),
-  .shelf-card:focus-within .content>*:not(.sc-title) {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: calc(var(--d) / 8);
+    transition-delay: calc(var(--d) / 6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shelf-card .sc-bg,
+  .shelf-card::after,
+  .shelf-card .content {
+    transition-duration: 1ms;
   }
 }
 
@@ -4044,10 +4154,30 @@ html:not(.js) .loom-hint,
   transform: translateX(4px);
 }
 
+/* The featured article and the grid are one block of content, so they share a
+   section and a single rhythm instead of two full section paddings stacked into
+   a ~200px void between them. */
+.journal-body {
+  padding-top: clamp(16px, 2vh, 28px);
+}
+
+.journal-body .featured-post {
+  margin-bottom: clamp(36px, 5vh, 64px);
+}
+
+.journal-pagination {
+  margin-top: clamp(36px, 5vh, 56px);
+  display: flex;
+  justify-content: center;
+}
+
 /* Post Cards Grid */
 .post-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Tracks capped rather than stretched, and centred, so two or four articles
+     don't leave a lopsided hole where the third column would be. */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 360px));
+  justify-content: center;
   gap: clamp(20px, 2.6vw, 32px);
 }
 
@@ -4154,6 +4284,15 @@ html:not(.js) .loom-hint,
   text-align: center;
 }
 
+/* Empty until a topic is picked — don't reserve a line for it. */
+.filter-count:empty {
+  display: none;
+}
+
+#filter-count:not(:empty) {
+  margin-bottom: 22px;
+}
+
 /* Newsletter Band */
 .newsletter-band {
   text-align: center;
@@ -4247,7 +4386,7 @@ html:not(.js) .loom-hint,
   }
 
   .post-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 }
 
@@ -4785,7 +4924,10 @@ html:not(.js) .loom-hint,
   margin-inline: auto;
 }
 
+/* "The plan" carries the whole section, so its icons run 1.5x the token. */
 .process-step .section-icon {
+  width: calc(var(--icon-size) * 1.5);
+  height: calc(var(--icon-size) * 1.5);
   margin-bottom: 18px;
 }
 

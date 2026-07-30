@@ -40,6 +40,20 @@ class Blog extends Model
         'show_toc' => 'boolean',
     ];
 
+    /**
+     * The sitemap is cached for an hour; publishing or unpublishing an article
+     * should show up straight away rather than whenever that window happens to
+     * expire.
+     */
+    protected static function booted(): void
+    {
+        $flush = fn () => \Illuminate\Support\Facades\Cache::forget('sitemap.xml');
+
+        static::saved($flush);
+        static::deleted($flush);
+        static::restored($flush);
+    }
+
     /** Topics offered in the editor and used by the journal filter pills. */
     public const CATEGORIES = [
         'gifts'     => 'Gift Guides',

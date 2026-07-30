@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\MediaManagerController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,13 @@ Route::get('/journal-dont-get-me-anything.html', function () {
     return redirect()->route('blog.show', 'what-to-give-the-person-who-says-dont-get-me-anything');
 });
 Route::get('/begin', [FrontendController::class, 'begin'])->name('begin');
+
+/*
+ * Crawler files. Served by routes, not as static files in public/, so they ship
+ * with every deployment and the sitemap stays in step with what's published.
+ */
+Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
 Route::post('/contact/submit', [FrontendController::class, 'submitContact'])->name('contact.submit');
 Route::post('/newsletter/subscribe', [FrontendController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');

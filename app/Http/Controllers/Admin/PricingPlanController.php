@@ -84,6 +84,8 @@ class PricingPlanController extends Controller
         $request->validate([
             'plan_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'compare_price' => 'nullable|numeric|min:0|gte:price',
+            'discount_label' => 'nullable|string|max:40',
             'duration' => 'required|string|max:255',
             'button_text' => 'nullable|string|max:255',
             'button_url' => 'nullable|string|max:255',
@@ -96,6 +98,15 @@ class PricingPlanController extends Controller
         $data = $request->all();
         $data['popular_plan'] = $request->has('popular_plan');
         $data['features'] = array_values(array_filter($request->input('features')));
+
+        // Blank discount inputs must land as NULL, not as an empty string a
+        // decimal column would coerce to 0.00 and render as "100% off".
+        $data['compare_price'] = filled($request->input('compare_price'))
+            ? $request->input('compare_price')
+            : null;
+        $data['discount_label'] = filled($request->input('discount_label'))
+            ? trim($request->input('discount_label'))
+            : null;
 
         PricingPlan::create($data);
 
@@ -118,6 +129,8 @@ class PricingPlanController extends Controller
         $request->validate([
             'plan_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'compare_price' => 'nullable|numeric|min:0|gte:price',
+            'discount_label' => 'nullable|string|max:40',
             'duration' => 'required|string|max:255',
             'button_text' => 'nullable|string|max:255',
             'button_url' => 'nullable|string|max:255',
@@ -130,6 +143,15 @@ class PricingPlanController extends Controller
         $data = $request->all();
         $data['popular_plan'] = $request->has('popular_plan');
         $data['features'] = array_values(array_filter($request->input('features')));
+
+        // Blank discount inputs must land as NULL, not as an empty string a
+        // decimal column would coerce to 0.00 and render as "100% off".
+        $data['compare_price'] = filled($request->input('compare_price'))
+            ? $request->input('compare_price')
+            : null;
+        $data['discount_label'] = filled($request->input('discount_label'))
+            ? trim($request->input('discount_label'))
+            : null;
 
         $pricing->update($data);
 

@@ -1,27 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
+  @php
+    // The newest article is promoted to the "start here" slot, so the grid holds
+    // everything after it — otherwise the same piece appeared twice on the page.
+    $all      = collect($articles->items() ?? $articles);
+    $featured = $all->first();
+    $rest     = $all->slice(1)->values();
+
+    // Only offer topics that actually have something published under them. A
+    // pill that filters down to nothing is worse than no pill.
+    $topics = $all
+        ->groupBy(fn ($a) => strtolower($a->category ?: 'gifts'))
+        ->map->count();
+  @endphp
+
   <!-- ============ HERO ============ -->
   <section class="container journal-hero">
     <p class="eyebrow eyebrow-center" data-reveal>{{ setting('journal_hero_eyebrow', 'The Storyloom Journal') }}</p>
     <h1 data-reveal>{!! setting('journal_hero_heading', 'Notes on giving <em>better.</em>') !!}</h1>
-    <p class="lede" data-reveal>{{ setting('journal_hero_lede', 'Gift ideas that aren\'t a scented candle, real stories from the families we\'ve made books for, and what actually happens at the loom. Short reads, mostly.') }}</p>
+    <p class="lede" data-reveal>{!! setting('journal_hero_lede', 'Gift ideas that aren\'t a scented candle, real stories from the families we\'ve made books for, and what actually happens at the loom. Short reads, mostly.') !!}</p>
 
-    <div class="filter-row" role="group" aria-label="Filter articles by topic" data-reveal>
-      <button class="filter-pill" data-filter="all" aria-pressed="true">Everything</button>
-      <button class="filter-pill" data-filter="gifts" aria-pressed="false">Gift Guides</button>
-      <button class="filter-pill" data-filter="occasions" aria-pressed="false">Occasions</button>
-      <button class="filter-pill" data-filter="stories" aria-pressed="false">Real Stories</button>
-      <button class="filter-pill" data-filter="loom" aria-pressed="false">Behind the Loom</button>
-    </div>
+    @if($topics->count() > 1)
+      <div class="filter-row" role="group" aria-label="Filter articles by topic" data-reveal>
+        <button class="filter-pill" data-filter="all" aria-pressed="true">Everything</button>
+        @foreach($topics as $key => $count)
+          <button class="filter-pill" data-filter="{{ $key }}" aria-pressed="false">
+            {{ \App\Models\Blog::CATEGORIES[$key] ?? Str::title(str_replace(['-', '_'], ' ', $key)) }}
+          </button>
+        @endforeach
+      </div>
+    @endif
   </section>
 
-  <!-- ============ FEATURED POST ============ -->
-  @if(isset($articles) && count($articles) > 0)
-    @php $featured = $articles[0]; @endphp
-    <section class="section grain" style="padding-top: clamp(20px, 3vh, 36px);">
-      <div class="container">
-        <a class="featured-post" href="{{ route('blog.show', $featured->slug) }}" data-reveal>
+  <!-- ============ FEATURED POST + ARTICLE GRID ============ -->
+  <section class="section grain journal-body">
+    <div class="container">
+      @if($featured)
+        <a class="featured-post" href="{{ route('blog.show', $featured->slug) }}"
+           data-cat="{{ strtolower($featured->category ?: 'gifts') }}" data-reveal>
           <div class="fp-media">
             <span class="fp-badge">Start here</span>
             <img src="{{ asset($featured->featured_image ?: 'assets/img/spread-bench-dusk.webp') }}" width="1600" height="900" loading="eager" alt="{{ $featured->title }}">
@@ -42,47 +59,46 @@
             </span>
           </div>
         </a>
-      </div>
-    </section>
-  @endif
+      @endif
 
-  <!-- ============ ARTICLE GRID ============ -->
-  <section class="section">
-    <div class="container">
-      <p class="filter-count" id="filter-count" aria-live="polite"></p>
-      <div class="post-grid" style="margin-top: 26px;" id="post-grid">
-        @forelse($articles as $index => $article)
-          @php
-            $catKey = strtolower($article->category ?: 'gifts');
-            $catLabel = $article->category_label;
-          @endphp
-          <a class="post-card" href="{{ route('blog.show', $article->slug) }}" data-cat="{{ $catKey }}" data-reveal style="--stagger:{{ $index % 3 }}">
-            <span class="pc-media">
-              <img src="{{ asset($article->featured_image ?: 'assets/img/spread-home-morning.webp') }}" width="1100" height="1469" loading="lazy" alt="{{ $article->title }}">
-            </span>
-            <span class="pc-body">
-              <span class="post-meta">
-                <span class="cat">{{ $catLabel }}</span>
-                <span class="dot" aria-hidden="true"></span>
-                <span class="read-time">{{ is_numeric($article->read_time) ? $article->read_time . ' min read' : ($article->read_time ?: '5 min read') }}</span>
+      @if($rest->count())
+        <p class="filter-count" id="filter-count" aria-live="polite"></p>
+        <div class="post-grid" id="post-grid">
+          @foreach($rest as $index => $article)
+            <a class="post-card" href="{{ route('blog.show', $article->slug) }}"
+               data-cat="{{ strtolower($article->category ?: 'gifts') }}"
+               data-reveal style="--stagger:{{ $index % 3 }}">
+              <span class="pc-media">
+                <img src="{{ asset($article->featured_image ?: 'assets/img/spread-home-morning.webp') }}" width="1100" height="1469" loading="lazy" alt="{{ $article->title }}">
               </span>
-              <h3>{!! $article->headline !!}</h3>
-              <span class="pc-excerpt">{{ $article->dek ?: ($article->short_description ?: Str::limit(strip_tags($article->content), 110)) }}</span>
-              <span class="pc-more">Read
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+              <span class="pc-body">
+                <span class="post-meta">
+                  <span class="cat">{{ $article->category_label }}</span>
+                  <span class="dot" aria-hidden="true"></span>
+                  <span class="read-time">{{ is_numeric($article->read_time) ? $article->read_time . ' min read' : ($article->read_time ?: '5 min read') }}</span>
+                </span>
+                <h3>{!! $article->headline !!}</h3>
+                <span class="pc-excerpt">{{ $article->dek ?: ($article->short_description ?: Str::limit(strip_tags($article->content), 110)) }}</span>
+                <span class="pc-more">Read
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+                </span>
               </span>
-            </span>
-          </a>
-        @empty
-          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 0; color: var(--ink-faint);">
-            <p style="font-size: 1.1rem;">No articles found in this category.</p>
-          </div>
-        @endforelse
-      </div>
+            </a>
+          @endforeach
+        </div>
 
-      <p id="no-results" class="filter-count" hidden style="margin-top: 48px; font-size: 1rem;">
-        Nothing here yet — try another topic.
-      </p>
+        <p id="no-results" class="filter-count" hidden style="margin-top: 40px; font-size: 1rem;">
+          Nothing here yet — try another topic.
+        </p>
+      @elseif(!$featured)
+        <p class="filter-count" style="padding: 40px 0; font-size: 1.05rem;">
+          The first entry is being written. Check back soon.
+        </p>
+      @endif
+
+      @if($articles instanceof \Illuminate\Contracts\Pagination\Paginator && $articles->hasPages())
+        <div class="journal-pagination">{{ $articles->links() }}</div>
+      @endif
     </div>
   </section>
 

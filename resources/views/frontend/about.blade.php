@@ -93,18 +93,15 @@
       margin-bottom: 20px;
     }
 
-    /* Artwork Polaroid Card */
+    /* Artwork Polaroid Card — a photo mount, not a control. The paper fill is
+       the point of the polaroid, but it gets no hover state, because nothing
+       here is clickable. */
     .artwork-card {
       background: #FFFFFF;
       padding: 8px 8px 16px;
       border: 1px solid #E8E3DB;
       border-radius: 4px;
       box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
-      transition: transform var(--dur-quick), box-shadow var(--dur-quick);
-    }
-    .artwork-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.12);
     }
     .artwork-card .img-wrapper {
       position: relative;
@@ -138,24 +135,20 @@
       gap: clamp(20px, 2.2vw, 30px);
     }
 
+    /* Outline only — these are statements, not links. */
     .stand-card {
-      background: #FFFFFF;
-      border: 1px solid #E8E3DB;
+      background: transparent;
+      border: 1px solid #DCD5C8;
       border-radius: 4px;
       padding: 28px 24px;
       height: 100%;
-      transition: transform var(--dur-quick), box-shadow var(--dur-quick);
-    }
-    .stand-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.06);
     }
     .stand-card h3 {
       font-family: var(--font-display);
       font-size: 1.25rem;
       font-weight: 600;
       color: #1C222B;
-      margin-0 0 12px 0;
+      margin: 0 0 12px 0;
       line-height: 1.3;
     }
     .stand-card p {

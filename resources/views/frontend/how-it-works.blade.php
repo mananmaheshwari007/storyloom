@@ -104,7 +104,8 @@
           </li>
         </ul>
       </div>
-      <figure class="plate hoverable" data-reveal="right">
+      {{-- Not "hoverable": this plate isn't clickable, so it must not lift. --}}
+      <figure class="plate" data-reveal="right">
         <img src="{{ asset(setting('craft_artwork_img', 'assets/img/spread-home-morning.webp')) }}" width="1600" height="900" loading="lazy"
              alt="Illustrated spread showing warm morning light across a family living room">
         <figcaption class="caption">{{ setting('craft_artwork_caption', 'every spread, printed exactly as painted') }}</figcaption>

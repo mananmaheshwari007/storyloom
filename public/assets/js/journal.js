@@ -84,10 +84,13 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!row) return;
 
   var pills = row.querySelectorAll(".filter-pill");
-  var grid = document.getElementById("post-grid");
-  if (!grid) return;
+  // The promoted "start here" article is filterable too — leaving it pinned in
+  // place while the grid filtered around it made the count read as a lie.
+  var cards = Array.prototype.slice.call(
+    document.querySelectorAll(".featured-post[data-cat], #post-grid .post-card")
+  );
+  if (!cards.length) return;
 
-  var cards = grid.querySelectorAll(".post-card");
   var countEl = document.getElementById("filter-count");
   var noResults = document.getElementById("no-results");
 

@@ -153,7 +153,7 @@
   <section class="section section-tint grain">
     <div class="container">
       <div class="section-head center" data-reveal>
-        <p class="eyebrow eyebrow-center">{{ setting('problem_eyebrow', 'The trouble with gifts') }}</p>
+        <p class="eyebrow eyebrow-center">{!! setting('problem_eyebrow', 'The trouble with gifts') !!}</p>
         <h2>{!! setting('problem_heading', 'Most gifts are <em>forgotten.</em>') !!}</h2>
       </div>
       <div class="fading-gifts">
@@ -161,26 +161,26 @@
           @if(setting('problem_gift1_icon'))
             <img class="section-icon" src="{{ asset(setting('problem_gift1_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
           @endif
-          <span class="word">{{ setting('problem_gift1_word', 'Flowers') }}</span>
-          <span class="fate">{{ setting('problem_gift1_fate', 'fade in a week') }}</span>
+          <span class="word">{!! setting('problem_gift1_word', 'Flowers') !!}</span>
+          <span class="fate">{!! setting('problem_gift1_fate', 'fade in a week') !!}</span>
         </div>
         <div class="fading-gift" data-reveal style="--stagger:1">
           @if(setting('problem_gift2_icon'))
             <img class="section-icon" src="{{ asset(setting('problem_gift2_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
           @endif
-          <span class="word">{{ setting('problem_gift2_word', 'Chocolates') }}</span>
-          <span class="fate">{{ setting('problem_gift2_fate', 'disappear in a day') }}</span>
+          <span class="word">{!! setting('problem_gift2_word', 'Chocolates') !!}</span>
+          <span class="fate">{!! setting('problem_gift2_fate', 'disappear in a day') !!}</span>
         </div>
         <div class="fading-gift" data-reveal style="--stagger:2">
           @if(setting('problem_gift3_icon'))
             <img class="section-icon" src="{{ asset(setting('problem_gift3_icon')) }}" alt="" width="72" height="72" loading="lazy" decoding="async">
           @endif
-          <span class="word">{{ setting('problem_gift3_word', 'Gadgets') }}</span>
-          <span class="fate">{{ setting('problem_gift3_fate', 'are replaced next year') }}</span>
+          <span class="word">{!! setting('problem_gift3_word', 'Gadgets') !!}</span>
+          <span class="fate">{!! setting('problem_gift3_fate', 'are replaced next year') !!}</span>
         </div>
       </div>
       <div class="section-head center" data-reveal style="margin-bottom:0">
-        <p class="lede">{{ setting('problem_lede', 'The people who shaped your life deserve something that says exactly what they mean to you — and keeps saying it, for years.') }}</p>
+        <p class="lede">{!! setting('problem_lede', 'The people who shaped your life deserve something that says exactly what they mean to you — and keeps saying it, for years.') !!}</p>
       </div>
     </div>
   </section>
@@ -227,8 +227,8 @@
     if (empty($storyForCards)) {
         $storyForCards = [
             ['image' => 'assets/img/spread-bench-sunset.webp', 'title' => 'For Your Wife', 'hint' => 'anniversaries · birthdays', 'link' => route('occasions')],
-            ['image' => 'assets/img/spread-sunday-breakfast.webp', 'title' => 'For Your Mom & Dad', 'hint' => 'parents 50th · retirement', 'link' => route('occasions')],
-            ['image' => 'assets/img/spread-bicycle-lesson.webp', 'title' => 'For Your Sister / Brother', 'hint' => 'rakhi · milestone birthdays', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-home-morning.webp', 'title' => 'For Your Mom & Dad', 'hint' => 'parents 50th · retirement', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-shared-fries.webp', 'title' => 'For Your Sister / Brother', 'hint' => 'rakhi · milestone birthdays', 'link' => route('occasions')],
             ['image' => 'assets/img/spread-under-stars.webp', 'title' => 'For Your Husband / Partner', 'hint' => 'proposals · weddings', 'link' => route('occasions')],
         ];
     }

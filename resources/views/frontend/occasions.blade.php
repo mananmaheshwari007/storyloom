@@ -75,21 +75,19 @@
       gap: clamp(20px, 2.2vw, 30px);
     }
 
-    /* Exact Card design matching screenshot */
+    /* Outline only — these cards don't link anywhere, so they get no fill, no
+       lift and no shadow. The one hover response is a gentle zoom on the art
+       (see .img-container img below): enough to feel alive, not enough to read
+       as "click me". */
     .fest-card {
-      background: #FFFFFF;
-      border: 1px solid #E8E3DB;
+      background: transparent;
+      border: 1px solid #DCD5C8;
       border-radius: 4px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       height: 100%;
-      transition: transform var(--dur-quick), box-shadow var(--dur-quick), border-color var(--dur-quick);
-    }
-    .fest-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
-      border-color: #D8D1C5;
+      cursor: default;
     }
     .fest-card .img-container {
       position: relative;
@@ -106,7 +104,14 @@
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .fest-card:hover .img-container img {
-      transform: scale(1.03);
+      transform: scale(1.06);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .fest-card .img-container img,
+      .fest-card:hover .img-container img {
+        transition: none;
+        transform: none;
+      }
     }
     .fest-card .card-content {
       padding: 16px 20px 24px;

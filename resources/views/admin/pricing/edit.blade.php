@@ -39,9 +39,26 @@
 
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                    <label for="price" class="form-label">Price (₹)</label>
+                    <label for="price" class="form-label">Final price (₹)</label>
                     <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $pricing->price) }}" required>
+                    <div class="form-text">What the customer actually pays. Shown large on the card.</div>
                     @error('price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="compare_price" class="form-label">Original price (₹) <span class="text-muted">— optional</span></label>
+                    <input type="number" step="0.01" class="form-control @error('compare_price') is-invalid @enderror" id="compare_price" name="compare_price" value="{{ old('compare_price', $pricing->compare_price) }}">
+                    <div class="form-text">Shown struck through above the final price. Leave blank for no discount.</div>
+                    @error('compare_price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="discount_label" class="form-label">Discount badge <span class="text-muted">— optional</span></label>
+                    <input type="text" maxlength="40" class="form-control @error('discount_label') is-invalid @enderror" id="discount_label" name="discount_label" value="{{ old('discount_label', $pricing->discount_label) }}" placeholder="e.g. Launch offer">
+                    <div class="form-text">Leave blank and the % saving is worked out from the two prices automatically.</div>
+                    @error('discount_label')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
