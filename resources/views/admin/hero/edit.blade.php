@@ -773,9 +773,19 @@
                     <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-chat-quote me-2 text-warning"></i> "The Moment It Opens" — Testimonials Heading</h5>
                 </div>
                 <div class="card-body">
+                    <div class="form-check form-switch mb-3">
+                        <input type="hidden" name="testimonial_show_head" value="0">
+                        <input class="form-check-input" type="checkbox" role="switch" id="testimonialShowHead"
+                               name="testimonial_show_head" value="1"
+                               {{ setting('testimonial_show_head', '0') === '1' ? 'checked' : '' }}>
+                        <label class="form-check-label fw-semibold" for="testimonialShowHead">
+                            Show the eyebrow &amp; heading above the testimonial band
+                        </label>
+                        <div class="form-text">Off by default — the band reads better on its own. The two fields below are kept either way.</div>
+                    </div>
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label font-weight-bold">Eyebrow</label>
+                            <label class="form-label font-weight-bold">Eyebrow <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                             <input type="text" class="form-control form-control-sm" name="testimonial_eyebrow" value="{{ setting('testimonial_eyebrow', 'The moment it opens') }}">
                         </div>
                         <div class="col-md-8">

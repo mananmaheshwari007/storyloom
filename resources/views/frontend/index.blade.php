@@ -225,11 +225,17 @@
         $storyForCards = is_array($rawStoryCards) ? $rawStoryCards : json_decode($rawStoryCards, true);
     }
     if (empty($storyForCards)) {
+        // Eight cards fill two even rows of four. Overridden entirely once
+        // Homepage Editor → "Who is your story for?" has been saved.
         $storyForCards = [
-            ['image' => 'assets/img/spread-bench-sunset.webp', 'title' => 'For Your Wife', 'hint' => 'anniversaries · birthdays', 'link' => route('occasions')],
-            ['image' => 'assets/img/spread-home-morning.webp', 'title' => 'For Your Mom & Dad', 'hint' => 'parents 50th · retirement', 'link' => route('occasions')],
-            ['image' => 'assets/img/spread-shared-fries.webp', 'title' => 'For Your Sister / Brother', 'hint' => 'rakhi · milestone birthdays', 'link' => route('occasions')],
-            ['image' => 'assets/img/spread-under-stars.webp', 'title' => 'For Your Husband / Partner', 'hint' => 'proposals · weddings', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-under-stars.webp', 'title' => 'Partner', 'hint' => 'anniversaries · proposals', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-home-morning.webp', 'title' => 'Mom & Dad', 'hint' => 'parents 50th · retirement', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-shared-fries.webp', 'title' => 'Sister / Brother', 'hint' => 'rakhi · milestone birthdays', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-cafe-window.webp', 'title' => 'Best Friend', 'hint' => 'farewells · long distance', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-street-morning.webp', 'title' => 'Grandparents', 'hint' => 'birthdays · anniversaries', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-home-evening.webp', 'title' => 'Children', 'hint' => "baby's first year · graduation", 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-bench-sunset.webp', 'title' => 'Teacher / Mentor', 'hint' => 'thank-yous · farewells', 'link' => route('occasions')],
+            ['image' => 'assets/img/spread-walk-together.webp', 'title' => 'The Whole Family', 'hint' => 'reunions · festivals', 'link' => route('occasions')],
         ];
     }
   @endphp
@@ -348,11 +354,15 @@
 
   <!-- ================= TESTIMONIALS ================= -->
   <section class="section section-dark" aria-label="What families say">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow eyebrow-center">{{ setting('testimonial_eyebrow', 'The moment it opens') }}</p>
-        <h2>{!! setting('testimonial_heading', 'Some gifts get a thank-you. <em>These get tears.</em>') !!}</h2>
-      </div>
+    <div class="container container-testimonial">
+      {{-- Heading is off by default: the band speaks for itself. Turn it back on
+           from Homepage Editor → Testimonial section if it's ever wanted. --}}
+      @if(setting('testimonial_show_head', '0') === '1')
+        <div class="section-head center" data-reveal>
+          <p class="eyebrow eyebrow-center">{!! setting('testimonial_eyebrow', 'The moment it opens') !!}</p>
+          <h2>{!! setting('testimonial_heading', 'Some gifts get a thank-you. <em>These get tears.</em>') !!}</h2>
+        </div>
+      @endif
       @php
         $tItems = $testimonials->count() ? $testimonials : collect([(object)[
             'review' => "My mother read it aloud twice, cried both times, and now it lives on her bedside table. Nothing I've ever given her has come close.",

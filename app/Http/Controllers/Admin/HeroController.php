@@ -237,6 +237,9 @@ class HeroController extends Controller
             'why_card4_desc' => $request->input('why_card4_desc'),
 
             // "The Moment It Opens" — testimonials heading
+            // A hidden 0 field pairs with the checkbox so unticking it actually
+            // saves "off" rather than submitting nothing.
+            'testimonial_show_head' => $request->input('testimonial_show_head', '0'),
             'testimonial_eyebrow' => $request->input('testimonial_eyebrow'),
             'testimonial_heading' => $request->input('testimonial_heading'),
             'testimonial_more_text' => $request->input('testimonial_more_text'),

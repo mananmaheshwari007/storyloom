@@ -1505,11 +1505,11 @@ a.plate:hover,
 }
 
 /* ---------- Story index (for whom) ---------- */
-/* Fits the card count instead of forcing three per row, so the fourth
-   relationship card no longer sits alone on a second row. */
+/* Four per row on desktop, so eight cards read as two even rows rather than
+   whatever auto-fit happens to work out to at a given width. */
 .story-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(18px, 2.4vw, 28px);
 }
 
@@ -1671,17 +1671,24 @@ a.plate:hover,
 /* ---------- Testimonial band ----------
    One thin horizontal panel: photo on the left fading into the dark
    panel, quote in the middle, vertical dots on the right. */
+/* With the section heading gone the band carries the section on its own, so it
+   runs wider than the standard container. */
+.container-testimonial {
+  max-width: 1420px;
+}
+
 .testimonial-band {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.7fr) auto;
+  /* Photo column takes a bigger share now that the band is wider. */
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.55fr) auto;
   align-items: stretch;
   background: var(--ink);
   border-radius: 6px;
   overflow: hidden;
-  /* A thin horizontal band, roughly 4.5:1 — the quote should read as a strip
-     across the section, not as a panel. */
-  min-height: clamp(215px, 20vw, 258px);
+  /* A thin horizontal band — the quote should read as a strip across the
+     section, not as a panel. */
+  min-height: clamp(215px, 20vw, 275px);
 }
 
 /* Photo column */
@@ -2633,13 +2640,13 @@ a.chip:hover {
   margin-bottom: 6px;
 }
 
-/* "Was" row sits above the amount charged: struck-through original on the left,
+/* "Was" row sits under the amount charged: struck-through original on the left,
    saving badge beside it. Rendered only when a compare price is set. */
 .price-card .price-was {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 16px 0 0;
+  margin: 2px 0 0;
 }
 
 .price-card .was-amount {
@@ -2672,9 +2679,9 @@ a.chip:hover {
   font-variant-numeric: tabular-nums;
 }
 
-/* With a "was" row above it the amount needs less air over it. */
-.price-card .price-was + .price {
-  margin-top: 4px;
+/* The "was" row now carries the gap down to the feature list. */
+.price-card .price:has(+ .price-was) {
+  margin-bottom: 0;
 }
 
 .price-card .price small {

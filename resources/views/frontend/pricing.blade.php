@@ -42,6 +42,8 @@
             <span class="tier-tag">{{ $tierTag }}</span>
             <h3>{{ $plan->plan_name }}</h3>
             <p style="color:var(--ink-soft); font-size:.95rem;">{{ $tagline }}</p>
+            {{-- Amount charged leads; the old price and the saving sit under it. --}}
+            <div class="price">₹{{ number_format($plan->price) }}<small> {{ $plan->duration }}</small></div>
             @if($plan->has_discount)
               <p class="price-was">
                 <span class="was-amount">₹{{ number_format($plan->compare_price) }}</span>
@@ -50,7 +52,6 @@
                 @endif
               </p>
             @endif
-            <div class="price">₹{{ number_format($plan->price) }}<small> {{ $plan->duration }}</small></div>
             
             @if($plan->features)
               <ul>
