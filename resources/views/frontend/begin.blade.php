@@ -88,31 +88,23 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="field">
-            <label for="f-occasion">The occasion</label>
-            <select id="f-occasion" name="occasion">
-              <option value="">Choose one (or don't)</option>
-              <option>Anniversary</option>
-              <option>Birthday</option>
-              <option>Wedding</option>
-              <option>Diwali</option>
-              <option>Raksha Bandhan</option>
-              <option>Mother's Day</option>
-              <option>Father's Day</option>
-              <option>Farewell / Moving</option>
-              <option>Just Because</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-timeline">Your timeline</label>
-            <select id="f-timeline" name="timeline">
-              <option value="">When do you need it?</option>
-              <option>Within 4 weeks (Priority)</option>
-              <option>Within 6-8 weeks</option>
-              <option>No hurry, flexible</option>
-            </select>
-          </div>
+        {{-- No "your timeline" question: every book runs to the same fixed
+             schedule, so asking the customer to pick a speed only invited an
+             expectation we wouldn't be setting. --}}
+        <div class="field">
+          <label for="f-occasion">The occasion</label>
+          <select id="f-occasion" name="occasion">
+            <option value="">Choose one (or don't)</option>
+            <option>Anniversary</option>
+            <option>Birthday</option>
+            <option>Wedding</option>
+            <option>Diwali</option>
+            <option>Raksha Bandhan</option>
+            <option>Mother's Day</option>
+            <option>Father's Day</option>
+            <option>Farewell / Moving</option>
+            <option>Just Because</option>
+          </select>
         </div>
 
         <div class="field">

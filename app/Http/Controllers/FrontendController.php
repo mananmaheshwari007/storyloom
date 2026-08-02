@@ -321,7 +321,6 @@ class FrontendController extends Controller
             'name' => 'required|string|max:255',
             'for' => 'required|string|max:255',
             'occasion' => 'nullable|string|max:255',
-            'timeline' => 'nullable|string|max:255',
             'story' => 'required|string',
             'channel' => 'required|string|in:whatsapp,email',
             'email' => 'nullable|email|max:255',
@@ -335,7 +334,6 @@ class FrontendController extends Controller
         // Map inputs to ContactMessage
         $messageText = "For: " . $request->input('for') . "\n"
                      . "Occasion: " . ($request->input('occasion') ?: 'None') . "\n"
-                     . "Timeline: " . ($request->input('timeline') ?: 'Flexible') . "\n"
                      . "Preferred channel: " . $request->input('channel') . "\n\n"
                      . "Story:\n" . $request->input('story');
 
