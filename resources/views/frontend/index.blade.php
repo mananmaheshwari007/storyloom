@@ -365,17 +365,20 @@
   </section>
 
   <!-- ================= TESTIMONIALS ================= -->
-  <section class="section section-dark" aria-label="What families say">
-    <div class="container container-testimonial">
-      {{-- Heading is off by default: the band speaks for itself. Turn it back on
-           from Homepage Editor → Testimonial section if it's ever wanted. --}}
-      @if(setting('testimonial_show_head', '0') === '1')
-        <div class="section-head center" data-reveal>
+  {{-- Not a section with padding around it — the band IS the element, running
+       edge to edge with no dark margin above or below. --}}
+  <section class="testimonial-section" aria-label="What families say">
+    {{-- Heading is off by default: the band speaks for itself. Turn it back on
+         from Homepage Editor → Testimonial section if it's ever wanted. --}}
+    @if(setting('testimonial_show_head', '0') === '1')
+      <div class="container">
+        <div class="section-head center testimonial-head" data-reveal>
           <p class="eyebrow eyebrow-center">{!! setting('testimonial_eyebrow', 'The moment it opens') !!}</p>
           <h2>{!! setting('testimonial_heading', 'Some gifts get a thank-you. <em>These get tears.</em>') !!}</h2>
         </div>
-      @endif
-      @php
+      </div>
+    @endif
+    @php
         $tItems = $testimonials->count() ? $testimonials : collect([(object)[
             'review' => "My mother read it aloud twice, cried both times, and now it lives on her bedside table. Nothing I've ever given her has come close.",
             'client_name' => "A daughter's gift", 'designation' => "for her mother's 60th", 'image' => null,
@@ -424,7 +427,6 @@
           </div>
         @endif
       </div>
-    </div>
   </section>
 
   <!-- ================= OCCASIONS MARQUEE ================= -->

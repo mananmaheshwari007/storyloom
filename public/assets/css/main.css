@@ -1357,22 +1357,14 @@ a.plate:hover,
 }
 
 .fading-gift .fate {
-  color: var(--ink-faint);
+  color: var(--ink);
   font-style: italic;
   font-size: 1rem;
 }
 
-.fading-gift:nth-child(1) .word {
-  opacity: 1;
-}
-
-.fading-gift:nth-child(2) .word {
-  opacity: 0.75;
-}
-
-.fading-gift:nth-child(3) .word {
-  opacity: 0.45;
-}
+/* The three cards used to fade out left-to-right, which read as three different
+   text colours rather than as an effect. Every card now carries the same weight
+   of ink. */
 
 /* ---------- Spread showcase (weave gallery) ---------- */
 .weave-gallery {
@@ -1688,10 +1680,14 @@ a.plate:hover,
 /* ---------- Testimonial band ----------
    One thin horizontal panel: photo on the left fading into the dark
    panel, quote in the middle, vertical dots on the right. */
-/* With the section heading gone the band carries the section on its own, so it
-   runs wider than the standard container. */
-.container-testimonial {
-  max-width: 1420px;
+/* The band is the whole thing — no section padding, so there is no strip of
+   dark above or below it, and the artwork runs off the left viewport edge. */
+.testimonial-section {
+  padding: 0;
+}
+
+.testimonial-head {
+  padding-bottom: clamp(28px, 4vh, 44px);
 }
 
 .testimonial-band {
@@ -1702,7 +1698,9 @@ a.plate:hover,
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.6fr) auto;
   align-items: stretch;
   background: var(--ink);
-  border-radius: 6px;
+  /* Square corners and no container: it spans the viewport, so the photo is
+     flush to the left edge and the ink panel to the right. */
+  border-radius: 0;
   overflow: hidden;
   /* Tall enough that the artwork and the quote fill it — the earlier value left
      a wide strip of bare ink under the text. */
@@ -1745,7 +1743,7 @@ a.plate:hover,
 /* Copy column */
 .tb-body {
   position: relative;
-  padding: clamp(30px, 3.2vw, 48px) clamp(26px, 3.4vw, 54px);
+  padding: clamp(30px, 3.2vw, 48px) clamp(26px, 4vw, 72px);
   display: flex;
   flex-direction: column;
   justify-content: center;
