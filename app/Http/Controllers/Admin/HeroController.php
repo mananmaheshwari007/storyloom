@@ -206,6 +206,8 @@ class HeroController extends Controller
             // "Most gifts are forgotten" — problem section
             'problem_eyebrow' => $request->input('problem_eyebrow'),
             'problem_heading' => $request->input('problem_heading'),
+            // Blank falls back to the desktop heading on mobile too.
+            'problem_heading_mobile' => $request->input('problem_heading_mobile'),
             'problem_gift1_word' => $request->input('problem_gift1_word'),
             'problem_gift1_fate' => $request->input('problem_gift1_fate'),
             'problem_gift2_word' => $request->input('problem_gift2_word'),

@@ -630,6 +630,11 @@
                             <label class="form-label font-weight-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                             <input type="text" class="form-control form-control-sm" name="problem_heading" value="{{ setting('problem_heading', 'Most gifts are <em>forgotten.</em>') }}">
                         </div>
+                        <div class="col-12">
+                            <label class="form-label font-weight-bold">Section Heading — Mobile <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                            <input type="text" class="form-control form-control-sm" name="problem_heading_mobile" value="{{ setting('problem_heading_mobile', '') }}" placeholder="Leave blank to use the same heading on mobile">
+                            <div class="form-text">Shown instead of the heading above on screens under 768px — for a shorter line or a different break. Blank means mobile uses the desktop heading.</div>
+                        </div>
                     </div>
                     <div class="row g-3 mb-3">
                         @foreach([1 => ['Flowers','fade in a week'], 2 => ['Chocolates','disappear in a day'], 3 => ['Gadgets','are replaced next year']] as $n => [$defWord, $defFate])

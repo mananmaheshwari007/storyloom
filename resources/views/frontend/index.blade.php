@@ -154,7 +154,19 @@
     <div class="container">
       <div class="section-head center" data-reveal>
         <p class="eyebrow eyebrow-center">{!! setting('problem_eyebrow', 'The trouble with gifts') !!}</p>
-        <h2>{!! setting('problem_heading', 'Most gifts are <em>forgotten.</em>') !!}</h2>
+        @php
+          // A separate mobile heading, same pattern as the hero: leave the
+          // Homepage Editor field blank and the desktop heading is used on
+          // every screen.
+          $problemHeading       = setting('problem_heading', 'Most gifts are <em>forgotten.</em>');
+          $problemHeadingMobile = setting('problem_heading_mobile', '');
+        @endphp
+        @if(trim($problemHeadingMobile) !== '')
+          <h2 class="only-desktop">{!! $problemHeading !!}</h2>
+          <h2 class="only-mobile">{!! $problemHeadingMobile !!}</h2>
+        @else
+          <h2>{!! $problemHeading !!}</h2>
+        @endif
       </div>
       <div class="fading-gifts">
         <div class="fading-gift" data-reveal style="--stagger:0">

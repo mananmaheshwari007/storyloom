@@ -1,0 +1,23 @@
+---
+# cPanel Git deployment tasks.
+#
+# The repository is checked out directly at the site root
+# (/home/outgglmv/storyloombooks.com), so there are no files to copy — a pull
+# already puts the code in place. These tasks only do the things Laravel needs
+# afterwards.
+#
+# Nothing here touches .env, /public/assets/img/uploads or /storage: those are
+# gitignored and stay exactly as they are on the server.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/outgglmv/storyloombooks.com
+    - cd $DEPLOYPATH
+    # vendor/ is not in the repo, so dependencies are installed on the server.
+    - /usr/local/bin/php -d memory_limit=-1 /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
+    # Applies any new migrations (currently: the pricing discount columns).
+    - /usr/local/bin/php artisan migrate --force
+    # Old compiled views and cached settings would otherwise mask the new code.
+    - /usr/local/bin/php artisan view:clear
+    - /usr/local/bin/php artisan route:clear
+    - /usr/local/bin/php artisan config:clear
+    - /usr/local/bin/php artisan cache:clear

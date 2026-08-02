@@ -409,6 +409,49 @@
             });
         })();
     </script>
+    <script>
+        /* Keep your place when you save.
+           Every editor screen saves with a POST and a redirect, which the
+           browser serves as a fresh page — landing you back at the top, often
+           several sections above whatever you were editing. So we note the
+           scroll offset as the form goes off, and put it back once the page
+           has settled. Only the page that was saved restores; navigating to it
+           normally still opens at the top. */
+        (function () {
+            var storageKey = function () {
+                return 'admin:scroll:' + window.location.pathname + window.location.search;
+            };
+
+            // Capture phase: runs even if a handler later cancels the submit.
+            document.addEventListener('submit', function () {
+                try {
+                    sessionStorage.setItem(storageKey(), String(window.scrollY || 0));
+                } catch (e) { /* private mode / storage full — just lose the position */ }
+            }, true);
+
+            window.addEventListener('load', function () {
+                var saved;
+                try {
+                    saved = sessionStorage.getItem(storageKey());
+                    sessionStorage.removeItem(storageKey());
+                } catch (e) { return; }
+
+                var target = parseInt(saved, 10);
+                if (!target || target < 40) return;
+
+                // Image previews and late web fonts reflow the page after load,
+                // which would drag the view off again — so re-apply a few times
+                // until it holds.
+                var attempts = 0;
+                (function settle() {
+                    window.scrollTo(0, target);
+                    if (++attempts < 8 && Math.abs(window.scrollY - target) > 2) {
+                        setTimeout(settle, 70);
+                    }
+                })();
+            });
+        })();
+    </script>
     @yield('scripts')
 </body>
 </html>

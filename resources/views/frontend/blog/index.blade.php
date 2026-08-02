@@ -102,26 +102,8 @@
     </div>
   </section>
 
-  <!-- ============ NEWSLETTER ============ -->
-  <section class="section section-dark grain">
-    <div class="container-narrow newsletter-band">
-      <p class="eyebrow eyebrow-center" data-reveal>{{ setting('newsletter_eyebrow', 'The Loom Letter') }}</p>
-      <h2 data-reveal>{!! setting('newsletter_heading', 'One good gift idea, <em>once a month.</em>') !!}</h2>
-      <p data-reveal>{!! setting('newsletter_desc', 'No sale blasts. Just one thoughtful idea, one real family story, and a heads-up before the occasions that sneak up on everyone.') !!}</p>
-      <form class="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST" data-reveal>
-        @csrf
-        <label class="skip-link" for="news-email">Your email address</label>
-        <input id="news-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
-        <button class="btn btn-primary" type="submit">{{ setting('newsletter_btn', 'Send it to me') }}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
-        </button>
-      </form>
-      @if(session('newsletter_success'))
-        <p style="color: #68D391; font-size: 0.9rem; margin-top: 10px;">{{ session('newsletter_success') }}</p>
-      @endif
-      <p class="newsletter-note" data-reveal>{{ setting('newsletter_note', 'Unsubscribe in one click. We never share your email.') }}</p>
-    </div>
-  </section>
+  {{-- The Loom Letter band was removed from this page; the footer still carries
+       a newsletter sign-up, and the CTA below now follows the articles directly. --}}
 
   <!-- ============ FINAL CTA ============ -->
   <section class="final-cta">
