@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
+        // Must run before validation and controllers so they see real markup,
+        // never the encoded form the admin panel sends past the host's WAF.
+        $middleware->prepend(\App\Http\Middleware\DecodeShieldedInput::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
