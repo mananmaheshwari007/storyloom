@@ -1188,6 +1188,32 @@ body.menu-open .nav-toggle {
     height: 100%;
     object-fit: cover;
     object-position: center top;
+    /* Parked slightly in so the slide never shows an edge mid-transition. */
+    transform: scale(1.04);
+  }
+
+  /* A slow drift inward while a slide is up — enough to feel alive, not enough
+     to notice as movement. Duration comes from --hero-slide-dur, which main.js
+     sets from the admin's slide speed, so the zoom always finishes exactly as
+     the slide hands over. */
+  .hero-mobile-slide.is-active img {
+    animation: hero-slide-zoom var(--hero-slide-dur, 4s) ease-out forwards;
+  }
+
+  @keyframes hero-slide-zoom {
+    from {
+      transform: scale(1.04);
+    }
+
+    to {
+      transform: scale(1.11);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-mobile-slide.is-active img {
+      animation: none;
+    }
   }
 
   /* Dark at both ends — the copy sits at the top and the button/dots at the

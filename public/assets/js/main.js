@@ -601,6 +601,11 @@
       }
       if (slideInterval < 2000) slideInterval = 2000;
 
+      // Hand the slide duration to CSS so the slow zoom on the active slide
+      // runs for exactly as long as that slide is up, whatever speed the admin
+      // has set. Add the crossfade so the zoom doesn't stall before the swap.
+      mobileHero.style.setProperty("--hero-slide-dur", (slideInterval + 1200) / 1000 + "s");
+
       var showSlide = function (n) {
         slides[currentSlide].classList.remove("is-active");
         if (mhDots[currentSlide]) {
