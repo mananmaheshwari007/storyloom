@@ -16,7 +16,13 @@
     .channel-choice label:has(input:checked) {
       border-color: var(--terra); background: var(--terra-soft); color: var(--terra-deep);
     }
-    .direct-card { position: sticky; top: 110px; }
+    .begin-aside { position: sticky; top: 110px; }
+    .begin-privacy {
+      display: flex; gap: 10px; align-items: flex-start;
+      margin: 18px 2px 0; font-size: 0.82rem; line-height: 1.6;
+      color: var(--ink-faint);
+    }
+    .begin-privacy svg { width: 17px; height: 17px; flex: none; margin-top: 2px; color: var(--grove); }
     .direct-card ul { display: grid; gap: 18px; margin-top: 24px; }
     .direct-card li { display: flex; gap: 14px; align-items: flex-start; }
     .direct-card li svg { width: 20px; height: 20px; flex: none; margin-top: 4px; color: var(--terra); }
@@ -27,7 +33,7 @@
       background: rgba(63, 78, 58, 0.08); border: 1px solid rgba(63, 78, 58, 0.3);
       color: var(--grove); font-size: 0.95rem;
     }
-    @media (max-width: 859px) { .begin-grid { grid-template-columns: 1fr; } .direct-card { position: static; } }
+    @media (max-width: 859px) { .begin-grid { grid-template-columns: 1fr; } .begin-aside { position: static; } }
   </style>
 
   <section class="page-hero container">
@@ -39,6 +45,10 @@
   <section class="section grain" style="padding-top: clamp(16px, 3vh, 40px);">
     <div class="container begin-grid">
 
+      {{-- Card and privacy note share the grid's left cell, so the note sits
+           directly under the card rather than being placed on a second grid row
+           below the (much taller) form. --}}
+      <div class="begin-aside">
       <div class="direct-card card" data-reveal="left">
         <p class="eyebrow">{{ setting('begin_box_eyebrow', 'Prefer to just talk?') }}</p>
         <h2 style="font-size:clamp(1.5rem,2.6vw,2rem); margin-bottom: 6px;">{{ setting('begin_box_heading', 'We\'re one message away.') }}</h2>
@@ -58,6 +68,17 @@
           </li>
         </ul>
         <p class="hand-note" style="margin-top: 26px;">{{ setting('begin_box_note', 'voice notes welcome. rambling encouraged.') }}</p>
+      </div>
+
+      @php $beginPrivacy = trim(setting('begin_privacy_note', 'Your memories stay between us. We never sell, share or publish anything you send — not your story, not your photographs, not your contact details. Nothing appears on this site without your written permission.')); @endphp
+      @if($beginPrivacy !== '')
+        <p class="begin-privacy" data-reveal="left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6l7-3Z"/><path d="M9 12.5l2 2 4-4.5"/>
+          </svg>
+          <span>{!! $beginPrivacy !!}</span>
+        </p>
+      @endif
       </div>
 
       <form id="laravel-begin-form" class="form-grid" data-reveal="right" novalidate>

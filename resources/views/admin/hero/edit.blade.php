@@ -29,6 +29,47 @@
         </div>
     </div>
 
+    {{-- Section visibility. Turning one off removes it entirely; the remaining
+         sections take their background colours in sequence, so the page never
+         ends up with two tinted bands touching where a section used to be. --}}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-eye me-2 text-primary"></i> Which sections appear on the homepage</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted small">
+                Everything is on by default. Switch one off and it disappears from the page — the sections
+                above and below close up and re-shade themselves, so there's no gap and no clash.
+                The hero is always shown.
+            </p>
+            <div class="row g-2">
+                @foreach([
+                    'problem'     => ['The trouble with gifts', 'bi-emoji-frown'],
+                    'reveal'      => ['Your story, woven into a book', 'bi-book'],
+                    'story'       => ['Who is your story for?', 'bi-people'],
+                    'process'     => ['The plan (three steps)', 'bi-list-ol'],
+                    'why'         => ['Why Storyloom', 'bi-patch-check'],
+                    'testimonial' => ['Testimonial band', 'bi-chat-quote'],
+                    'marquee'     => ['For every occasion', 'bi-tags'],
+                    'faqteaser'   => ['FAQ teaser', 'bi-question-circle'],
+                    'cta'         => ['Final call to action', 'bi-megaphone'],
+                ] as $key => [$label, $icon])
+                    @php $on = setting('section_' . $key, '1') !== '0'; @endphp
+                    <div class="col-md-6">
+                        <div class="form-check form-switch border rounded px-3 py-2 ms-0" style="padding-left:3rem !important;">
+                            <input type="hidden" name="section_{{ $key }}" value="0">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="section_{{ $key }}" name="section_{{ $key }}" value="1" {{ $on ? 'checked' : '' }}>
+                            <label class="form-check-label small fw-semibold" for="section_{{ $key }}">
+                                <i class="bi {{ $icon }} me-1 text-muted"></i>{{ $label }}
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
     <div class="row g-4">
         <!-- Left Column: Copy & Text Content -->
         <div class="col-lg-5">
@@ -799,16 +840,6 @@
                         </div>
                     </div>
                     @php $tmList = \App\Models\Testimonial::orderBy('id')->get(); @endphp
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-4">
-                            <label class="form-label font-weight-bold">"Read more" Link Text</label>
-                            <input type="text" class="form-control form-control-sm" name="testimonial_more_text" value="{{ setting('testimonial_more_text', 'Read more reviews') }}">
-                        </div>
-                        <div class="col-md-8">
-                            <label class="form-label font-weight-bold">"Read more" Link URL</label>
-                            <input type="text" class="form-control form-control-sm" name="testimonial_more_link" value="{{ setting('testimonial_more_link', route('library')) }}">
-                        </div>
-                    </div>
 
                     <hr class="my-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">

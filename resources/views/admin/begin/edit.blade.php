@@ -162,9 +162,14 @@
                         <label class="form-label fw-bold">WhatsApp link text</label>
                         <input type="text" name="begin_box_wa_text" class="form-control form-control-sm" value="{{ setting('begin_box_wa_text', 'Message us directly') }}">
                     </div>
-                    <div class="mb-0">
+                    <div class="mb-3">
                         <label class="form-label fw-bold">Handwritten Note</label>
                         <input type="text" name="begin_box_note" class="form-control form-control-sm" value="{{ setting('begin_box_note', 'voice notes welcome. rambling encouraged.') }}">
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label fw-bold">Privacy Note <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                        <textarea name="begin_privacy_note" class="form-control form-control-sm" rows="4">{{ setting('begin_privacy_note', 'Your memories stay between us. We never sell, share or publish anything you send — not your story, not your photographs, not your contact details. Nothing appears on this site without your written permission.') }}</textarea>
+                        <div class="form-text">Sits under this card with a small shield icon. Leave blank to hide it entirely.</div>
                     </div>
                     <hr class="my-3">
                     <p class="text-muted small mb-0">

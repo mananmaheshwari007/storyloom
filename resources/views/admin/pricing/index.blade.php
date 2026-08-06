@@ -75,6 +75,13 @@
                     <label class="form-label fw-bold">Subnote Below Pricing Packages Grid</label>
                     <input type="text" name="pricing_grid_subnote" class="form-control form-control-sm" value="{{ setting('pricing_grid_subnote', 'Working towards a specific date or budget? Tell us when you begin — every book is planned personally.') }}">
                 </div>
+                <div class="col-md-6 mt-3">
+                    <label class="form-label fw-bold">Badge on the highlighted tier</label>
+                    <input type="text" name="pricing_popular_label" class="form-control form-control-sm" value="{{ setting('pricing_popular_label', 'Most loved') }}">
+                    <div class="form-text">
+                        Shown only on the tier ticked as <strong>Popular</strong> below — tick a different tier and the badge moves with it.
+                    </div>
+                </div>
             </div>
 
             <hr class="my-4">

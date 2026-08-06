@@ -30,6 +30,7 @@ class BeginController extends Controller
         'begin_box_subtext',
         'begin_box_wa_text',
         'begin_box_note',
+        'begin_privacy_note',
 
         // Form labels, placeholders and options
         'begin_label_name',

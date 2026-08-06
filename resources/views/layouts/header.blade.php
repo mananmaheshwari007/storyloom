@@ -30,6 +30,14 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
+  {{-- Fixed to the viewport, so it stays reachable however far the menu or the
+       page behind it scrolls. Replaces the header toggle while the menu is
+       open, so there is only ever one close control. --}}
+  <button type="button" class="menu-close" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
   <nav aria-label="Mobile">
     <a class="menu-link {{ request()->routeIs('how-it-works') ? 'active' : '' }}" href="{{ route('how-it-works') }}"><span>How It Works</span><span class="no">01</span></a>
     <a class="menu-link {{ request()->routeIs('library') ? 'active' : '' }}" href="{{ route('library') }}"><span>Read a Storyloom</span><span class="no">02</span></a>

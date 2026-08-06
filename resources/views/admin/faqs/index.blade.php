@@ -106,7 +106,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php $currentSection = null; @endphp
                     @forelse($faqs as $faq)
+                        @php $thisSection = trim((string) $faq->section) ?: \App\Models\Faq::DEFAULT_SECTION; @endphp
+                        @if($thisSection !== $currentSection)
+                            @php $currentSection = $thisSection; @endphp
+                            {{-- Section header row, so the list here reads in the
+                                 same groups a visitor sees on the page. --}}
+                            <tr class="table-light">
+                                <td colspan="5" class="ps-3 py-2 fw-bold text-dark">
+                                    <i class="bi bi-collection me-1 text-primary"></i>{{ $thisSection }}
+                                    <span class="text-muted fw-normal small ms-2">section order {{ $faq->section_order }}</span>
+                                </td>
+                            </tr>
+                        @endif
                         <tr>
                             <td class="ps-3 fw-bold">{{ $faq->display_order }}</td>
                             <td class="fw-semibold text-dark">{!! $faq->question !!}</td>
@@ -138,11 +151,8 @@
             </table>
         </div>
     </div>
-    @if($faqs->hasPages())
-        <div class="card-footer bg-white border-0 py-3">
-            {{ $faqs->links() }}
-        </div>
-    @endif
+    {{-- Not paginated any more: sections only make sense with the whole set on
+         one screen, so the pager was removed with the grouping. --}}
 </div>
 @endsection
 

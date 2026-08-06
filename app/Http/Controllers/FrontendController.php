@@ -41,11 +41,7 @@ class FrontendController extends Controller
         $testimonials = safeCache('home_testimonials', 3600, fn() => Testimonial::where('status', 'active')->get());
         $faqs = safeCache('home_faqs', 3600, fn() => Faq::where('status', 'active')->orderBy('display_order')->take(4)->get());
         
-        $seo = [
-            'title' => setting('seo_title', 'Storyloom — The Story Only You Could Give'),
-            'description' => setting('seo_description'),
-            'keywords' => setting('seo_keywords'),
-        ];
+        $seo = \App\Support\Seo::forPage('home');
 
         return view('frontend.index', compact('hero', 'services', 'projects', 'portfolios', 'testimonials', 'faqs', 'seo'));
     }
@@ -58,10 +54,7 @@ class FrontendController extends Controller
         $about = About::first();
         $team = TeamMember::where('status', 'active')->get();
         
-        $seo = [
-            'title' => 'About Storyloom — Our Mission & Craftsmanship',
-            'description' => 'Learn how Storyloom weaves family memories into handbound, illustrated keepsake books crafted by master artisans in India.',
-        ];
+        $seo = \App\Support\Seo::forPage('about');
 
         return view('frontend.about', compact('about', 'team', 'seo'));
     }
@@ -73,10 +66,7 @@ class FrontendController extends Controller
     {
         $faqs = Faq::where('status', 'active')->orderBy('display_order')->get();
         
-        $seo = [
-            'title' => 'How It Works — The Journey of a Storyloom',
-            'description' => 'From sharing a single memory to reviewing hand-painted spreads, learn the step-by-step process of crafting your keepsake book.',
-        ];
+        $seo = \App\Support\Seo::forPage('how-it-works');
 
         return view('frontend.how-it-works', compact('faqs', 'seo'));
     }
@@ -105,10 +95,7 @@ class FrontendController extends Controller
             }
         }
         
-        $seo = [
-            'title' => 'Read a Storyloom — Illustrated Keepsake Book Library',
-            'description' => 'Explore sample hand-drawn pages, watercolor spreads, and heirloom books created from real family memories.',
-        ];
+        $seo = \App\Support\Seo::forPage('library');
 
         return view('frontend.library', compact('featuredBooks', 'shelfBooks', 'seo'));
     }
@@ -215,10 +202,7 @@ class FrontendController extends Controller
     {
         $portfolios = safeCache('occasions_portfolios', 3600, fn() => Portfolio::where('status', 'published')->get());
         
-        $seo = [
-            'title' => 'Gifting Occasions — Keepsakes for Milestones',
-            'description' => 'Personalised books for anniversaries, Mother\'s Day, Father\'s Day, weddings, retirements, birthdays, and farewelling loved ones.',
-        ];
+        $seo = \App\Support\Seo::forPage('occasions');
 
         return view('frontend.occasions', compact('portfolios', 'seo'));
     }
@@ -230,10 +214,7 @@ class FrontendController extends Controller
     {
         $plans = safeCache('pricing_plans', 3600, fn() => PricingPlan::where('status', 'active')->get());
         
-        $seo = [
-            'title' => 'Pricing & Book Formats — Storyloom',
-            'description' => 'Compare our Keepsake and Heirloom custom book editions. Clear pricing for handbound, illustrated storytelling.',
-        ];
+        $seo = \App\Support\Seo::forPage('pricing');
 
         return view('frontend.pricing', compact('plans', 'seo'));
     }
@@ -245,10 +226,7 @@ class FrontendController extends Controller
     {
         $faqs = safeCache('faq_faqs', 3600, fn() => Faq::where('status', 'active')->orderBy('display_order')->get());
         
-        $seo = [
-            'title' => 'Good Questions — FAQ | Storyloom',
-            'description' => 'Answers to questions about writing, image references, international shipping, print proof reviews, and pricing packages.',
-        ];
+        $seo = \App\Support\Seo::forPage('faq');
 
         return view('frontend.faq', compact('faqs', 'seo'));
     }
@@ -258,10 +236,7 @@ class FrontendController extends Controller
      */
     public function begin()
     {
-        $seo = [
-            'title' => 'Begin Your Story — Start a Storybook | Storyloom',
-            'description' => 'Start with one memory. Tell us who the book is for, and we\'ll send a personalized plan, timeline, and quote.',
-        ];
+        $seo = \App\Support\Seo::forPage('begin');
 
         return view('frontend.begin', compact('seo'));
     }
@@ -273,10 +248,7 @@ class FrontendController extends Controller
     {
         $articles = Blog::where('status', 'published')->orderBy('created_at', 'desc')->paginate(9);
 
-        $seo = [
-            'title' => 'The Storyloom Journal — Reflections on Memory & Keepsakes',
-            'description' => 'Essays, family traditions, memory-keeping ideas, and behind-the-scenes stories from the Storyloom writing and art desk.',
-        ];
+        $seo = \App\Support\Seo::forPage('journal');
 
         return view('frontend.blog.index', compact('articles', 'seo'));
     }

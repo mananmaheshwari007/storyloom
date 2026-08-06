@@ -294,6 +294,10 @@
                 <i class="bi bi-sliders"></i>
                 <span>Site Settings & Branding</span>
             </a>
+            <a href="{{ route('admin.seo.index') }}" class="sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
+                <i class="bi bi-search"></i>
+                <span>SEO (all pages)</span>
+            </a>
             <a href="{{ route('admin.messages.index') }}" class="sidebar-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
                 <i class="bi bi-envelope"></i>
                 <span>Messages & Inquiries</span>

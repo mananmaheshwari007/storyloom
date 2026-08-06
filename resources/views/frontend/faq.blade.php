@@ -15,25 +15,37 @@
   <!-- ================= ACCORDION ================= -->
   <section class="section">
     <div class="container-narrow">
-      <div class="faq-list">
-        @forelse($faqs as $index => $faq)
-          <div class="faq-item" data-reveal style="--stagger:{{ $index % 4 }}">
-            <button class="faq-q" aria-expanded="false">
-              <span>{!! $faq->question !!}</span>
-              <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></span>
-            </button>
-            <div class="faq-a">
-              <div>
-                <p style="white-space: pre-line;">{!! $faq->answer !!}</p>
+      @php $faqGroups = \App\Models\Faq::grouped(); @endphp
+
+      @forelse($faqGroups as $sectionName => $sectionFaqs)
+        {{-- A single unnamed group would just be a redundant heading over the
+             whole list, so the label only appears once there is more than one. --}}
+        <div class="faq-group">
+          @if($faqGroups->count() > 1)
+            <h2 class="faq-group-title" id="faq-{{ Str::slug($sectionName) }}" data-reveal>{{ $sectionName }}</h2>
+          @endif
+
+          <div class="faq-list">
+            @foreach($sectionFaqs as $index => $faq)
+              <div class="faq-item" data-reveal style="--stagger:{{ $index % 4 }}">
+                <button class="faq-q" aria-expanded="false">
+                  <span>{!! $faq->question !!}</span>
+                  <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></span>
+                </button>
+                <div class="faq-a">
+                  <div>
+                    <p style="white-space: pre-line;">{!! $faq->answer !!}</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            @endforeach
           </div>
-        @empty
-          <div class="text-center py-5 text-muted">
-            No questions found.
-          </div>
-        @endforelse
-      </div>
+        </div>
+      @empty
+        <div class="text-center py-5 text-muted">
+          No questions found.
+        </div>
+      @endforelse
     </div>
   </section>
 

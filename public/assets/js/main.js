@@ -26,11 +26,21 @@
     links.forEach(function (a, i) {
       a.style.transitionDelay = 0.06 + i * 0.05 + "s";
     });
+    /* The close control lives inside the overlay and is fixed to the viewport,
+       so it stays put no matter what the page behind does — the header's own
+       toggle could scroll out of reach on iOS, where overflow:hidden on body
+       doesn't reliably stop the document moving. */
+    var closeBtn = menu.querySelector(".menu-close");
     var setMenu = function (open) {
       toggle.setAttribute("aria-expanded", String(open));
       menu.classList.toggle("is-open", open);
+      document.body.classList.toggle("menu-open", open);
       document.body.style.overflow = open ? "hidden" : "";
+      if (open && closeBtn) closeBtn.focus();
     };
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () { setMenu(false); });
+    }
     toggle.addEventListener("click", function () {
       setMenu(toggle.getAttribute("aria-expanded") !== "true");
     });

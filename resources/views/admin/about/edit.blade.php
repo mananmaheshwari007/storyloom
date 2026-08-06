@@ -42,6 +42,10 @@
                 <div class="col-md-8">
                     <label class="form-label fw-bold">Hero Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                     <input type="text" name="about_hero_heading" class="form-control form-control-sm" value="{{ setting('about_hero_heading', 'We exist because memories<br>deserve better than a <em>camera roll.</em>') }}">
+                    <div class="form-text mb-2">Shown on screens 768px and wider.</div>
+                    <label class="form-label fw-bold mt-2">Hero Heading — Mobile <span class="badge bg-secondary ms-1">optional</span></label>
+                    <input type="text" name="about_hero_heading_mobile" class="form-control form-control-sm" value="{{ setting('about_hero_heading_mobile', '') }}" placeholder="Leave blank to reuse the heading above">
+                    <div class="form-text">Used instead of the heading above under 768px — for a shorter line or a different break.</div>
                     <div class="form-text">Use <code>&lt;em&gt;text&lt;/em&gt;</code> for the custom script font accent.</div>
                 </div>
             </div>
@@ -103,6 +107,10 @@
                 <div class="col-md-8">
                     <label class="form-label fw-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                     <input type="text" name="stand_heading" class="form-control form-control-sm" value="{{ setting('stand_heading', 'Craftsmanship over speed.<br>Specificity over <em>sentiment.</em>') }}">
+                    <div class="form-text mb-2">Shown on screens 768px and wider.</div>
+                    <label class="form-label fw-bold mt-2">Section Heading — Mobile <span class="badge bg-secondary ms-1">optional</span></label>
+                    <input type="text" name="stand_heading_mobile" class="form-control form-control-sm" value="{{ setting('stand_heading_mobile', '') }}" placeholder="Leave blank to reuse the heading above">
+                    <div class="form-text">Used instead of the heading above under 768px — for a shorter line or a different break.</div>
                 </div>
             </div>
 
@@ -154,6 +162,10 @@
                 <div class="col-md-8">
                     <label class="form-label fw-bold">Section Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                     <input type="text" name="mark_heading" class="form-control form-control-sm" value="{{ setting('mark_heading', 'An heirloom mark,<br>not a <em>startup logo.</em>') }}">
+                    <div class="form-text mb-2">Shown on screens 768px and wider.</div>
+                    <label class="form-label fw-bold mt-2">Section Heading — Mobile <span class="badge bg-secondary ms-1">optional</span></label>
+                    <input type="text" name="mark_heading_mobile" class="form-control form-control-sm" value="{{ setting('mark_heading_mobile', '') }}" placeholder="Leave blank to reuse the heading above">
+                    <div class="form-text">Used instead of the heading above under 768px — for a shorter line or a different break.</div>
                 </div>
             </div>
             <div class="row g-3">
@@ -202,6 +214,10 @@
                 <div class="col-md-8">
                     <label class="form-label fw-bold">CTA Banner Heading <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
                     <input type="text" name="about_cta_heading" class="form-control form-control-sm" value="{{ setting('about_cta_heading', 'Your family\'s chapter<br>is <em>ready</em> to be written.') }}">
+                    <div class="form-text mb-2">Shown on screens 768px and wider.</div>
+                    <label class="form-label fw-bold mt-2">CTA Heading — Mobile <span class="badge bg-secondary ms-1">optional</span></label>
+                    <input type="text" name="about_cta_heading_mobile" class="form-control form-control-sm" value="{{ setting('about_cta_heading_mobile', '') }}" placeholder="Leave blank to reuse the heading above">
+                    <div class="form-text">Used instead of the heading above under 768px — for a shorter line or a different break.</div>
                     <div class="form-text">Supports HTML formatting tags like <code>&lt;em&gt;word&lt;/em&gt;</code> for brand terracotta italic script.</div>
                 </div>
                 <div class="col-md-4">

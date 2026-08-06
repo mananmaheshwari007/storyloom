@@ -150,7 +150,8 @@
   </section>
 
   <!-- ================= PROBLEM ================= -->
-  <section class="section section-tint grain">
+  @if(\App\Support\Sections::enabled('problem'))
+  <section class="section {{ \App\Support\Sections::tint() }}">
     <div class="container">
       <div class="section-head center" data-reveal>
         <p class="eyebrow eyebrow-center">{!! setting('problem_eyebrow', 'The trouble with gifts') !!}</p>
@@ -196,8 +197,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= REVEAL (FULL-BLEED BACKGROUND ARTWORK IMAGE) ================= -->
+  @if(\App\Support\Sections::enabled('reveal'))
   <section class="section reveal-split-section" style="position: relative; overflow: hidden; min-height: clamp(640px, 82vh, 920px); display: flex; align-items: center; padding: 0;">
     <!-- Full-Bleed Background Artwork Image Across Whole Section (No Opacity Mask) -->
     <div class="reveal-right-img" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background-image: url('{{ asset(setting('reveal_book_spread_image', 'assets/img/spread-home-morning.webp')) }}'); background-size: cover; background-position: center; pointer-events: none;"></div>
@@ -228,6 +231,8 @@
       </div>
     </div>
   </section>
+  @php \App\Support\Sections::breakTint(); @endphp
+  @endif
 
   <!-- ================= STORY EXAMPLES ================= -->
   @php
@@ -251,7 +256,8 @@
         ];
     }
   @endphp
-  <section class="section section-tint grain">
+  @if(\App\Support\Sections::enabled('story'))
+  <section class="section {{ \App\Support\Sections::tint() }}">
     <div class="container">
       <div class="section-head" data-reveal>
         <p class="eyebrow">{{ setting('story_for_eyebrow', 'Who is your story for?') }}</p>
@@ -275,9 +281,11 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= PROCESS ================= -->
-  <section class="section">
+  @if(\App\Support\Sections::enabled('process'))
+  <section class="section {{ \App\Support\Sections::tint() }}">
     <div class="container">
       <div class="section-head center" data-reveal>
         <p class="eyebrow eyebrow-center">{{ setting('process_eyebrow', 'The plan') }}</p>
@@ -321,9 +329,11 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= WHY / TRANSFORMATION ================= -->
-  <section class="section section-tint grain">
+  @if(\App\Support\Sections::enabled('why'))
+  <section class="section {{ \App\Support\Sections::tint() }}">
     <div class="container">
       <div class="section-head" data-reveal>
         <p class="eyebrow">{{ setting('why_eyebrow', 'Why Storyloom') }}</p>
@@ -363,10 +373,12 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= TESTIMONIALS ================= -->
   {{-- Not a section with padding around it — the band IS the element, running
        edge to edge with no dark margin above or below. --}}
+  @if(\App\Support\Sections::enabled('testimonial'))
   <section class="testimonial-section" aria-label="What families say">
     {{-- Heading is off by default: the band speaks for itself. Turn it back on
          from Homepage Editor → Testimonial section if it's ever wanted. --}}
@@ -410,10 +422,6 @@
             @endforeach
           </div>
 
-          <a class="tb-more" href="{{ setting('testimonial_more_link', route('library')) }}">
-            {{ setting('testimonial_more_text', 'Read more reviews') }}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
-          </a>
         </div>
 
         @if($tItems->count() > 1)
@@ -428,9 +436,12 @@
         @endif
       </div>
   </section>
+  @php \App\Support\Sections::breakTint(); @endphp
+  @endif
 
   <!-- ================= OCCASIONS MARQUEE ================= -->
-  <section class="section grain" style="padding-bottom: clamp(56px, 8vh, 96px);">
+  @if(\App\Support\Sections::enabled('marquee'))
+  <section class="section {{ \App\Support\Sections::tint() }}" style="padding-bottom: clamp(56px, 8vh, 96px);">
     <div class="container" style="text-align:center;">
       <div class="section-head center" data-reveal>
         <p class="eyebrow eyebrow-center">{{ setting('marquee_eyebrow', 'For every occasion') }}</p>
@@ -449,9 +460,11 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= FAQ TEASER ================= -->
-  <section class="section section-tint">
+  @if(\App\Support\Sections::enabled('faqteaser'))
+  <section class="section {{ \App\Support\Sections::tint() }}">
     <div class="container-narrow">
       <div class="section-head center" data-reveal>
         <p class="eyebrow eyebrow-center">Good questions</p>
@@ -481,8 +494,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= FINAL CTA ================= -->
+  @if(\App\Support\Sections::enabled('cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('cta_bg_image', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a couple lying on a hillside pointing at the stars above their city"></div>
     <div class="container inner">
@@ -499,4 +514,6 @@
       <p class="subnote" data-reveal>{{ setting('cta_subnote_text', 'We’ll guide you through every step') }}</p>
     </div>
   </section>
+  @php \App\Support\Sections::breakTint(); @endphp
+  @endif
 @endsection

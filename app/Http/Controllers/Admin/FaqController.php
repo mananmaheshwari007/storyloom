@@ -17,8 +17,14 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faqs = Faq::orderBy('display_order')->paginate(10);
-        return view('admin.faqs.index', compact('faqs'));
+        // Ordered exactly as the public page groups them, so the list here reads
+        // in the same order a visitor sees. Not paginated: sections only make
+        // sense when the whole set is on one screen.
+        $faqs = Faq::orderBy('section_order')->orderBy('section')
+            ->orderBy('display_order')->orderBy('id')->get();
+        $sections = Faq::sections();
+
+        return view('admin.faqs.index', compact('faqs', 'sections'));
     }
 
     /**
@@ -75,6 +81,8 @@ class FaqController extends Controller
         $request->validate([
             'question' => 'required|string|max:255',
             'answer' => 'required|string',
+            'section' => 'nullable|string|max:120',
+            'section_order' => 'nullable|integer',
             'display_order' => 'required|integer',
             'status' => 'required|in:active,inactive',
         ]);
@@ -100,6 +108,8 @@ class FaqController extends Controller
         $request->validate([
             'question' => 'required|string|max:255',
             'answer' => 'required|string',
+            'section' => 'nullable|string|max:120',
+            'section_order' => 'nullable|integer',
             'display_order' => 'required|integer',
             'status' => 'required|in:active,inactive',
         ]);

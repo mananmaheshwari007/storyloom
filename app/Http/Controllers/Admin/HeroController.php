@@ -238,14 +238,24 @@ class HeroController extends Controller
             'why_card4_title' => $request->input('why_card4_title'),
             'why_card4_desc' => $request->input('why_card4_desc'),
 
+            // Section visibility. A hidden 0 field pairs with each switch so
+            // unticking one saves "off" instead of submitting nothing.
+            'section_problem' => $request->input('section_problem', '1'),
+            'section_reveal' => $request->input('section_reveal', '1'),
+            'section_story' => $request->input('section_story', '1'),
+            'section_process' => $request->input('section_process', '1'),
+            'section_why' => $request->input('section_why', '1'),
+            'section_testimonial' => $request->input('section_testimonial', '1'),
+            'section_marquee' => $request->input('section_marquee', '1'),
+            'section_faqteaser' => $request->input('section_faqteaser', '1'),
+            'section_cta' => $request->input('section_cta', '1'),
+
             // "The Moment It Opens" — testimonials heading
             // A hidden 0 field pairs with the checkbox so unticking it actually
             // saves "off" rather than submitting nothing.
             'testimonial_show_head' => $request->input('testimonial_show_head', '0'),
             'testimonial_eyebrow' => $request->input('testimonial_eyebrow'),
             'testimonial_heading' => $request->input('testimonial_heading'),
-            'testimonial_more_text' => $request->input('testimonial_more_text'),
-            'testimonial_more_link' => $request->input('testimonial_more_link'),
 
             // "For Every Occasion" — marquee
             'marquee_eyebrow' => $request->input('marquee_eyebrow'),

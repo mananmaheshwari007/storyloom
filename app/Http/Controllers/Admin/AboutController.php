@@ -30,6 +30,7 @@ class AboutController extends Controller
             // Section 1: Hero & Story Prose
             'about_hero_eyebrow',
             'about_hero_heading',
+            'about_hero_heading_mobile',
             // Single prose block. about_hero_p1..p3 are the retired split
             // fields — still read as a fallback until this is first saved.
             'about_hero_body',
@@ -39,6 +40,7 @@ class AboutController extends Controller
             // Section 2: What We Stand For
             'stand_eyebrow',
             'stand_heading',
+            'stand_heading_mobile',
             'stand_card1_title', 'stand_card1_desc',
             'stand_card2_title', 'stand_card2_desc',
             'stand_card3_title', 'stand_card3_desc',
@@ -47,6 +49,7 @@ class AboutController extends Controller
             // Section 3: The Mark We Make
             'mark_eyebrow',
             'mark_heading',
+            'mark_heading_mobile',
             'mark_p1',
             'mark_p2',
 
@@ -57,6 +60,7 @@ class AboutController extends Controller
 
             // Section 5: About Page Final CTA
             'about_cta_heading',
+            'about_cta_heading_mobile',
             'about_cta_desc',
             'about_cta_btn1',
             'about_cta_bg',

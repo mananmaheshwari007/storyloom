@@ -37,9 +37,32 @@
                 @enderror
             </div>
 
+            <datalist id="faq-sections">
+                @foreach(\App\Models\Faq::sections() as $s)<option value="{{ $s }}">@endforeach
+            </datalist>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-8">
+                    <label for="section" class="form-label">Section</label>
+                    <input type="text" list="faq-sections" class="form-control @error('section') is-invalid @enderror" id="section" name="section" value="{{ old('section', \App\Models\Faq::DEFAULT_SECTION) }}" placeholder="e.g. Shipping &amp; Delivery">
+                    <div class="form-text">Pick an existing section or type a new name to create one. Questions sharing a name appear under one heading.</div>
+                    @error('section')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-4">
+                    <label for="section_order" class="form-label">Section Order</label>
+                    <input type="number" class="form-control @error('section_order') is-invalid @enderror" id="section_order" name="section_order" value="{{ old('section_order', 0) }}">
+                    <div class="form-text">Where this section sits on the page. Lower comes first.</div>
+                    @error('section_order')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                    <label for="display_order" class="form-label">Display Order</label>
+                    <label for="display_order" class="form-label">Display Order <span class="text-muted">— within its section</span></label>
                     <input type="number" class="form-control @error('display_order') is-invalid @enderror" id="display_order" name="display_order" value="{{ old('display_order', 0) }}" required>
                     @error('display_order')
                         <div class="invalid-feedback">{{ $message }}</div>

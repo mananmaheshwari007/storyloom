@@ -35,6 +35,7 @@ class PricingPlanController extends Controller
             'pricing_stat3_num',
             'pricing_stat3_lbl',
             'pricing_grid_subnote',
+            'pricing_popular_label',
             'price_note_eyebrow',
             'price_note_heading',
             'price_note_p1',

@@ -20,26 +20,25 @@
       <div class="pricing-grid">
         @forelse($plans as $index => $plan)
           @php
-            // Resolve tags and taglines dynamically based on standard static definitions
-            $tierTag = 'The Storyloom';
+            // The "most loved" badge belongs to whichever tier is ticked as
+            // popular in the admin — it used to be pinned to the plan *named*
+            // Deluxe, so marking another tier moved the highlight but left the
+            // badge behind. Exactly one tier carries it.
             $tagline = 'A customized storybook experience.';
-            
+
             if (Str::lower($plan->plan_name) === 'classic') {
-                $tierTag = 'The Storyloom';
                 $tagline = 'The complete Storyloom experience.';
             } elseif (Str::lower($plan->plan_name) === 'deluxe') {
-                $tierTag = 'Most loved';
                 $tagline = 'A longer story, a richer world.';
             } elseif (Str::lower($plan->plan_name) === 'heirloom') {
-                $tierTag = 'The Heirloom';
                 $tagline = 'Made to be handed down.';
-            } elseif ($plan->popular_plan) {
-                $tierTag = 'Most loved';
             }
           @endphp
-          
+
           <div class="card price-card @if($plan->popular_plan) featured @endif" data-reveal style="--stagger:{{ $index }}">
-            <span class="tier-tag">{{ $tierTag }}</span>
+            @if($plan->popular_plan)
+              <span class="tier-tag">{{ setting('pricing_popular_label', 'Most loved') }}</span>
+            @endif
             <h3>{{ $plan->plan_name }}</h3>
             <p style="color:var(--ink-soft); font-size:.95rem;">{{ $tagline }}</p>
             {{-- Amount charged leads; the old price and the saving sit under it. --}}

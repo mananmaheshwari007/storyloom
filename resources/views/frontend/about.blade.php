@@ -217,7 +217,7 @@
       <div class="section-head center" style="margin-bottom: clamp(48px, 6vh, 75px);">
         <div class="hero-eyebrow-center">{{ setting('about_hero_eyebrow', 'ABOUT STORYLOOM') }}</div>
         <h1 style="font-family: 'Cormorant Garamond', Cormorant, Georgia, serif; font-style: normal; font-weight: 600; font-size: clamp(2.4rem, 4.2vw, 56px); line-height: clamp(2.8rem, 4.8vw, 66px); color: rgb(29, 42, 68); max-width: 960px; width: 100%; margin-inline: auto; text-align: center; letter-spacing: -0.01em;">
-          {!! setting('about_hero_heading', 'We exist because memories<br>deserve better than a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">camera roll.</em>') !!}
+          @php $h = setting('about_hero_heading', 'We exist because memories<br>deserve better than a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">camera roll.</em>'); $hm = trim(setting('about_hero_heading_mobile', '')); @endphp@if($hm !== '')<span class="only-desktop">{!! $h !!}</span><span class="only-mobile">{!! $hm !!}</span>@else{!! $h !!}@endif
         </h1>
       </div>
 
@@ -262,7 +262,7 @@
       <div class="section-head center" data-reveal style="margin-bottom: clamp(40px, 6vh, 64px);">
         <div class="hero-eyebrow-center">{{ setting('stand_eyebrow', 'WHAT WE STAND FOR') }}</div>
         <h2 style="font-family: var(--font-display); font-size: clamp(2.2rem, 3.8vw, 3.2rem); font-weight: 600; line-height: 1.18; color: #1C222B; margin: 0;">
-          {!! setting('stand_heading', 'Craftsmanship over speed.<br>Specificity over <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">sentiment.</em>') !!}
+          @php $h = setting('stand_heading', 'Craftsmanship over speed.<br>Specificity over <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">sentiment.</em>'); $hm = trim(setting('stand_heading_mobile', '')); @endphp@if($hm !== '')<span class="only-desktop">{!! $h !!}</span><span class="only-mobile">{!! $hm !!}</span>@else{!! $h !!}@endif
         </h2>
       </div>
 
@@ -310,7 +310,7 @@
         <div data-reveal="right">
           <div class="eyebrow-left">{{ setting('mark_eyebrow', 'THE MARK WE MAKE') }}</div>
           <h2 style="font-family: 'Cormorant Garamond', Cormorant, Georgia, serif; font-size: clamp(2.3rem, 4.2vw, 56px); line-height: clamp(2.7rem, 4.8vw, 66px); font-weight: 600; color: #1C222B; margin-bottom: 24px;">
-            {!! setting('mark_heading', 'An heirloom mark,<br>not a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">startup logo.</em>') !!}
+            @php $h = setting('mark_heading', 'An heirloom mark,<br>not a <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: rgb(181, 91, 41);">startup logo.</em>'); $hm = trim(setting('mark_heading_mobile', '')); @endphp@if($hm !== '')<span class="only-desktop">{!! $h !!}</span><span class="only-mobile">{!! $hm !!}</span>@else{!! $h !!}@endif
           </h2>
           <div class="about-prose">
             <p>{{ setting('mark_p1', 'Look closely at our emblem. At the top, a loom — vertical posts with threads strung between them: a family\'s scattered moments, still unformed. Below, those same threads fall and open into the pages of a book. One becomes the other.') }}</p>
@@ -342,7 +342,7 @@
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('about_cta_bg', 'assets/img/spread-alone-bench.webp')) }}')" role="img" aria-label="Illustration of a couple watching dusk city lights"></div>
     <div class="container inner">
-      <h2 data-reveal>{!! setting('about_cta_heading', 'Your family\'s chapter<br>is <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: #E88B52;">ready</em> to be written.') !!}</h2>
+      <h2 data-reveal>@php $h = setting('about_cta_heading', 'Your family\'s chapter<br>is <em style="font-family: \'Cormorant Garamond\', Cormorant, Georgia, serif; font-style: italic; font-weight: 500; color: #E88B52;">ready</em> to be written.'); $hm = trim(setting('about_cta_heading_mobile', '')); @endphp@if($hm !== '')<span class="only-desktop">{!! $h !!}</span><span class="only-mobile">{!! $hm !!}</span>@else{!! $h !!}@endif</h2>
       <p data-reveal style="max-width: 620px; width: 100%; margin-inline: auto; font-size: 1.05rem; line-height: 1.65; color: rgba(255, 255, 255, 0.78);">
         {!! setting('about_cta_desc', 'Somewhere a memory is waiting to be told and painted into a book. Tell us your story to begin, or read a storyloom.') !!}
       </p>

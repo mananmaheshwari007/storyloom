@@ -93,6 +93,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/blog/default-book', [BlogController::class, 'updateDefaultBook'])->name('blog.defaultBook.update');
 
     // Website Settings
+    Route::get('/seo', [\App\Http\Controllers\Admin\SeoController::class, 'index'])->name('seo.index');
+    Route::post('/seo', [\App\Http\Controllers\Admin\SeoController::class, 'update'])->name('seo.update');
+
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 
