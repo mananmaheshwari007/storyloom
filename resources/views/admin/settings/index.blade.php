@@ -187,6 +187,16 @@
                         <div class="form-text" style="font-size: 0.74rem;"><span class="badge bg-secondary">PNG/SVG</span> Max 1MB</div>
                     </div>
 
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Social Share &amp; Thumbnail Card</label>
+                        <div class="mb-2 p-2 bg-light border rounded text-center">
+                            <img id="share_image_preview" src="{{ asset(setting('site_share_image', 'assets/img/spread-bench-dusk.webp')) }}" alt="Thumbnail Card Preview" style="max-height: 120px; width: 100%; object-fit: cover;" class="rounded border">
+                        </div>
+                        <input type="file" class="form-control form-control-sm mb-1" name="site_share_image_file" accept="image/*" onchange="previewImg(this, 'share_image_preview')">
+                        <input type="text" class="form-control form-control-sm" name="site_share_image" value="{{ setting('site_share_image', 'assets/img/spread-bench-dusk.webp') }}">
+                        <div class="form-text" style="font-size: 0.74rem;"><span class="badge bg-secondary">JPG/PNG/WEBP</span> Recommended 1200&times;630 px. Preview card shown on WhatsApp, iMessage &amp; social links.</div>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">Favicon Icon</label>
                         <div class="mb-2 p-2 bg-light border rounded text-center">

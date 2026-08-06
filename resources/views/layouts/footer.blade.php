@@ -60,8 +60,8 @@
       <span>© <span data-year>{{ date('Y') }}</span> {{ setting('copyright_text', 'Storyloom. Every story belongs to its family.') }}</span>
       <span class="legal-links">
         <a href="{{ route('faq') }}{{ \App\Models\Faq::sectionAnchor('shipping') }}">Shipping</a>
-        <a href="{{ route('faq') }}#refunds">Refunds</a>
-        <a href="{{ route('faq') }}">Privacy</a>
+        <a href="{{ route('faq') }}{{ \App\Models\Faq::sectionAnchor('refund') }}">Refunds</a>
+        <a href="{{ route('faq') }}{{ \App\Models\Faq::sectionAnchor('privacy') }}">Privacy</a>
       </span>
     </div>
   </div>

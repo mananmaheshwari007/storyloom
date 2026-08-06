@@ -5,7 +5,8 @@
     $description = $seo['description'] ?? setting('seo_description', 'Storyloom transforms your memories into a hand-illustrated keepsake storybook — a one-of-a-kind gift for the people who shaped your life.');
     $keywords = $seo['keywords'] ?? setting('seo_keywords', 'personalized storybook, keepsake books, customized gifts, illustrated storybook, India gifts, anniversaries, birthdays');
     $url = url()->current();
-    $image = asset(setting('site_share_image', 'assets/img/spread-bench-dusk.webp'));
+    $imageRaw = !empty($seo['image']) ? $seo['image'] : setting('site_share_image', 'assets/img/spread-bench-dusk.webp');
+    $image = \Illuminate\Support\Str::startsWith($imageRaw, ['http://', 'https://']) ? $imageRaw : asset($imageRaw);
 @endphp
 
 <title>{{ $title }}</title>

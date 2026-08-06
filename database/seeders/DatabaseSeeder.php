@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             'site_emblem' => 'assets/img/logo-emblem.png',
             'site_wordmark' => 'assets/img/logo-wordmark.png',
             'site_favicon' => 'assets/img/favicon.png',
+            'site_share_image' => 'assets/img/spread-bench-dusk.webp',
             'contact_phone' => '+91 99999 99999',
             'contact_email' => 'hello@storyloom.in',
             'contact_whatsapp' => '919999999999',
@@ -246,10 +247,13 @@ class DatabaseSeeder extends Seeder
         // 10. Seed FAQs
         Faq::truncate();
         $faqs = [
-            ['question' => 'What if I\'m not a writer?', 'answer' => 'You don\'t need to be. You share memories the way you\'d tell them to a friend — scattered, unpolished, out of order. Our writers shape them into a story. Most of our favourite books began as voice notes.', 'display_order' => 1, 'status' => 'active'],
-            ['question' => 'Can I review the book before it\'s printed?', 'answer' => 'Always. You\'ll see the story, then every illustrated spread, before anything goes to print. Refinement rounds are built into the process — nothing is final until you say it is.', 'display_order' => 2, 'status' => 'active'],
-            ['question' => 'How long does a Storyloom take?', 'answer' => 'Most books take three to five weeks from first conversation to delivery. Working towards a date? Tell us — we plan every book backwards from the moment it needs to be opened.', 'display_order' => 3, 'status' => 'active'],
-            ['question' => 'Can pets, grandparents — everyone — be in it?', 'answer' => 'Yes — the dog, the grandparents, the neighbour who\'s basically family, the exact balcony with the exact plants. If they belong in your story, they belong in the book.', 'display_order' => 4, 'status' => 'active'],
+            ['question' => 'What if I\'m not a writer?', 'answer' => 'You don\'t need to be. You share memories the way you\'d tell them to a friend — scattered, unpolished, out of order. Our writers shape them into a story. Most of our favourite books began as voice notes.', 'section' => 'General', 'section_order' => 1, 'display_order' => 1, 'status' => 'active'],
+            ['question' => 'Can I review the book before it\'s printed?', 'answer' => 'Always. You\'ll see the story, then every illustrated spread, before anything goes to print. Refinement rounds are built into the process — nothing is final until you say it is.', 'section' => 'General', 'section_order' => 1, 'display_order' => 2, 'status' => 'active'],
+            ['question' => 'How long does a Storyloom take?', 'answer' => 'Most books take three to five weeks from first conversation to delivery. Working towards a date? Tell us — we plan every book backwards from the moment it needs to be opened.', 'section' => 'General', 'section_order' => 1, 'display_order' => 3, 'status' => 'active'],
+            ['question' => 'Can pets, grandparents — everyone — be in it?', 'answer' => 'Yes — the dog, the grandparents, the neighbour who\'s basically family, the exact balcony with the exact plants. If they belong in your story, they belong in the book.', 'section' => 'General', 'section_order' => 1, 'display_order' => 4, 'status' => 'active'],
+            ['question' => 'How does shipping and delivery work?', 'answer' => 'We deliver across India and internationally via express courier partners. Every book is packaged in archival protective wrapping and a custom presentation box to ensure safe arrival.', 'section' => 'Shipping & Delivery', 'section_order' => 2, 'display_order' => 1, 'status' => 'active'],
+            ['question' => 'What is your refund and cancellation policy?', 'answer' => 'Since every Storyloom is a custom, hand-crafted artwork tailored specifically to your family memories, cancellations are accepted before draft writing begins. If you are not satisfied with initial proofs, our team works closely with you through revision rounds until you love your story.', 'section' => 'Refunds & Cancellations', 'section_order' => 3, 'display_order' => 1, 'status' => 'active'],
+            ['question' => 'How do you protect our personal photos and memories?', 'answer' => 'Your privacy is paramount to us. All photos, voice notes, and family stories shared with Storyloom are kept strictly confidential, used solely for crafting your book, and are never shared or published without your explicit consent.', 'section' => 'Privacy & Confidentiality', 'section_order' => 4, 'display_order' => 1, 'status' => 'active'],
         ];
         foreach ($faqs as $faq) {
             Faq::create($faq);

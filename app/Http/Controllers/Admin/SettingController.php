@@ -51,11 +51,12 @@ class SettingController extends Controller
                     $request->file($key)->move($uploadPath, $filename);
 
                     $relativePath = 'uploads/settings/' . $filename;
+                    $targetKey = preg_replace('/_file$/', '', $key);
                     Setting::updateOrCreate(
-                        ['key' => $key],
+                        ['key' => $targetKey],
                         ['value' => $relativePath]
                     );
-                    Cache::forget("setting.{$key}");
+                    Cache::forget("setting.{$targetKey}");
                 }
             }
         }
