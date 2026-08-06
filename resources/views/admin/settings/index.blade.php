@@ -194,7 +194,11 @@
                         </div>
                         <input type="file" class="form-control form-control-sm mb-1" name="site_share_image_file" accept="image/*" onchange="previewImg(this, 'share_image_preview')">
                         <input type="text" class="form-control form-control-sm" name="site_share_image" value="{{ setting('site_share_image', 'assets/img/spread-bench-dusk.webp') }}">
-                        <div class="form-text" style="font-size: 0.74rem;"><span class="badge bg-secondary">JPG/PNG/WEBP</span> Recommended 1200&times;630 px. Preview card shown on WhatsApp, iMessage &amp; social links.</div>
+                        <div class="form-text" style="font-size: 0.74rem;">
+                            <span class="badge bg-primary mb-1">WhatsApp &amp; Social Card</span><br>
+                            <strong>Dimensions:</strong> <code>1200 &times; 630 px</code> (1.91:1 ratio)<br>
+                            <strong>File Size:</strong> Under <code>300 KB</code> (WhatsApp downsamples images &gt; 300KB into small blurry 1:1 squares).
+                        </div>
                     </div>
 
                     <div class="mb-3">
