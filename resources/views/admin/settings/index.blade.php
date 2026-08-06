@@ -68,22 +68,27 @@
                         </div>
                         @php
                             $waRaw = (string) setting('contact_whatsapp', '');
-                            $waDigits = preg_replace('/\D+/', '', $waRaw);
-                            $waIsPlaceholder = $waDigits === '' || $waDigits === '919999999999';
+                            $waResolved = \App\Support\Contact::whatsappNumber();
                         @endphp
                         <div class="col-md-6">
                             <label for="contact_whatsapp" class="form-label">WhatsApp Number</label>
-                            <input type="text" class="form-control @if($waIsPlaceholder) is-invalid @endif" id="contact_whatsapp" name="contact_whatsapp" value="{{ $waRaw }}">
-                            @if($waIsPlaceholder)
+                            <input type="text" class="form-control @if($waResolved === null) is-invalid @endif" id="contact_whatsapp" name="contact_whatsapp" value="{{ $waRaw }}">
+                            @if($waResolved === null)
                                 <div class="invalid-feedback d-block">
-                                    <strong>This is still the placeholder number.</strong> Every "WhatsApp us" link on the site
-                                    currently sends people to <a href="{{ route('begin') }}" target="_blank">Begin Your Story</a> instead,
-                                    rather than to a chat nobody answers. Enter your real number to switch them over.
+                                    <strong>No usable number saved.</strong> Every "WhatsApp us" link currently sends people to
+                                    <a href="{{ route('begin') }}" target="_blank">Begin Your Story</a> instead of to a chat nobody answers.
+                                </div>
+                            @else
+                                <div class="form-text text-success">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Opens <code>wa.me/{{ $waResolved }}</code> —
+                                    <a href="{{ route('whatsapp') }}" target="_blank" rel="noopener">test it</a>.
+                                    Check that number is exactly right before saving.
                                 </div>
                             @endif
                             <div class="form-text">
-                                Country code first, no <code>+</code> needed — e.g. <code>919876543210</code>.
-                                Spaces and dashes are fine, they're stripped automatically.
+                                Country code first, no <code>+</code> needed — e.g. <code>918740853131</code>.
+                                Spaces and dashes are fine. A plain 10-digit Indian mobile gets <code>91</code> added for you.
                             </div>
                         </div>
                         <div class="col-md-6">

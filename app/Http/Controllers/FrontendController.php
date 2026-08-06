@@ -328,27 +328,14 @@ class FrontendController extends Controller
      */
     public function whatsapp()
     {
-        // wa.me accepts digits only — no +, spaces, dashes or brackets. Editors
-        // paste numbers in every format, so normalise rather than trust it.
-        $number = preg_replace('/\D+/', '', (string) setting('contact_whatsapp', ''));
+        $link = \App\Support\Contact::whatsappLink();
 
-        // 919999999999 is the shipped placeholder. Sending someone to a chat
-        // that will never be answered is worse than not offering the link, so
-        // fall back to the page that does capture the enquiry.
-        if ($number === '' || $number === '919999999999') {
-            return redirect()->route('begin');
-        }
-
-        $url = 'https://wa.me/' . $number;
-        $prefill = trim((string) setting('whatsapp_prefill', 'Hi Storyloom — I would like to begin a story.'));
-
-        if ($prefill !== '') {
-            // Opening the chat with the message already typed removes the
-            // "what do I even say" pause that loses people at this step.
-            $url .= '?text=' . rawurlencode($prefill);
-        }
-
-        return redirect()->away($url);
+        // No usable number saved. Sending someone to a chat that will never be
+        // answered is worse than not offering the link, so fall back to the page
+        // that does capture the enquiry.
+        return $link === null
+            ? redirect()->route('begin')
+            : redirect()->away($link);
     }
 
     /**
