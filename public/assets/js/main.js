@@ -601,19 +601,44 @@
       }
       if (slideInterval < 2000) slideInterval = 2000;
 
+      // Must match the opacity transition on .hero-mobile-slide in main.css.
+      var CROSSFADE_MS = 1200;
+
       // Hand the slide duration to CSS so the slow zoom on the active slide
       // runs for exactly as long as that slide is up, whatever speed the admin
       // has set. Add the crossfade so the zoom doesn't stall before the swap.
-      mobileHero.style.setProperty("--hero-slide-dur", (slideInterval + 1200) / 1000 + "s");
+      mobileHero.style.setProperty("--hero-slide-dur", (slideInterval + CROSSFADE_MS) / 1000 + "s");
 
       var showSlide = function (n) {
-        slides[currentSlide].classList.remove("is-active");
+        var outgoing = slides[currentSlide];
+
+        // Hold the outgoing slide at its finished zoom until it has faded out,
+        // otherwise dropping .is-active would snap it back to its parked size
+        // in full view.
+        outgoing.classList.add("is-leaving");
+        window.clearTimeout(Number(outgoing.dataset.leaveTimer));
+        // The extra margin matters: this timer and the CSS opacity transition
+        // run off independent clocks, and releasing the hold even a frame early
+        // would show the image snap back to its parked size.
+        outgoing.dataset.leaveTimer = window.setTimeout(function () {
+          outgoing.classList.remove("is-leaving");
+        }, CROSSFADE_MS + 250);
+
+        outgoing.classList.remove("is-active");
         if (mhDots[currentSlide]) {
           mhDots[currentSlide].classList.remove("is-active");
           mhDots[currentSlide].setAttribute("aria-current", "false");
         }
         currentSlide = (n + slides.length) % slides.length;
-        slides[currentSlide].classList.add("is-active");
+
+        // Jumping back to the slide that is still fading out would leave it
+        // holding at the end of the zoom instead of restarting it, so clear the
+        // leaving state before it becomes active again.
+        var incoming = slides[currentSlide];
+        window.clearTimeout(Number(incoming.dataset.leaveTimer));
+        incoming.classList.remove("is-leaving");
+
+        incoming.classList.add("is-active");
         if (mhDots[currentSlide]) {
           mhDots[currentSlide].classList.add("is-active");
           mhDots[currentSlide].setAttribute("aria-current", "true");

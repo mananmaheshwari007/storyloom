@@ -1200,6 +1200,17 @@ body.menu-open .nav-toggle {
     animation: hero-slide-zoom var(--hero-slide-dur, 4s) ease-out forwards;
   }
 
+  /* Losing .is-active would drop the animation and snap the image back to its
+     parked size — mid-crossfade, which read as a jerk. The outgoing slide holds
+     the zoom it finished on until it has faded out completely, so the scale and
+     the fade run together. Holding (rather than continuing to drift) is what
+     matches: ease-out is nearly stationary by the end, so there is no jump in
+     position or in speed. */
+  .hero-mobile-slide.is-leaving img {
+    animation: none;
+    transform: scale(1.11);
+  }
+
   @keyframes hero-slide-zoom {
     from {
       transform: scale(1.04);
@@ -1211,8 +1222,10 @@ body.menu-open .nav-toggle {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-mobile-slide.is-active img {
+    .hero-mobile-slide.is-active img,
+    .hero-mobile-slide.is-leaving img {
       animation: none;
+      transform: scale(1.04);
     }
   }
 
