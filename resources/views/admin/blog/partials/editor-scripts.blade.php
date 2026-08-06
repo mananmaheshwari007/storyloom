@@ -643,12 +643,42 @@
             var txt = (e.clipboardData || window.clipboardData).getData("text/plain");
             document.execCommand("insertText", false, txt);
         });
+        /* execCommand("italic") answers with <i> (or a font-style span), but the
+           terracotta accent is styled as `h1 em, h2 em, h3 em` — so an <i> came
+           out italic and stayed ink-black. Fold whatever the browser produced
+           back to <em> before it is synced to the hidden field. */
+        var accentToEm = function () {
+            var last = null;
+            var nodes = titleRich.querySelectorAll("i, span[style*='italic']");
+
+            Array.prototype.forEach.call(nodes, function (node) {
+                var em = document.createElement("em");
+                em.innerHTML = node.innerHTML;
+                node.parentNode.replaceChild(em, node);
+                last = em;
+            });
+
+            return last;
+        };
+
         var emBtn = document.getElementById("titleEmBtn");
         if (emBtn) {
             emBtn.addEventListener("mousedown", function (e) { e.preventDefault(); });
             emBtn.addEventListener("click", function () {
                 titleRich.focus();
                 document.execCommand("italic", false, null);
+
+                // Swapping the node drops the selection, so put it back over the
+                // new <em> — otherwise pressing Em twice can't undo itself.
+                var replaced = accentToEm();
+                if (replaced) {
+                    var range = document.createRange();
+                    range.selectNodeContents(replaced);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+
                 syncTitle();
             });
         }

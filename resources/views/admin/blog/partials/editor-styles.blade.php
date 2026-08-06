@@ -241,4 +241,14 @@
 }
 .jw-article-body .article-rule { border: 0; border-top: 1px solid rgba(29,42,68,.16); }
 .jw-preview-note { text-align: center; color: #8a9099; font-size: .85rem; padding: 40px 0; }
+
+/* The title box is a live preview of the headline, so the Em accent has to look
+   here exactly as it does on the article — terracotta, not just slanted. <i> is
+   covered too, for titles saved before the accent was normalised to <em>. */
+#titleRich em,
+#titleRich i {
+    color: #B55B29;
+    font-style: italic;
+    font-weight: 500;
+}
 </style>

@@ -162,10 +162,16 @@ em,
   font-style: italic;
 }
 
+/* <i> is included so headlines saved before the editor normalised its accent to
+   <em> still get the terracotta, without needing to be re-saved one by one. */
 h1 em,
 h2 em,
-h3 em {
+h3 em,
+h1 i,
+h2 i,
+h3 i {
   color: var(--terra);
+  font-style: italic;
   font-weight: 500;
 }
 

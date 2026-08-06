@@ -194,7 +194,7 @@ class BlogController extends Controller
         // Headline keeps its <em> accent; plain title drives lists and meta.
         $titleHtml = trim((string) $request->input('title_html', ''));
         if ($titleHtml !== '') {
-            $data['title_html'] = strip_tags($titleHtml, '<em><i>');
+            $data['title_html'] = $this->normaliseHeadline($titleHtml);
             $data['title']      = trim(strip_tags($titleHtml));
         }
 
@@ -203,6 +203,28 @@ class BlogController extends Controller
         $data['show_toc'] = $request->boolean('show_toc');
 
         return $data;
+    }
+
+    /**
+     * Keep the headline accent on <em>, whatever the browser produced.
+     *
+     * The terracotta accent is styled as `h1 em, h2 em, h3 em`. Browsers answer
+     * execCommand("italic") with <i> (or a font-style span), which is italic but
+     * gets no colour — the word looked slanted and stayed ink-black. Everything
+     * that means "italic" is folded back to <em> before it is stored.
+     */
+    private function normaliseHeadline(string $html): string
+    {
+        // A styled span is what browsers emit under styleWithCSS.
+        $html = preg_replace(
+            '#<span[^>]*font-style\s*:\s*italic[^>]*>(.*?)</span>#is',
+            '<em>$1</em>',
+            $html
+        );
+
+        $html = strip_tags($html, '<em><i>');
+
+        return trim(preg_replace('#<(/?)i\b[^>]*>#i', '<$1em>', $html));
     }
 
     /** Inline image upload used by the editor (returns a usable path). */
@@ -235,7 +257,7 @@ class BlogController extends Controller
 
         $article = new Blog([
             'title'             => $title,
-            'title_html'        => $titleHtml !== '' ? strip_tags($titleHtml, '<em><i>') : null,
+            'title_html'        => $titleHtml !== '' ? $this->normaliseHeadline($titleHtml) : null,
             'slug'              => 'preview',
             'category'          => $request->input('category'),
             'featured_image'    => $request->input('featured_image') ?: null,
