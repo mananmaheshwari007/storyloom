@@ -36,12 +36,15 @@
     @media (max-width: 859px) { .begin-grid { grid-template-columns: 1fr; } .begin-aside { position: static; } }
   </style>
 
+  @if(\App\Support\Sections::enabled('begin_hero'))
   <section class="page-hero container">
     <p class="eyebrow eyebrow-center" data-reveal>{{ setting('begin_hero_eyebrow', 'Begin your story') }}</p>
     <h1 data-reveal>{!! setting('begin_hero_heading', 'Start with one <em>memory.</em>') !!}</h1>
     <p class="lede" data-reveal>{{ setting('begin_hero_lede', 'That\'s genuinely all it takes. Tell us who the book is for and one moment you never want forgotten. We\'ll reply within a day — with questions, a plan, and a timeline. No payment, no commitment, just the beginning.') }}</p>
   </section>
+  @endif
 
+  @if(\App\Support\Sections::enabled('begin_form'))
   <section class="section grain" style="padding-top: clamp(16px, 3vh, 40px);">
     <div class="container begin-grid">
 
@@ -158,6 +161,7 @@
 
     </div>
   </section>
+  @endif
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {

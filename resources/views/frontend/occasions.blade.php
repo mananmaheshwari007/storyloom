@@ -199,6 +199,7 @@
   </style>
 
   <!-- ================= HERO ================= -->
+  @if(\App\Support\Sections::enabled('occasions_hero'))
   <section class="section grain" style="background: #f7f4ed; padding-top: clamp(65px, 7vh, 90px); padding-bottom: clamp(50px, 6vh, 70px);">
     <div class="container-narrow">
       <div class="section-head center" style="margin-bottom: 0;">
@@ -212,8 +213,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 1: FESTIVALS & CELEBRATIONS ================= -->
+  @if(\App\Support\Sections::enabled('occasions_festivals'))
   <section class="section grain" style="padding-top: clamp(60px, 8vh, 100px); padding-bottom: clamp(60px, 8vh, 100px); background: #f4f1eb;">
     <div class="container">
       <div class="section-head-left" data-reveal>
@@ -272,8 +275,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 2: MILESTONES ================= -->
+  @if(\App\Support\Sections::enabled('occasions_milestones'))
   <section class="section" style="padding-top: clamp(60px, 8vh, 100px); padding-bottom: clamp(60px, 8vh, 100px); background: #f2ecdf;">
     <div class="container">
       <div class="section-head-left" data-reveal>
@@ -373,8 +378,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 3: BY RELATIONSHIP ================= -->
+  @if(\App\Support\Sections::enabled('occasions_relationships'))
   <section class="section grain" style="padding-top: clamp(60px, 8vh, 100px); padding-bottom: clamp(60px, 8vh, 100px); background: #f5f2eb; overflow: hidden;">
     <div class="container">
       <div class="section-head-left" data-reveal>
@@ -402,8 +409,10 @@
       </p>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 4: FINAL CTA ================= -->
+  @if(\App\Support\Sections::enabled('occasions_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('occasion_cta_bg', 'assets/img/spread-bench-dusk.webp')) }}')" role="img" aria-label="Illustration of a couple watching dusk city lights"></div>
     <div class="container inner">
@@ -416,4 +425,5 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection

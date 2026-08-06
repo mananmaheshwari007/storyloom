@@ -2,6 +2,7 @@
 
 @section('content')
   <!-- ================= HERO ================= -->
+  @if(\App\Support\Sections::enabled('faq_hero'))
   <section class="section section-tint grain" style="padding-top: clamp(120px, 15vh, 180px); padding-bottom: clamp(60px, 8vh, 100px);">
     <div class="container-narrow">
       <div class="section-head center" style="margin-bottom: 0;">
@@ -11,8 +12,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= ACCORDION ================= -->
+  @if(\App\Support\Sections::enabled('faq_list'))
   <section class="section">
     <div class="container-narrow">
       @php $faqGroups = \App\Models\Faq::grouped(); @endphp
@@ -48,8 +51,10 @@
       @endforelse
     </div>
   </section>
+  @endif
 
   <!-- ================= FINAL CTA ================= -->
+  @if(\App\Support\Sections::enabled('faq_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('faq_cta_bg', 'assets/img/spread-home-evening.webp')) }}')" role="img" aria-label="Illustration of a cozy evening with a Storyloom book"></div>
     <div class="container inner">
@@ -64,4 +69,5 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection

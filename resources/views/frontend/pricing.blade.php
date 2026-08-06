@@ -2,13 +2,16 @@
 
 @section('content')
   <!-- ================= HERO ================= -->
+  @if(\App\Support\Sections::enabled('pricing_hero'))
   <section class="page-hero container">
     <p class="eyebrow eyebrow-center" data-reveal>{{ setting('pricing_hero_eyebrow', 'Pricing') }}</p>
     <h1 data-reveal>{!! setting('pricing_hero_title', 'What a one-of-one book <em>includes.</em>') !!}</h1>
     <p class="lede" data-reveal>{{ setting('pricing_hero_lede', 'Every Storyloom — whichever edition — is written from scratch, illustrated from scratch, and reviewed by you before printing. You\'re not buying a book off a shelf; you\'re commissioning the only copy that will ever exist.') }}</p>
   </section>
+  @endif
 
   <!-- ================= CARDS & GRID ================= -->
+  @if(\App\Support\Sections::enabled('pricing_cards'))
   <section class="section grain" style="padding-top: clamp(16px, 3vh, 40px);">
     <div class="container">
       <div class="stats-strip" data-reveal style="margin-bottom: clamp(48px, 8vh, 80px);">
@@ -78,8 +81,10 @@
       </p>
     </div>
   </section>
+  @endif
 
   <!-- ================= A NOTE ON PRICE ================= -->
+  @if(\App\Support\Sections::enabled('pricing_note'))
   <section class="section section-tint">
     <div class="container-narrow">
       <div class="section-head center" data-reveal>
@@ -92,8 +97,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= FINAL CTA ================= -->
+  @if(\App\Support\Sections::enabled('pricing_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('pricing_cta_bg', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a couple beneath a starry night sky"></div>
     <div class="container inner">
@@ -106,4 +113,5 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection

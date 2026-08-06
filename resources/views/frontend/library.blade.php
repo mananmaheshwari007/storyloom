@@ -2,6 +2,7 @@
 
 @section('content')
   <!-- ================= HERO ================= -->
+  @if(\App\Support\Sections::enabled('library_hero'))
   <section class="section grain" style="background: #f7f4ed; padding-top: clamp(70px, 8vh, 100px); padding-bottom: clamp(45px, 5vh, 65px);">
     <div class="container-narrow">
       <div class="section-head center" style="margin-bottom: 0;">
@@ -15,8 +16,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ============ FEATURED BOOKS LOOP ============ -->
+  @if(\App\Support\Sections::enabled('library_featured'))
   @if(isset($featuredBooks) && count($featuredBooks) > 0)
     @foreach($featuredBooks as $index => $book)
       @php
@@ -67,8 +70,10 @@
       </section>
     @endforeach
   @endif
+  @endif
 
   <!-- ============ THE SHELF ============ -->
+  @if(\App\Support\Sections::enabled('library_shelf'))
   <section class="section section-tint grain" id="shelf">
     <div class="container">
       <div class="section-head center" data-reveal>
@@ -108,8 +113,10 @@
       </p>
     </div>
   </section>
+  @endif
 
   <!-- ============ FINAL CTA ============ -->
+  @if(\App\Support\Sections::enabled('library_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('library_cta_bg', 'assets/img/spread-bench-dusk.webp')) }}')" role="img"
          aria-label="Illustration of a couple on a bench at dusk, city lights below"></div>
@@ -123,5 +130,6 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection
 

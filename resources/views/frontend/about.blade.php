@@ -212,6 +212,7 @@
   </style>
 
   <!-- ================= SECTION 1: HERO & STORY PROSE ================= -->
+  @if(\App\Support\Sections::enabled('about_hero'))
   <section class="section grain" style="background: #f7f4ed; padding-top: clamp(65px, 8vh, 100px); padding-bottom: clamp(75px, 9vh, 115px);">
     <div class="container">
       <div class="section-head center" style="margin-bottom: clamp(48px, 6vh, 75px);">
@@ -255,8 +256,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 2: WHAT WE STAND FOR ================= -->
+  @if(\App\Support\Sections::enabled('about_stand'))
   <section class="section grain" style="background: #f2ecdf; padding-top: clamp(60px, 8vh, 100px); padding-bottom: clamp(60px, 8vh, 100px);">
     <div class="container">
       <div class="section-head center" data-reveal style="margin-bottom: clamp(40px, 6vh, 64px);">
@@ -294,8 +297,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 3: THE MARK WE MAKE ================= -->
+  @if(\App\Support\Sections::enabled('about_mark'))
   <section class="section grain" style="background: #f5f2eb; padding-top: clamp(65px, 8vh, 105px); padding-bottom: clamp(65px, 8vh, 105px);">
     <div class="container">
       <div class="dual-grid-2" style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: clamp(40px, 6vw, 80px); align-items: center;">
@@ -320,8 +325,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 4: A NOTE FROM THE FOUNDER ================= -->
+  @if(\App\Support\Sections::enabled('about_founder'))
   <section class="section grain" style="background: #f1ece0; padding-top: clamp(80px, 10vh, 120px); padding-bottom: clamp(80px, 10vh, 120px); text-align: center; color: #1C222B;">
     <div class="container-narrow" style="max-width: 940px; margin-inline: auto;">
       <div class="founder-banner-eyebrow" data-reveal style="color: rgb(181, 91, 41); font-family: 'Cormorant Garamond', Cormorant, Georgia, serif; font-size: 14px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 0;">
@@ -337,8 +344,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ================= SECTION 5: FINAL CTA ================= -->
+  @if(\App\Support\Sections::enabled('about_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('about_cta_bg', 'assets/img/spread-alone-bench.webp')) }}')" role="img" aria-label="Illustration of a couple watching dusk city lights"></div>
     <div class="container inner">
@@ -354,4 +363,5 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection

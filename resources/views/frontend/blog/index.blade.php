@@ -16,6 +16,7 @@
   @endphp
 
   <!-- ============ HERO ============ -->
+  @if(\App\Support\Sections::enabled('journal_hero'))
   <section class="container journal-hero">
     <p class="eyebrow eyebrow-center" data-reveal>{{ setting('journal_hero_eyebrow', 'The Storyloom Journal') }}</p>
     <h1 data-reveal>{!! setting('journal_hero_heading', 'Notes on giving <em>better.</em>') !!}</h1>
@@ -32,8 +33,10 @@
       </div>
     @endif
   </section>
+  @endif
 
   <!-- ============ FEATURED POST + ARTICLE GRID ============ -->
+  @if(\App\Support\Sections::enabled('journal_list'))
   <section class="section grain journal-body">
     <div class="container">
       @if($featured)
@@ -101,11 +104,13 @@
       @endif
     </div>
   </section>
+  @endif
 
   {{-- The Loom Letter band was removed from this page; the footer still carries
        a newsletter sign-up, and the CTA below now follows the articles directly. --}}
 
   <!-- ============ FINAL CTA ============ -->
+  @if(\App\Support\Sections::enabled('journal_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('journal_cta_bg_image', 'assets/img/spread-under-stars.webp')) }}')" role="img" aria-label="Illustration of a starry night sky over the city"></div>
     <div class="container inner">
@@ -119,6 +124,7 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection
 
 @push('scripts')

@@ -2,13 +2,16 @@
 
 @section('content')
   <!-- ============ HERO ============ -->
+  @if(\App\Support\Sections::enabled('how_hero'))
   <section class="page-hero container">
     <p class="eyebrow eyebrow-center" data-reveal>{{ setting('how_hero_eyebrow', 'How it works') }}</p>
     <h1 data-reveal>{!! setting('how_hero_heading', 'From a conversation to a <em>keepsake.</em>') !!}</h1>
     <p class="lede" data-reveal>{{ setting('how_hero_lede', 'You bring the memories. We bring the writers, the illustrators, and the patience. Here is exactly what happens between “I\'d like to make one” and the moment they open it.') }}</p>
   </section>
+  @endif
 
   <!-- ============ TIMELINE ============ -->
+  @if(\App\Support\Sections::enabled('how_timeline'))
   <section class="section grain" style="padding-top: clamp(24px, 4vh, 48px);">
     <div class="container" style="max-width: 900px;">
       <div class="timeline">
@@ -66,8 +69,10 @@
       </p>
     </div>
   </section>
+  @endif
 
   <!-- ============ STATS STRIP ============ -->
+  @if(\App\Support\Sections::enabled('how_stats'))
   <section class="section section-tint">
     <div class="container">
       <div class="stats-strip" data-reveal>
@@ -77,8 +82,10 @@
       </div>
     </div>
   </section>
+  @endif
 
   <!-- ============ CRAFTSMANSHIP / QUALITY YOU CAN FEEL ============ -->
+  @if(\App\Support\Sections::enabled('how_craft'))
   <section class="section grain">
     <div class="container book-feature">
       <div class="book-meta" data-reveal="left">
@@ -112,8 +119,10 @@
       </figure>
     </div>
   </section>
+  @endif
 
   <!-- ============ FINAL CTA ============ -->
+  @if(\App\Support\Sections::enabled('how_cta'))
   <section class="final-cta">
     <div class="bg" style="background-image:url('{{ asset(setting('how_cta_bg', 'assets/img/spread-night-farewell.webp')) }}')" role="img"
          aria-label="Illustration of a lamplit street at night"></div>
@@ -128,4 +137,5 @@
       </div>
     </div>
   </section>
+  @endif
 @endsection

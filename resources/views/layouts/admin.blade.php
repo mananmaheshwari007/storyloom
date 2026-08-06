@@ -294,6 +294,10 @@
                 <i class="bi bi-sliders"></i>
                 <span>Site Settings & Branding</span>
             </a>
+            <a href="{{ route('admin.sections.index') }}" class="sidebar-link {{ request()->routeIs('admin.sections.*') ? 'active' : '' }}">
+                <i class="bi bi-eye"></i>
+                <span>Page Sections</span>
+            </a>
             <a href="{{ route('admin.seo.index') }}" class="sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
                 <i class="bi bi-search"></i>
                 <span>SEO (all pages)</span>
