@@ -191,7 +191,80 @@
                     </div>
                 </div>
             </div>
+
+            {{-- ---------- Mail diagnostics ----------
+                 Enquiry mail failures are logged rather than shown to the
+                 visitor, so without this panel a misconfigured mailbox looks
+                 exactly like a working one from the dashboard. --}}
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0 fw-bold text-dark"><i class="bi bi-wrench-adjustable me-2 text-primary"></i> Mail Status</h5>
+                </div>
+                <div class="card-body">
+                    @php
+                        $mailer = config('mail.default');
+                        $smtp = config('mail.mailers.smtp');
+                        $fromAddress = config('mail.from.address');
+                        $configCached = file_exists(base_path('bootstrap/cache/config.php'));
+                    @endphp
+
+                    @if($mailer === 'log')
+                        <div class="alert alert-danger py-2 px-3 small mb-3">
+                            <strong>Nothing is being sent.</strong> The mailer is set to <code>log</code>, so enquiry emails are written to
+                            <code>storage/logs/laravel.log</code> instead of being delivered.
+                        </div>
+                    @endif
+
+                    <table class="table table-sm mb-3 small">
+                        <tr><td class="text-muted" style="width:110px;">Mailer</td><td><code>{{ $mailer }}</code></td></tr>
+                        <tr><td class="text-muted">SMTP host</td><td><code>{{ $smtp['host'] ?? '—' }}:{{ $smtp['port'] ?? '—' }}</code></td></tr>
+                        <tr><td class="text-muted">Scheme</td><td><code>{{ $smtp['scheme'] ?: 'auto (STARTTLS)' }}</code></td></tr>
+                        <tr><td class="text-muted">Username</td><td><code>{{ $smtp['username'] ?: 'none' }}</code></td></tr>
+                        <tr>
+                            <td class="text-muted">From</td>
+                            <td>
+                                <code>{{ $fromAddress }}</code>
+                                @if($fromAddress === 'hello@example.com')
+                                    <span class="badge bg-danger ms-1">placeholder</span>
+                                @endif
+                            </td>
+                        </tr>
+                    </table>
+
+                    @if($configCached)
+                        <div class="alert alert-warning py-2 px-3 small mb-3">
+                            <strong>Config is cached.</strong> The values above come from
+                            <code>bootstrap/cache/config.php</code>, not from <code>.env</code>. If they don't match what you
+                            put in <code>.env</code>, delete that cache file and reload this page.
+                        </div>
+                    @endif
+
+                    @if(session('mail_test_ok'))
+                        <div class="alert alert-success py-2 px-3 small mb-3">{{ session('mail_test_ok') }}</div>
+                    @endif
+                    @if(session('mail_test_error'))
+                        <div class="alert alert-danger py-2 px-3 small mb-3">
+                            <strong>Send failed.</strong>
+                            <div class="mt-1" style="word-break: break-word;">{{ session('mail_test_error') }}</div>
+                        </div>
+                    @endif
+
+                    {{-- Submits the separate form below, since forms can't nest. --}}
+                    <button type="submit" form="mail-test-form" class="btn btn-outline-primary btn-sm w-100">
+                        <i class="bi bi-send me-1"></i> Send a test email
+                    </button>
+                    <div class="form-text mt-2">
+                        Goes to the address above and reports the exact error if it fails. Save any address change first.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</form>
+
+{{-- Kept outside the editor form: HTML forms cannot be nested, so the button in
+     the Mail Status card targets this one via its form="" attribute. --}}
+<form id="mail-test-form" action="{{ route('admin.begin.testMail') }}" method="POST" class="d-none">
+    @csrf
 </form>
 @endsection

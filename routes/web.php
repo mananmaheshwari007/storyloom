@@ -106,6 +106,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Begin a Story Page
     Route::get('/begin', [\App\Http\Controllers\Admin\BeginController::class, 'edit'])->name('begin.edit');
     Route::post('/begin', [\App\Http\Controllers\Admin\BeginController::class, 'update'])->name('begin.update');
+    Route::post('/begin/test-mail', [\App\Http\Controllers\Admin\BeginController::class, 'testMail'])->name('begin.testMail');
 
     // Read a Storyloom (Library)
     Route::post('/library/reorder', [\App\Http\Controllers\Admin\LibraryController::class, 'reorder'])->name('library.reorder');

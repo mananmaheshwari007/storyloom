@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class BeginController extends Controller
 {
@@ -75,5 +77,49 @@ class BeginController extends Controller
         }
 
         return redirect()->back()->with('success', 'Begin a Story page updated successfully.');
+    }
+
+    /**
+     * Send a test email and report exactly what happened.
+     *
+     * Live enquiry mail is deliberately non-fatal — a broken mailbox must never
+     * cost a lead — which means real failures are invisible to everyone except
+     * whoever reads the log. This puts the actual SMTP error on screen instead.
+     */
+    public function testMail(Request $request)
+    {
+        $to = setting('enquiry_notify_email', 'team@storyloombooks.com');
+
+        try {
+            Mail::raw(
+                "This is a test from the Storyloom dashboard.\n\n"
+                . "If you are reading this, enquiry notifications will arrive here too.\n"
+                . 'Sent at ' . now()->toDayDateTimeString() . " UTC.\n",
+                function ($message) use ($to) {
+                    $message->to($to)->subject('Storyloom mail test');
+                }
+            );
+        } catch (\Throwable $e) {
+            Log::error('Admin mail test failed', ['error' => $e->getMessage()]);
+
+            return redirect()->back()->with('mail_test_error', $e->getMessage());
+        }
+
+        $mailer = config('mail.default');
+
+        // A "success" on the log driver means nothing was actually delivered —
+        // say so plainly rather than letting it read as a working mailbox.
+        if ($mailer === 'log') {
+            return redirect()->back()->with(
+                'mail_test_error',
+                'Mail is still on the "log" driver, so nothing was sent — it was written to storage/logs/laravel.log. '
+                . 'Set MAIL_MAILER=smtp in .env and delete bootstrap/cache/config.php.'
+            );
+        }
+
+        return redirect()->back()->with(
+            'mail_test_ok',
+            'Handed to the mail server without error, addressed to ' . $to . '. Check that inbox (and its spam folder).'
+        );
     }
 }
