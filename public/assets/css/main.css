@@ -1201,14 +1201,13 @@ body.menu-open .nav-toggle {
   }
 
   /* Losing .is-active would drop the animation and snap the image back to its
-     parked size — mid-crossfade, which read as a jerk. The outgoing slide holds
-     the zoom it finished on until it has faded out completely, so the scale and
-     the fade run together. Holding (rather than continuing to drift) is what
-     matches: ease-out is nearly stationary by the end, so there is no jump in
-     position or in speed. */
+     parked size mid-crossfade. The outgoing slide instead holds the zoom it had
+     actually reached until it has faded out, so scale and opacity move together.
+     The held value is written inline by main.js from the live computed
+     transform — pinning it to a fixed scale here caused the opposite jerk,
+     because the animation is only part-way through when the slide hands over. */
   .hero-mobile-slide.is-leaving img {
     animation: none;
-    transform: scale(1.11);
   }
 
   @keyframes hero-slide-zoom {

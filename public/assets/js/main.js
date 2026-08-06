@@ -604,10 +604,10 @@
       // Must match the opacity transition on .hero-mobile-slide in main.css.
       var CROSSFADE_MS = 1200;
 
-      // Hand the slide duration to CSS so the slow zoom on the active slide
-      // runs for exactly as long as that slide is up, whatever speed the admin
-      // has set. Add the crossfade so the zoom doesn't stall before the swap.
-      mobileHero.style.setProperty("--hero-slide-dur", (slideInterval + CROSSFADE_MS) / 1000 + "s");
+      // The zoom runs over exactly the time a slide holds the stage, so it has
+      // completed by the moment the slide hands over — and ease-out leaves it
+      // barely moving by then, which is what makes the freeze below invisible.
+      mobileHero.style.setProperty("--hero-slide-dur", slideInterval / 1000 + "s");
 
       var showSlide = function (n) {
         var outgoing = slides[currentSlide];
@@ -615,6 +615,16 @@
         // Hold the outgoing slide at its finished zoom until it has faded out,
         // otherwise dropping .is-active would snap it back to its parked size
         // in full view.
+        var outgoingImg = outgoing.querySelector("img");
+
+        if (outgoingImg && !reduceMotion) {
+          // Freeze at the transform the animation had actually reached. Reading
+          // it live is the whole point: the slide can hand over early (a tapped
+          // dot) or late (a throttled background tab), so any assumed end value
+          // shows up as a jump the moment the fade starts.
+          outgoingImg.style.transform = window.getComputedStyle(outgoingImg).transform;
+        }
+
         outgoing.classList.add("is-leaving");
         window.clearTimeout(Number(outgoing.dataset.leaveTimer));
         // The extra margin matters: this timer and the CSS opacity transition
@@ -622,6 +632,7 @@
         // would show the image snap back to its parked size.
         outgoing.dataset.leaveTimer = window.setTimeout(function () {
           outgoing.classList.remove("is-leaving");
+          if (outgoingImg) outgoingImg.style.transform = "";
         }, CROSSFADE_MS + 250);
 
         outgoing.classList.remove("is-active");
@@ -637,6 +648,11 @@
         var incoming = slides[currentSlide];
         window.clearTimeout(Number(incoming.dataset.leaveTimer));
         incoming.classList.remove("is-leaving");
+
+        // Clear any frozen transform too, or the inline style would outrank the
+        // keyframes and the slide would sit still instead of zooming.
+        var incomingImg = incoming.querySelector("img");
+        if (incomingImg) incomingImg.style.transform = "";
 
         incoming.classList.add("is-active");
         if (mhDots[currentSlide]) {
