@@ -223,10 +223,22 @@
 
       <div class="dual-grid-2" style="display: grid; grid-template-columns: 0.92fr 1.08fr; gap: clamp(32px, 5vw, 64px); align-items: center;">
         <!-- Left Column: Story Prose -->
+        @php
+          // One editable block now. Until it is saved for the first time the
+          // three legacy paragraph settings are joined, so existing copy keeps
+          // rendering exactly as before.
+          $aboutBody = trim(setting('about_hero_body', ''));
+
+          if ($aboutBody === '') {
+              $aboutBody = \App\Support\Prose::join([
+                  setting('about_hero_p1', 'Families have stories. Often hundreds — and most of them die with us.'),
+                  setting('about_hero_p2', 'They live in WhatsApp, scattered across hard drives, lost in phones and albums nobody opens. And as time passes, the details start to blur, and memories lose their frame.'),
+                  setting('about_hero_p3', 'The story is the most valuable thing a family can leave behind. It deserves better than a screen.'),
+              ]);
+          }
+        @endphp
         <div class="about-prose" data-reveal="left">
-          <p class="drop">{{ setting('about_hero_p1', 'Families have stories. Often hundreds — and most of them die with us.') }}</p>
-          <p>{{ setting('about_hero_p2', 'They live in WhatsApp, scattered across hard drives, lost in phones and albums nobody opens. And as time passes, the details start to blur, and memories lose their frame.') }}</p>
-          <p>{{ setting('about_hero_p3', 'The story is the most valuable thing a family can leave behind. It deserves better than a screen.') }}</p>
+          {!! \App\Support\Prose::paragraphs($aboutBody, 'drop') !!}
         </div>
 
         <!-- Right Column: Artwork Polaroid Card -->

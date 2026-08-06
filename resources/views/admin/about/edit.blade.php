@@ -48,17 +48,27 @@
 
             <div class="row g-3">
                 <div class="col-md-8">
+                    @php
+                        // Pre-filled from the old three-paragraph fields the
+                        // first time this is opened, so nothing already written
+                        // is lost in the switch to a single box.
+                        $aboutBody = trim(setting('about_hero_body', ''));
+
+                        if ($aboutBody === '') {
+                            $aboutBody = \App\Support\Prose::join([
+                                setting('about_hero_p1', 'Families have stories. Often hundreds — and most of them die with us.'),
+                                setting('about_hero_p2', 'They live in WhatsApp, scattered across hard drives, lost in phones and albums nobody opens. And as time passes, the details start to blur, and memories lose their frame.'),
+                                setting('about_hero_p3', 'The story is the most valuable thing a family can leave behind. It deserves better than a screen.'),
+                            ]);
+                        }
+                    @endphp
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Story Paragraph 1 (with Drop Cap)</label>
-                        <textarea name="about_hero_p1" class="form-control form-control-sm" rows="3">{{ setting('about_hero_p1', 'Families have stories. Often hundreds — and most of them die with us.') }}</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Story Paragraph 2</label>
-                        <textarea name="about_hero_p2" class="form-control form-control-sm" rows="3">{{ setting('about_hero_p2', 'They live in WhatsApp, scattered across hard drives, lost in phones and albums nobody opens. And as time passes, the details start to blur, and memories lose their frame.') }}</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Story Paragraph 3</label>
-                        <textarea name="about_hero_p3" class="form-control form-control-sm" rows="2">{{ setting('about_hero_p3', 'The story is the most valuable thing a family can leave behind. It deserves better than a screen.') }}</textarea>
+                        <label class="form-label fw-bold">Story Text <span class="badge bg-info text-dark ms-1">HTML Allowed</span></label>
+                        <textarea name="about_hero_body" class="form-control form-control-sm" rows="10">{{ $aboutBody }}</textarea>
+                        <div class="form-text">
+                            Write it as you would anywhere else — leave a <strong>blank line between paragraphs</strong> and they'll be spaced correctly on the page.
+                            The first paragraph gets the large drop cap automatically. <code>&lt;em&gt;</code>, <code>&lt;strong&gt;</code> and <code>&lt;br&gt;</code> work if you want them.
+                        </div>
                     </div>
                 </div>
 

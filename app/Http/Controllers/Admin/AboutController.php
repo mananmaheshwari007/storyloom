@@ -30,9 +30,9 @@ class AboutController extends Controller
             // Section 1: Hero & Story Prose
             'about_hero_eyebrow',
             'about_hero_heading',
-            'about_hero_p1',
-            'about_hero_p2',
-            'about_hero_p3',
+            // Single prose block. about_hero_p1..p3 are the retired split
+            // fields — still read as a fallback until this is first saved.
+            'about_hero_body',
             'about_artwork_img',
             'about_artwork_caption',
 

@@ -46,7 +46,7 @@
         <ul>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z"/><path d="M9 9.5c.5 2.5 3 5 5.5 5.5l1-1.5 2 1c-.5 1.5-1.5 2-3 2-3.5-.5-6.5-3.5-7-7 0-1.5.5-2.5 2-3l1 2-1.5 1Z" fill="currentColor" stroke="none"/></svg>
-            <span><span class="lbl">WhatsApp</span><a href="https://wa.me/{{ setting('contact_whatsapp', '919999999999') }}" target="_blank" rel="noopener">Message us directly</a></span>
+            <span><span class="lbl">{{ setting('begin_channel_whatsapp', 'WhatsApp') }}</span><a href="https://wa.me/{{ setting('contact_whatsapp', '919999999999') }}" target="_blank" rel="noopener">{{ setting('begin_box_wa_text', 'Message us directly') }}</a></span>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
@@ -64,26 +64,29 @@
         @csrf
         <div class="form-row">
           <div class="field">
-            <label for="f-name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <label for="f-name">{{ setting('begin_label_name', 'Your name') }} <span class="req" aria-hidden="true">*</span></label>
             <input id="f-name" name="name" type="text" autocomplete="name" required>
             <div class="error-msg text-danger small mt-1" id="err-name" style="display:none;"></div>
           </div>
           <div class="field">
-            <label for="f-for">Who is the story for? <span class="req" aria-hidden="true">*</span></label>
-            <input id="f-for" name="for" type="text" placeholder="e.g. my mother, my best friend" required>
+            <label for="f-for">{{ setting('begin_label_for', 'Who is the story for?') }} <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-for" name="for" type="text" placeholder="{{ setting('begin_ph_for', 'e.g. my mother, my best friend') }}" required>
             <div class="error-msg text-danger small mt-1" id="err-for" style="display:none;"></div>
           </div>
         </div>
-        
+
+        {{-- Whichever reply channel is chosen below decides which of these two
+             is required. The asterisks are driven by JS; the server enforces it
+             for real with required_if. --}}
         <div class="form-row">
           <div class="field">
-            <label for="f-email">Your Email Address</label>
+            <label for="f-email">{{ setting('begin_label_email', 'Your Email Address') }} <span class="req" id="req-email" aria-hidden="true" hidden>*</span></label>
             <input id="f-email" name="email" type="email" autocomplete="email">
             <div class="error-msg text-danger small mt-1" id="err-email" style="display:none;"></div>
           </div>
           <div class="field">
-            <label for="f-phone">Your Phone Number</label>
-            <input id="f-phone" name="phone" type="text">
+            <label for="f-phone">{{ setting('begin_label_phone', 'Your Phone Number') }} <span class="req" id="req-phone" aria-hidden="true" hidden>*</span></label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel">
             <div class="error-msg text-danger small mt-1" id="err-phone" style="display:none;"></div>
           </div>
         </div>
@@ -91,39 +94,40 @@
         {{-- No "your timeline" question: every book runs to the same fixed
              schedule, so asking the customer to pick a speed only invited an
              expectation we wouldn't be setting. --}}
+        @php
+          $occasionList = array_filter(array_map('trim', explode(',', setting(
+              'begin_occasions',
+              "Anniversary, Birthday, Wedding, Diwali, Raksha Bandhan, Mother's Day, Father's Day, Farewell / Moving, Just Because"
+          ))));
+        @endphp
         <div class="field">
-          <label for="f-occasion">The occasion</label>
+          <label for="f-occasion">{{ setting('begin_label_occasion', 'The occasion') }}</label>
           <select id="f-occasion" name="occasion">
-            <option value="">Choose one (or don't)</option>
-            <option>Anniversary</option>
-            <option>Birthday</option>
-            <option>Wedding</option>
-            <option>Diwali</option>
-            <option>Raksha Bandhan</option>
-            <option>Mother's Day</option>
-            <option>Father's Day</option>
-            <option>Farewell / Moving</option>
-            <option>Just Because</option>
+            <option value="">{{ setting('begin_ph_occasion', "Choose one (or don't)") }}</option>
+            @foreach($occasionList as $occasionOption)
+              <option>{{ $occasionOption }}</option>
+            @endforeach
           </select>
         </div>
 
         <div class="field">
-          <label for="f-story">Tell us one memory <span class="req" aria-hidden="true">*</span></label>
-          <textarea id="f-story" name="story" rows="4" placeholder="Don't worry about writing well — bullet points, half-remembered details, or a single story are plenty." required></textarea>
+          <label for="f-story">{{ setting('begin_label_story', 'Tell us one memory') }} <span class="req" aria-hidden="true">*</span></label>
+          <textarea id="f-story" name="story" rows="4" placeholder="{{ setting('begin_ph_story', "Don't worry about writing well — bullet points, half-remembered details, or a single story are plenty.") }}" required></textarea>
           <div class="error-msg text-danger small mt-1" id="err-story" style="display:none;"></div>
         </div>
 
         <div class="field">
-          <label>Where should we reply?</label>
+          <label>{{ setting('begin_label_channel', 'Where should we reply?') }}</label>
           <div class="channel-choice">
-            <label><input type="radio" name="channel" value="whatsapp" checked> WhatsApp</label>
-            <label><input type="radio" name="channel" value="email"> Email</label>
+            <label><input type="radio" name="channel" value="whatsapp" checked> {{ setting('begin_channel_whatsapp', 'WhatsApp') }}</label>
+            <label><input type="radio" name="channel" value="email"> {{ setting('begin_channel_email', 'Email') }}</label>
           </div>
+          <div class="error-msg text-danger small mt-1" id="err-channel" style="display:none;"></div>
         </div>
 
         <div>
           <button class="btn btn-primary btn-lg" type="submit" id="btn-submit-story" style="width: 100%; justify-content: center;">
-            <span id="btn-text">Send Memory &amp; Begin</span>
+            <span id="btn-text">{{ setting('begin_btn_text', 'Send Memory & Begin') }}</span>
             <span id="btn-spinner" class="spinner-border spinner-border-sm ms-2" style="display:none;" role="status" aria-hidden="true"></span>
           </button>
         </div>
@@ -138,6 +142,32 @@
     document.addEventListener('DOMContentLoaded', function () {
       const form = document.getElementById('laravel-begin-form');
       if (!form) return;
+
+      /* Whichever channel they pick is the one we need a way to reach them on,
+         so that field becomes required and the other stays optional. The
+         server enforces the same rule — this only saves a round trip. */
+      const emailField = document.getElementById('f-email');
+      const phoneField = document.getElementById('f-phone');
+      const emailStar  = document.getElementById('req-email');
+      const phoneStar  = document.getElementById('req-phone');
+
+      function applyChannel() {
+        const channel = form.querySelector('input[name="channel"]:checked')?.value || 'whatsapp';
+        const wantsEmail = channel === 'email';
+
+        emailField.required = wantsEmail;
+        phoneField.required = !wantsEmail;
+        emailStar.hidden = !wantsEmail;
+        phoneStar.hidden = wantsEmail;
+
+        // Clear a stale "this is required" from the channel they just left.
+        document.getElementById(wantsEmail ? 'err-phone' : 'err-email').style.display = 'none';
+      }
+
+      form.querySelectorAll('input[name="channel"]').forEach(function (radio) {
+        radio.addEventListener('change', applyChannel);
+      });
+      applyChannel();
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -180,7 +210,7 @@
             });
           } else if (data.success) {
             const successEl = document.getElementById('begin-success');
-            successEl.innerHTML = '<strong>' + data.message + '</strong><br>We have received your details and will get in touch shortly.';
+            successEl.innerHTML = '<strong>' + data.message + '</strong><br>{{ addslashes(setting('begin_success_note', 'We have received your details and will get in touch shortly.')) }}';
             successEl.style.display = 'block';
             form.reset();
           }

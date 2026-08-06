@@ -17,6 +17,9 @@ use App\Models\Blog;
 use App\Models\LibraryBook;
 use App\Models\ContactMessage;
 use App\Models\NewsletterSubscriber;
+use App\Mail\NewEnquiry;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
 
@@ -317,14 +320,19 @@ class FrontendController extends Controller
      */
     public function submitContact(Request $request)
     {
+        // We must end up with a way to reach them on the channel they chose,
+        // so that field — and only that one — is required.
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'for' => 'required|string|max:255',
             'occasion' => 'nullable|string|max:255',
             'story' => 'required|string',
             'channel' => 'required|string|in:whatsapp,email',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:255',
+            'email' => 'required_if:channel,email|nullable|email|max:255',
+            'phone' => 'required_if:channel,whatsapp|nullable|string|max:255',
+        ], [
+            'email.required_if' => 'We need your email address to reply there.',
+            'phone.required_if' => 'We need your number to reply on WhatsApp.',
         ]);
 
         if ($validator->fails()) {
@@ -337,13 +345,25 @@ class FrontendController extends Controller
                      . "Preferred channel: " . $request->input('channel') . "\n\n"
                      . "Story:\n" . $request->input('story');
 
-        ContactMessage::create([
+        $contactMessage = ContactMessage::create([
             'name' => $request->input('name'),
             'email' => $request->input('email') ?: 'anonymous@storyloom.in',
             'phone' => $request->input('phone'),
             'subject' => 'New Story Started: For ' . $request->input('for'),
             'message' => $messageText,
         ]);
+
+        // The enquiry is already safe in the dashboard by this point, so a mail
+        // problem must never cost us the lead or show the visitor an error.
+        try {
+            Mail::to(setting('enquiry_notify_email', 'team@storyloombooks.com'))
+                ->send(new NewEnquiry($contactMessage, $request->input('channel')));
+        } catch (\Throwable $e) {
+            Log::error('Enquiry notification email failed', [
+                'message_id' => $contactMessage->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return response()->json([
             'success' => true,
