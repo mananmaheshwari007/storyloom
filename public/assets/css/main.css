@@ -1974,19 +1974,77 @@ a.plate:hover,
   }
 }
 
-/* ---------- FAQ groups ---------- */
+/* ---------- FAQ groups ----------
+   The heading used to sit on a hairline identical to the one under every
+   question, so a section title read as just another row. It now gets a terracotta
+   rule above it, a much larger type size and real space between groups. */
 .faq-group + .faq-group {
-  margin-top: clamp(44px, 6vh, 72px);
+  margin-top: clamp(64px, 9vh, 104px);
+}
+
+.faq-group-head {
+  padding-top: 20px;
+  margin-bottom: 22px;
+  position: relative;
+  /* Clears the sticky header when jumped to from a link. */
+  scroll-margin-top: 96px;
+}
+
+.faq-group-head::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 2px;
+  background: var(--terra);
 }
 
 .faq-group-title {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-size: clamp(1.6rem, 2.8vw, 2.15rem);
   font-weight: 600;
+  line-height: 1.2;
   color: var(--ink);
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--hairline-strong, var(--hairline));
+  margin: 0;
+}
+
+.faq-group-count {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Jump links to each section, so a long page is navigable without scrolling. */
+.faq-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: clamp(40px, 6vh, 64px);
+}
+
+.faq-jump a {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 9px 20px;
+  transition: color var(--dur-quick), border-color var(--dur-quick), background var(--dur-quick);
+}
+
+.faq-jump a:hover,
+.faq-jump a:focus-visible {
+  color: #FFFFFF;
+  background: var(--terra);
+  border-color: var(--terra);
 }
 
 /* ---------- Occasions marquee ---------- */
@@ -5071,12 +5129,14 @@ html:not(.js) .loom-hint,
    inside .testimonial-band, whose height it drives. A 400px intrinsic
    placeholder made the band render ~250px too tall until it scrolled into
    view, then snap shorter — a visible layout jump. */
+/* .faq-list is deliberately NOT in this list: the FAQ page now has anchored
+   section headings, and a skipped list is only size-estimated, so jumping to a
+   topic below one landed in the wrong place. */
 .weave-gallery,
 .story-grid,
 .process-grid,
 .occasion-grid,
-.final-cta,
-.faq-list {
+.final-cta {
   content-visibility: auto;
   contain-intrinsic-size: 1px 400px;
 }

@@ -46,6 +46,26 @@ class Faq extends Model
             ->groupBy(fn (self $faq) => trim((string) $faq->section) ?: self::DEFAULT_SECTION);
     }
 
+    /**
+     * The #anchor of the first section matching a keyword, for linking straight
+     * to a topic from elsewhere on the site.
+     *
+     * Matched loosely on purpose: the footer link should survive the section
+     * being renamed from "Shipping" to "Shipping & Delivery" to "Delivery and
+     * Shipping". Returns an empty string when nothing matches, so the caller
+     * falls back to the top of the FAQ page rather than a dead anchor.
+     */
+    public static function sectionAnchor(string $needle): string
+    {
+        $needle = \Illuminate\Support\Str::slug($needle);
+
+        $match = static::sections()->first(
+            fn ($section) => str_contains(\Illuminate\Support\Str::slug($section), $needle)
+        );
+
+        return $match ? '#' . \Illuminate\Support\Str::slug($match) : '';
+    }
+
     /** Section names already in use, for the admin's suggestion list. */
     public static function sections(): Collection
     {

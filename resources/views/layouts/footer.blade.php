@@ -20,7 +20,7 @@
         <ul>
           <li><a href="{{ route('about') }}">Our Story</a></li>
           <li><a href="{{ route('faq') }}">FAQ</a></li>
-          <li><a href="{{ route('faq') }}#shipping">Shipping &amp; Delivery</a></li>
+          <li><a href="{{ route('faq') }}{{ \App\Models\Faq::sectionAnchor('shipping') }}">Shipping &amp; Delivery</a></li>
           <li><a href="{{ route('begin') }}">Begin Your Story</a></li>
         </ul>
       </div>
@@ -59,7 +59,7 @@
     <div class="footer-bottom">
       <span>© <span data-year>{{ date('Y') }}</span> {{ setting('copyright_text', 'Storyloom. Every story belongs to its family.') }}</span>
       <span class="legal-links">
-        <a href="{{ route('faq') }}#shipping">Shipping</a>
+        <a href="{{ route('faq') }}{{ \App\Models\Faq::sectionAnchor('shipping') }}">Shipping</a>
         <a href="{{ route('faq') }}#refunds">Refunds</a>
         <a href="{{ route('faq') }}">Privacy</a>
       </span>

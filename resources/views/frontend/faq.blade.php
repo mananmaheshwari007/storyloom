@@ -20,12 +20,27 @@
     <div class="container-narrow">
       @php $faqGroups = \App\Models\Faq::grouped(); @endphp
 
+      {{-- Jump links, so a page of six sections doesn't have to be scrolled
+           through to reach the one the visitor came for. --}}
+      @if($faqGroups->count() > 1)
+        <nav class="faq-jump" aria-label="Jump to a topic" data-reveal>
+          @foreach($faqGroups as $sectionName => $sectionFaqs)
+            <a href="#{{ Str::slug($sectionName) }}">{{ $sectionName }}</a>
+          @endforeach
+        </nav>
+      @endif
+
       @forelse($faqGroups as $sectionName => $sectionFaqs)
         {{-- A single unnamed group would just be a redundant heading over the
              whole list, so the label only appears once there is more than one. --}}
         <div class="faq-group">
           @if($faqGroups->count() > 1)
-            <h2 class="faq-group-title" id="faq-{{ Str::slug($sectionName) }}" data-reveal>{{ $sectionName }}</h2>
+            {{-- id is the plain slug of the section name, so links elsewhere on
+                 the site can point straight at a topic. --}}
+            <div class="faq-group-head" id="{{ Str::slug($sectionName) }}" data-reveal>
+              <h2 class="faq-group-title">{{ $sectionName }}</h2>
+              <span class="faq-group-count">{{ $sectionFaqs->count() }} {{ Str::plural('question', $sectionFaqs->count()) }}</span>
+            </div>
           @endif
 
           <div class="faq-list">

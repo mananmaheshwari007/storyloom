@@ -681,4 +681,39 @@
       startSlideshow();
     }
   }
+
+  /* ---------- Land #anchors below the sticky header ----------
+     scroll-margin-top handles this for in-page clicks, but not for a link
+     arriving from another page: main.css is loaded asynchronously (media=print
+     then flipped) to keep it off the critical path, and Chrome performs the
+     fragment jump before that stylesheet applies — so the heading ends up
+     tucked under the header. Re-running the scroll once everything has settled
+     puts it where it belongs. */
+  var settleHashScroll = function () {
+    if (!window.location.hash || window.location.hash.length < 2) return;
+
+    var target;
+    try {
+      target = document.querySelector(window.location.hash);
+    } catch (e) {
+      return; // not a valid selector, e.g. "#1"
+    }
+    if (!target) return;
+
+    var header = document.querySelector(".site-header");
+    var clearance = (header ? header.getBoundingClientRect().height : 0) + 28;
+    var top = window.scrollY + target.getBoundingClientRect().top - clearance;
+
+    // 'auto', not smooth: this is a correction, and animating it reads as drift.
+    window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+  };
+
+  window.addEventListener("load", function () {
+    // Twice on purpose. The first pass fixes the async-stylesheet problem; by
+    // the second the scroll-reveal has run and the header has shrunk into its
+    // scrolled state, both of which move the target after the first correction.
+    window.setTimeout(settleHashScroll, 80);
+    window.setTimeout(settleHashScroll, 450);
+  });
+  window.addEventListener("hashchange", settleHashScroll);
 })();
