@@ -46,7 +46,7 @@
         <ul>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z"/><path d="M9 9.5c.5 2.5 3 5 5.5 5.5l1-1.5 2 1c-.5 1.5-1.5 2-3 2-3.5-.5-6.5-3.5-7-7 0-1.5.5-2.5 2-3l1 2-1.5 1Z" fill="currentColor" stroke="none"/></svg>
-            <span><span class="lbl">{{ setting('begin_channel_whatsapp', 'WhatsApp') }}</span><a href="https://wa.me/{{ setting('contact_whatsapp', '919999999999') }}" target="_blank" rel="noopener">{{ setting('begin_box_wa_text', 'Message us directly') }}</a></span>
+            <span><span class="lbl">{{ setting('begin_channel_whatsapp', 'WhatsApp') }}</span><a href="{{ route('whatsapp') }}" target="_blank" rel="noopener">{{ setting('begin_box_wa_text', 'Message us directly') }}</a></span>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>

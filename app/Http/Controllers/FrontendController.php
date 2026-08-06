@@ -316,6 +316,42 @@ class FrontendController extends Controller
     }
 
     /**
+     * Send visitors to WhatsApp via our own URL.
+     *
+     * Nothing published anywhere — the site, an Instagram bio, a business card,
+     * a customer's screenshot — should contain the raw number, because the
+     * number is going to change once Storyloom has its own line. Everything
+     * points at /whatsapp instead, and changing the number is then a single
+     * field in Site Settings with no dead links left behind.
+     *
+     * Deliberately a 302: the destination changes, so it must not be cached.
+     */
+    public function whatsapp()
+    {
+        // wa.me accepts digits only — no +, spaces, dashes or brackets. Editors
+        // paste numbers in every format, so normalise rather than trust it.
+        $number = preg_replace('/\D+/', '', (string) setting('contact_whatsapp', ''));
+
+        // 919999999999 is the shipped placeholder. Sending someone to a chat
+        // that will never be answered is worse than not offering the link, so
+        // fall back to the page that does capture the enquiry.
+        if ($number === '' || $number === '919999999999') {
+            return redirect()->route('begin');
+        }
+
+        $url = 'https://wa.me/' . $number;
+        $prefill = trim((string) setting('whatsapp_prefill', 'Hi Storyloom — I would like to begin a story.'));
+
+        if ($prefill !== '') {
+            // Opening the chat with the message already typed removes the
+            // "what do I even say" pause that loses people at this step.
+            $url .= '?text=' . rawurlencode($prefill);
+        }
+
+        return redirect()->away($url);
+    }
+
+    /**
      * Handle Contact Message Form Submission.
      */
     public function submitContact(Request $request)

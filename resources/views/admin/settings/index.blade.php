@@ -66,9 +66,39 @@
                             <label for="contact_phone" class="form-label">Phone Number</label>
                             <input type="text" class="form-control" id="contact_phone" name="contact_phone" value="{{ setting('contact_phone', '+91 99999 99999') }}">
                         </div>
+                        @php
+                            $waRaw = (string) setting('contact_whatsapp', '');
+                            $waDigits = preg_replace('/\D+/', '', $waRaw);
+                            $waIsPlaceholder = $waDigits === '' || $waDigits === '919999999999';
+                        @endphp
                         <div class="col-md-6">
-                            <label for="contact_whatsapp" class="form-label">WhatsApp Number (e.g. 919999999999)</label>
-                            <input type="text" class="form-control" id="contact_whatsapp" name="contact_whatsapp" value="{{ setting('contact_whatsapp', '919999999999') }}">
+                            <label for="contact_whatsapp" class="form-label">WhatsApp Number</label>
+                            <input type="text" class="form-control @if($waIsPlaceholder) is-invalid @endif" id="contact_whatsapp" name="contact_whatsapp" value="{{ $waRaw }}">
+                            @if($waIsPlaceholder)
+                                <div class="invalid-feedback d-block">
+                                    <strong>This is still the placeholder number.</strong> Every "WhatsApp us" link on the site
+                                    currently sends people to <a href="{{ route('begin') }}" target="_blank">Begin Your Story</a> instead,
+                                    rather than to a chat nobody answers. Enter your real number to switch them over.
+                                </div>
+                            @endif
+                            <div class="form-text">
+                                Country code first, no <code>+</code> needed — e.g. <code>919876543210</code>.
+                                Spaces and dashes are fine, they're stripped automatically.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="whatsapp_prefill" class="form-label">Message pre-typed for the visitor</label>
+                            <input type="text" class="form-control" id="whatsapp_prefill" name="whatsapp_prefill" value="{{ setting('whatsapp_prefill', 'Hi Storyloom — I would like to begin a story.') }}">
+                            <div class="form-text">Their chat opens with this already written, so they only have to hit send. Leave blank for an empty chat.</div>
+                        </div>
+                        <div class="col-12">
+                            <div class="alert alert-light border small mb-0">
+                                <i class="bi bi-link-45deg me-1 text-primary"></i>
+                                <strong>Share <code>{{ route('whatsapp') }}</code> rather than the number itself</strong> —
+                                in your Instagram bio, on cards, in ads. It redirects to whatever number is saved above, so when you
+                                move to a dedicated Storyloom number you change it here once and every link already out in the world
+                                keeps working.
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label for="contact_address" class="form-label">Studio Address</label>

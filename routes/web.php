@@ -44,6 +44,12 @@ Route::get('/journal-dont-get-me-anything.html', function () {
 Route::get('/begin', [FrontendController::class, 'begin'])->name('begin');
 
 /*
+ * Our own WhatsApp URL. Share this anywhere the number would otherwise be
+ * printed — it keeps working when the number changes.
+ */
+Route::get('/whatsapp', [FrontendController::class, 'whatsapp'])->name('whatsapp');
+
+/*
  * Crawler files. Served by routes, not as static files in public/, so they ship
  * with every deployment and the sitemap stays in step with what's published.
  */
