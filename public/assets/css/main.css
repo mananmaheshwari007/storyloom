@@ -677,7 +677,11 @@ h3 i {
 .mobile-menu {
   position: fixed;
   inset: 0;
-  z-index: 110;
+  /* Above the promo bar (130) and the header (120). At 110 both painted on top
+     of this full-screen overlay: the promo bar covered the close button and
+     clipped the first menu link, so with the bar switched on the menu opened
+     with no visible way out. Nothing should sit over a takeover menu. */
+  z-index: 140;
   background: var(--parchment);
   background-image: var(--grain);
   display: flex;
