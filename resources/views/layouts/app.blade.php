@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ setting('promo_bar_enabled', '0') === '1' ? 'has-promo-bar' : '' }}">
 <head>
   @include('layouts.analytics')
-  @include('layouts.meta-pixel')
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
