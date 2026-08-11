@@ -200,6 +200,11 @@
          handler's promise chain settles. */
       let leadTracked = false;
 
+      /* Opt-in tracing for verifying the Lead event: add ?pixeldebug=1 to the
+         URL. Silent for every normal visitor, and it never logs anything the
+         visitor typed — only whether the branch ran and whether fbq exists. */
+      const pixelDebug = new URLSearchParams(window.location.search).has('pixeldebug');
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         leadTracked = false;
@@ -263,10 +268,18 @@
             if (!leadTracked) {
               leadTracked = true;
               try {
+                if (pixelDebug) console.log('[pixel] success branch reached; typeof fbq =', typeof fbq);
                 if (typeof fbq === 'function') {
+                  if (pixelDebug) console.log('[pixel] firing Lead');
                   fbq('track', 'Lead');
+                  if (pixelDebug) console.log('[pixel] Lead sent');
+                } else if (pixelDebug) {
+                  console.warn('[pixel] fbq missing — is the Meta Pixel ID set in Site Settings?');
                 }
-              } catch (e) { /* tracking must never break the form */ }
+              } catch (e) {
+                if (pixelDebug) console.error('[pixel] Lead threw:', e);
+                /* tracking must never break the form */
+              }
             }
           }
         })
