@@ -152,9 +152,18 @@
                         <label for="google_analytics_id" class="form-label">Google Analytics Measurement ID</label>
                         <input type="text" class="form-control" id="google_analytics_id" name="google_analytics_id" value="{{ setting('google_analytics_id', 'G-1V87JW7B54') }}" placeholder="G-1V87JW7B54">
                     </div>
-                    <div class="mb-0">
+                    <div class="mb-3">
                         <label for="google_site_verification" class="form-label">Google Site Verification Code</label>
                         <input type="text" class="form-control" id="google_site_verification" name="google_site_verification" value="{{ setting('google_site_verification', '') }}" placeholder="paste verification string">
+                    </div>
+                    <div class="mb-0">
+                        <label for="meta_pixel_id" class="form-label">Meta Pixel ID</label>
+                        <input type="text" class="form-control" id="meta_pixel_id" name="meta_pixel_id" value="{{ setting('meta_pixel_id', '') }}" placeholder="e.g. 1560383205788682">
+                        <div class="form-text">
+                            Your Meta (Facebook) Pixel / Dataset ID, from Events Manager. The Pixel loads on every public page
+                            while this is filled in. <strong>Clear the field to switch the Pixel off completely.</strong>
+                            Base Pixel only — no purchase or lead events are being sent.
+                        </div>
                     </div>
                 </div>
             </div>

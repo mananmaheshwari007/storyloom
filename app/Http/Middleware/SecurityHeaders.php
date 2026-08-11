@@ -26,14 +26,17 @@ class SecurityHeaders
 
         $response->headers->set('Content-Security-Policy', implode('; ', [
             "default-src 'self'",
-            // googletagmanager serves the GA4 gtag.js loader; without it the CSP
-            // silently blocks Analytics and no data ever reaches the property.
-            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.googletagmanager.com",
+            // googletagmanager serves the GA4 gtag.js loader; connect.facebook.net
+            // serves the Meta Pixel's fbevents.js. Without either host here the
+            // CSP silently blocks the tag and no data ever reaches the property.
+            "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.googletagmanager.com https://connect.facebook.net",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net https://cdn.jsdelivr.net",
             "font-src 'self' https://fonts.gstatic.com https://fonts.bunny.net https://cdn.jsdelivr.net data:",
             "img-src 'self' data: https:",
-            // GA4 beacons go to google-analytics.com / analytics.google.com.
-            "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com",
+            // GA4 beacons go to google-analytics.com / analytics.google.com;
+            // Meta Pixel events post to facebook.com/tr. The noscript fallback
+            // <img> is already covered by the https: allowance in img-src.
+            "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net",
             "frame-ancestors 'self'",
             "base-uri 'self'",
             "object-src 'none'",
