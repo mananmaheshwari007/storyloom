@@ -194,9 +194,16 @@
       });
       applyChannel();
 
+      /* One Meta Lead event per successful submission. Reset as each submission
+         starts, so a visitor who sends a second enquiry is counted again, while
+         a single submission can never report twice however many times this
+         handler's promise chain settles. */
+      let leadTracked = false;
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+        leadTracked = false;
+
         // Hide previous errors
         document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
         document.getElementById('begin-success').style.display = 'none';
@@ -238,6 +245,29 @@
             successEl.innerHTML = '<strong>' + data.message + '</strong><br>{{ addslashes(setting('begin_success_note', 'We have received your details and will get in touch shortly.')) }}';
             successEl.style.display = 'block';
             form.reset();
+
+            /* Meta Pixel — Lead.
+               Fires only here: data.success is returned by the server after
+               validation passed AND the enquiry was written to the database, so
+               a failed validation, a rejected submission or a network error
+               never reaches this branch.
+
+               Deliberately placed after the success message and form.reset() so
+               that nothing about the visitor's experience depends on tracking.
+               fbq is absent whenever the Pixel ID is cleared in the CMS, hence
+               the typeof check, and the try/catch means a blocked or broken
+               Pixel can never surface as a broken form.
+
+               No parameters: the visitor's name, phone, email and story stay
+               entirely out of what is sent to Meta. */
+            if (!leadTracked) {
+              leadTracked = true;
+              try {
+                if (typeof fbq === 'function') {
+                  fbq('track', 'Lead');
+                }
+              } catch (e) { /* tracking must never break the form */ }
+            }
           }
         })
         .catch(error => {
