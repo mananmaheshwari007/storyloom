@@ -699,6 +699,7 @@
             hidden("category", get("category"));
             hidden("read_time", get("read_time"));
             hidden("toc_label", get("toc_label"));
+            hidden("featured_image", get("featured_image"));
             var tEn = document.getElementById("tocEnabled");
             if (tEn && tEn.checked) hidden("show_toc", "1");
 
@@ -816,6 +817,27 @@
         }).join(" ").replace(/<[^>]*>/g, " ");
         var n = text.split(/\s+/).filter(Boolean).length;
         el.textContent = n + (n === 1 ? " word" : " words");
+    }
+
+    /* Cover Image Live Preview listener */
+    var coverFileInput = document.getElementById("featured_image_file");
+    if (coverFileInput) {
+        coverFileInput.addEventListener("change", function (e) {
+            var file = e.target.files && e.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    var base64 = evt.target.result;
+                    var hiddenInput = document.getElementById("featured_image");
+                    if (hiddenInput) hiddenInput.value = base64;
+                    var img = document.getElementById("cover_preview_img");
+                    var container = document.getElementById("cover_preview_container");
+                    if (img) img.src = base64;
+                    if (container) container.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     }
 
     paintDim();

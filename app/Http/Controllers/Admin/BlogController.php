@@ -161,6 +161,10 @@ class BlogController extends Controller
     {
         $data = $request->except(['featured_image_file', 'blocks', 'promo', 'sidebar_promo', 'title_html', '_token', '_method', 'publish_date_tag']);
 
+        if (isset($data['featured_image']) && str_starts_with($data['featured_image'], 'data:')) {
+            unset($data['featured_image']);
+        }
+
         $blocks = json_decode($request->input('blocks', '[]'), true);
         if (!is_array($blocks)) {
             $blocks = [];

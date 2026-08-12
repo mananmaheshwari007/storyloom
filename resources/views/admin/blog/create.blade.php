@@ -137,8 +137,16 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="featured_image_file" class="form-label">Featured Cover Image</label>
-                        <input type="file" class="form-control" id="featured_image_file" name="featured_image_file" accept="image/*">
-                        <div class="form-text">Max file size: <strong>3 MB</strong>. Recommended dimensions: <strong>1600 × 900 px</strong> (Landscape 16:9).</div>
+                        <input type="hidden" name="featured_image" id="featured_image" value="{{ old('featured_image') }}">
+                        <input type="file" class="form-control mb-2" id="featured_image_file" name="featured_image_file" accept="image/*">
+                        <div class="form-text mb-2">Max file size: <strong>3 MB</strong>. Recommended dimensions: <strong>1600 × 900 px</strong> (Landscape 16:9).</div>
+                        <div id="cover_preview_container" class="mt-2 text-muted" style="font-size: 0.85rem; {{ old('featured_image') ? '' : 'display:none;' }}">
+                            <span>Cover Preview:</span>
+                            <div class="mt-1">
+                                @php $oldCover = old('featured_image'); @endphp
+                                <img id="cover_preview_img" src="{{ $oldCover ? ((str_starts_with($oldCover, 'data:') || str_starts_with($oldCover, 'http')) ? $oldCover : asset($oldCover)) : '' }}" alt="Preview" style="max-height: 120px; width: 100%; object-fit: cover;" class="border rounded shadow-sm">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

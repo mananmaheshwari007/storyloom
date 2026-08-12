@@ -137,14 +137,16 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="featured_image_file" class="form-label">Upload New Cover Image (Optional)</label>
+                        <input type="hidden" name="featured_image" id="featured_image" value="{{ old('featured_image', $blog->featured_image) }}">
                         <input type="file" class="form-control mb-2" id="featured_image_file" name="featured_image_file" accept="image/*">
                         <div class="form-text mb-2">Max file size: <strong>3 MB</strong>. Recommended dimensions: <strong>1600 × 900 px</strong> (Landscape 16:9).</div>
-                        @if($blog->featured_image)
-                            <div class="mt-2 text-muted" style="font-size: 0.85rem;">
-                                Current Cover: <code>{{ $blog->featured_image }}</code>
-                                <div class="mt-1"><img src="{{ asset($blog->featured_image) }}" alt="Preview" height="80" class="border rounded"></div>
+                        <div id="cover_preview_container" class="mt-2 text-muted" style="font-size: 0.85rem; {{ (old('featured_image', $blog->featured_image)) ? '' : 'display:none;' }}">
+                            <span>Current Cover:</span>
+                            <div class="mt-1">
+                                @php $editCover = old('featured_image', $blog->featured_image); @endphp
+                                <img id="cover_preview_img" src="{{ $editCover ? ((str_starts_with($editCover, 'data:') || str_starts_with($editCover, 'http')) ? $editCover : asset($editCover)) : '' }}" alt="Preview" style="max-height: 120px; width: 100%; object-fit: cover;" class="border rounded shadow-sm">
                             </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>

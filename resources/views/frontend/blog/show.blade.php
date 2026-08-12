@@ -32,11 +32,14 @@
       </p>
     </section>
 
-    @if($article->featured_image)
+    @php
+      $coverImage = $article->featured_image ?: 'assets/img/spread-bench-dusk.webp';
+    @endphp
+    @if($coverImage)
       <section class="container">
         <figure class="article-figure plate" data-reveal>
-          <img src="{{ asset($article->featured_image) }}" width="1600" height="900" alt="{{ $article->title }}" fetchpriority="high">
-          <figcaption>the gift they remember is rarely the one that cost the most</figcaption>
+          <img src="{{ (str_starts_with($coverImage, 'data:') || str_starts_with($coverImage, 'http://') || str_starts_with($coverImage, 'https://')) ? $coverImage : asset($coverImage) }}" width="1600" height="900" alt="{{ $article->title }}" fetchpriority="high">
+          <figcaption>{{ $article->dek ?: ($article->short_description ?: 'the gift they remember is rarely the one that cost the most') }}</figcaption>
         </figure>
       </section>
     @endif
