@@ -183,7 +183,7 @@ class BlogController extends Controller
 
         $data['blocks']           = $blocks;
         $data['promo']            = $promo;
-        $data['show_promo']       = $request->has('show_promo') ? $request->boolean('show_promo') : true;
+        $data['show_promo']       = $request->boolean('show_promo');
 
         $date = ($blog && $blog->created_at) ? $blog->created_at : now();
         $data['publish_date_tag'] = 'PUBLISHED ' . strtoupper($date->format('F Y'));

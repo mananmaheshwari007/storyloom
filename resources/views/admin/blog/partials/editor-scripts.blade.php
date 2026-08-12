@@ -552,6 +552,9 @@
                     (b.caption ? '<p class="table-caption">' + (b.caption || "") + "</p>" : "");
             }
             if (b.type === "promo") {
+                var promoEn = document.getElementById("promoEnabled");
+                if (promoEn && !promoEn.checked) return "";
+
                 var p = b.promo || DEFAULT_PROMO;
                 var coverPath = p.cover;
                 var ctaPath   = p.cta_url || "library?book=1";
@@ -598,6 +601,30 @@
         var body  = state.length
             ? previewHTML()
             : '<p style="text-align:center;color:#8a9099;padding:40px 0;">Nothing to preview yet — add a block first.</p>';
+
+        var promoEn = document.getElementById("promoEnabled");
+        var showPromo = promoEn ? promoEn.checked : true;
+        var hasInlinePromo = state.some(function (b) { return b.type === "promo"; });
+
+        if (showPromo && !hasInlinePromo) {
+            var p = promo || DEFAULT_PROMO;
+            var coverPath = p.cover;
+            var ctaPath   = p.cta_url || "library?book=1";
+            if (ctaPath && window.libraryBooksData) {
+                var m = ctaPath.match(/book[=_](\d+)/i);
+                if (m) {
+                    var targetId = parseInt(m[1], 10);
+                    var foundBk = window.libraryBooksData.find(function (lb) { return lb.id === targetId; });
+                    if (foundBk && foundBk.cover_image) coverPath = foundBk.cover_image;
+                }
+            }
+            var resolvedCover = resolveUrl(coverPath || "assets/img/book1/cover.webp");
+            var resolvedCta   = resolveUrl(ctaPath);
+            var ctaBtnText    = (p.cta_text || "").trim() || "Read a real book";
+            body += '\n<aside class="inline-cta"><a class="ic-cover" href="' + esc(resolvedCta) + '" style="display:block;"><img src="' + esc(resolvedCover) + '" alt=""></a>' +
+                '<div><h3>' + (p.heading || "") + '</h3><p>' + (p.body || "") + '</p>' +
+                '<a class="btn btn-primary" href="' + esc(resolvedCta) + '">' + ctaBtnText + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg></a></div></aside>';
+        }
 
         return '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
             '<meta name="viewport" content="width=device-width, initial-scale=1">' +
@@ -821,6 +848,14 @@
                     if (pCtaUrl) pCtaUrl.value = "library?book=" + opt.value;
                     updatePromoPanel();
                 }
+            });
+        }
+
+        var promoEn = document.getElementById("promoEnabled");
+        if (promoEn) {
+            promoEn.addEventListener("change", function () {
+                sync();
+                if (typeof paintPreview === "function") paintPreview();
             });
         }
     })();
