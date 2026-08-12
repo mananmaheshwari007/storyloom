@@ -4792,6 +4792,35 @@ html:not(.js) .loom-hint,
   font-weight: 700;
 }
 
+.article-body ol {
+  margin: 20px 0 28px;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: article-ol-counter;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.article-body ol li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 1.04rem;
+  line-height: 1.7;
+  counter-increment: article-ol-counter;
+}
+
+.article-body ol li::before {
+  content: counter(article-ol-counter) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--terra);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
 .article-body strong {
   color: var(--ink);
   font-weight: 700;

@@ -64,7 +64,7 @@
     }
 
     /* ---------- field builders ---------- */
-    function rich(value, placeholder, onInput) {
+    function rich(value, placeholder, onInput, isLarge) {
         var wrap = document.createElement("div");
 
         var bar = document.createElement("div");
@@ -93,7 +93,7 @@
             });
 
         var ed = document.createElement("div");
-        ed.className = "jw-rich";
+        ed.className = "jw-rich" + (isLarge ? " jw-rich-lg" : "");
         ed.contentEditable = "true";
         ed.setAttribute("data-empty", placeholder || "");
         ed.innerHTML = value || "";
@@ -159,7 +159,7 @@
         body.className = "jw-block-body";
 
         if (block.type === "paragraph") {
-            body.appendChild(rich(block.text, "Write your paragraph…", function (v) { block.text = v; sync(); }));
+            body.appendChild(rich(block.text, "Write your paragraph…", function (v) { block.text = v; sync(); }, true));
             var lw = document.createElement("div");
             lw.className = "form-check mt-2";
             lw.innerHTML =
@@ -184,7 +184,7 @@
             sel.value = block.level || "h2";
             sel.addEventListener("change", function () { block.level = sel.value; sync(); });
             row.appendChild(labelled("Level", sel, "H2 headings appear in the article's contents list."));
-            row.appendChild(labelled("Heading text", input(block.text, "e.g. What actually passes", function (v) { block.text = v; sync(); })));
+            row.appendChild(labelled("Heading text", rich(block.text, "e.g. What actually passes", function (v) { block.text = v; sync(); })));
             body.appendChild(row);
 
         } else if (block.type === "image") {
@@ -194,26 +194,54 @@
             var r2 = document.createElement("div");
             r2.className = "jw-row two mt-2";
             r2.appendChild(labelled("Alt text (for accessibility)", input(block.alt, "Describe the illustration", function (v) { block.alt = v; sync(); })));
-            r2.appendChild(labelled("Caption (optional)", input(block.caption, "shown under the image", function (v) { block.caption = v; sync(); })));
+            r2.appendChild(labelled("Caption (optional)", rich(block.caption, "shown under the image", function (v) { block.caption = v; sync(); })));
             body.appendChild(r2);
 
         } else if (block.type === "quote") {
-            body.appendChild(labelled("Quote", rich(block.text, "The line you want to stand out…", function (v) { block.text = v; sync(); })));
-            body.appendChild(labelled("Attribution (optional)", input(block.cite, "e.g. Storyloom · Studio note", function (v) { block.cite = v; sync(); })));
+            body.appendChild(labelled("Quote", rich(block.text, "The line you want to stand out…", function (v) { block.text = v; sync(); }, true)));
+            body.appendChild(labelled("Attribution (optional)", rich(block.cite, "e.g. Storyloom · Studio note", function (v) { block.cite = v; sync(); })));
 
         } else if (block.type === "takeaway") {
-            body.appendChild(labelled("Label", input(block.label, "The takeaway", function (v) { block.label = v; sync(); })));
-            body.appendChild(labelled("Text", rich(block.text, "The point you want remembered…", function (v) { block.text = v; sync(); })));
+            body.appendChild(labelled("Label", rich(block.label, "The takeaway", function (v) { block.label = v; sync(); })));
+            body.appendChild(labelled("Text", rich(block.text, "The point you want remembered…", function (v) { block.text = v; sync(); }, true)));
 
         } else if (block.type === "list") {
+            var optsRow = document.createElement("div");
+            optsRow.className = "jw-row two mb-3 align-items-center";
+
+            var styleSel = document.createElement("select");
+            styleSel.className = "jw-input";
+            styleSel.innerHTML =
+                '<option value="bulleted">Bulleted (•)</option>' +
+                '<option value="numbered">Numbered (1, 2, 3…)</option>';
+            styleSel.value = block.list_style || "bulleted";
+            styleSel.addEventListener("change", function () {
+                block.list_style = styleSel.value;
+                sync();
+            });
+            optsRow.appendChild(labelled("List Style", styleSel));
+
+            var nw = document.createElement("div");
+            nw.className = "form-check mt-3";
+            nw.innerHTML =
+                '<input class="form-check-input" type="checkbox" id="newline' + index + '"' + (block.newline ? " checked" : "") + '>' +
+                '<label class="form-check-label small text-muted" for="newline' + index + '">Start paragraph copy on the next line</label>';
+            nw.querySelector("input").addEventListener("change", function (e) {
+                block.newline = e.target.checked;
+                sync();
+            });
+            optsRow.appendChild(nw);
+
+            body.appendChild(optsRow);
+
             var host = document.createElement("div");
             (block.items || []).forEach(function (item, i) {
                 var wrap = document.createElement("div");
                 wrap.className = "jw-item";
                 var fields = document.createElement("div");
                 fields.className = "jw-item-fields";
-                fields.appendChild(input(item.lead, "Bold lead-in (optional)", function (v) { item.lead = v; sync(); }));
-                fields.appendChild(input(item.text, "The rest of this point", function (v) { item.text = v; sync(); }));
+                fields.appendChild(labelled("Title / Lead-in (optional)", rich(item.lead, "Lead-in or question title", function (v) { item.lead = v; sync(); })));
+                fields.appendChild(labelled("Paragraph Copy", rich(item.text, "The rest of this point", function (v) { item.text = v; sync(); })));
                 wrap.appendChild(fields);
                 var del = document.createElement("button");
                 del.type = "button";
@@ -244,8 +272,7 @@
             var thead = document.createElement("tr");
             (block.head || []).forEach(function (cell, c) {
                 var td = document.createElement("td");
-                var inp = input(cell, "Column " + (c + 1), function (v) { block.head[c] = v; sync(); });
-                inp.className = "jw-cell fw-bold";
+                var inp = rich(cell, "Column " + (c + 1), function (v) { block.head[c] = v; sync(); });
                 td.appendChild(inp);
                 thead.appendChild(td);
             });
@@ -255,7 +282,7 @@
                 var tr = document.createElement("tr");
                 row.forEach(function (cell, c) {
                     var td = document.createElement("td");
-                    td.appendChild(input(cell, "", function (v) { block.rows[r][c] = v; sync(); }));
+                    td.appendChild(rich(cell, "", function (v) { block.rows[r][c] = v; sync(); }));
                     tr.appendChild(td);
                 });
                 var tdDel = document.createElement("td");
@@ -309,7 +336,7 @@
             ctrls.appendChild(addRow); ctrls.appendChild(addCol); ctrls.appendChild(delCol);
             body.appendChild(ctrls);
             body.appendChild(labelled("Caption (optional)",
-                input(block.caption, "shown under the table", function (v) { block.caption = v; sync(); })));
+                rich(block.caption, "shown under the table", function (v) { block.caption = v; sync(); })));
 
         } else if (block.type === "promo") {
             block.promo = block.promo || Object.assign({}, DEFAULT_PROMO);
@@ -319,14 +346,14 @@
             note.textContent = "This is the book we promote inside this article. It starts as the house default — change any field to feature a different book.";
             body.appendChild(note);
 
-            body.appendChild(labelled("Heading", input(p.heading, "", function (v) { p.heading = v; sync(); })));
-            body.appendChild(labelled("Body text", rich(p.body, "Why this book fits this article…", function (v) { p.body = v; sync(); })));
+            body.appendChild(labelled("Heading", rich(p.heading, "Promo heading", function (v) { p.heading = v; sync(); })));
+            body.appendChild(labelled("Body text", rich(p.body, "Why this book fits this article…", function (v) { p.body = v; sync(); }, true)));
             var pr = document.createElement("div");
             pr.className = "jw-row two mt-2";
             pr.appendChild(labelled("Book cover image", inputUpload(p.cover, "assets/img/book1/cover.webp", function (v) { p.cover = v; sync(); })));
             pr.appendChild(labelled("Button link", input(p.cta_url, "library.html", function (v) { p.cta_url = v; sync(); })));
             body.appendChild(pr);
-            body.appendChild(labelled("Button text", input(p.cta_text, "Read a real book", function (v) { p.cta_text = v; sync(); })));
+            body.appendChild(labelled("Button text", rich(p.cta_text, "Read a real book", function (v) { p.cta_text = v; sync(); })));
 
             var reset = document.createElement("button");
             reset.type = "button";
@@ -438,31 +465,41 @@
                     (b.caption ? "<figcaption>" + b.caption + "</figcaption>" : "") + "</figure>";
             if (b.type === "quote")
                 return '<blockquote class="pull-quote">' + (b.text || "") +
-                    (b.cite ? "<cite>" + esc(b.cite) + "</cite>" : "") + "</blockquote>";
+                    (b.cite ? "<cite>" + b.cite + "</cite>" : "") + "</blockquote>";
             if (b.type === "takeaway")
                 return '<div class="takeaway"><p class="tk-label">' +
                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12.5l5 5L20 6.5"/></svg> ' +
-                    esc(b.label || "The takeaway") + "</p><p>" + (b.text || "") + "</p></div>";
-            if (b.type === "list")
-                return "<ul>" + (b.items || []).map(function (i) {
-                    if (!((i.lead || "") + (i.text || "")).trim()) return "";
-                    return "<li>" + (i.lead ? "<strong>" + esc(i.lead) + "</strong> " : "") + esc(i.text) + "</li>";
-                }).join("") + "</ul>";
+                    (b.label || "The takeaway") + "</p><p>" + (b.text || "") + "</p></div>";
+            if (b.type === "list") {
+                var isNewline  = !!b.newline;
+                var isNumbered = (b.list_style === "numbered");
+                var tag = isNumbered ? "ol" : "ul";
+                return "<" + tag + ' class="article-list' + (isNumbered ? " is-numbered" : "") + '">' + (b.items || []).map(function (i) {
+                    var leadStr = (i.lead || "").trim();
+                    var textStr = (i.text || "").trim();
+                    if (!leadStr && !textStr) return "";
+                    if (leadStr) {
+                        var leadMarkup = (leadStr.toLowerCase().startsWith("<strong") || leadStr.toLowerCase().startsWith("<b")) ? leadStr : "<strong>" + leadStr + "</strong>";
+                        return "<li>" + leadMarkup + (isNewline ? "<br>" : " ") + textStr + "</li>";
+                    }
+                    return "<li>" + textStr + "</li>";
+                }).join("") + "</" + tag + ">";
+            }
             if (b.type === "table") {
                 var head = (b.head || []).some(function (c) { return (c || "").trim(); })
-                    ? "<thead><tr>" + b.head.map(function (c) { return "<th>" + esc(c) + "</th>"; }).join("") + "</tr></thead>" : "";
+                    ? "<thead><tr>" + b.head.map(function (c) { return "<th>" + (c || "") + "</th>"; }).join("") + "</tr></thead>" : "";
                 var rows = (b.rows || []).map(function (r) {
                     if (!r.some(function (c) { return (c || "").trim(); })) return "";
-                    return "<tr>" + r.map(function (c) { return "<td>" + esc(c) + "</td>"; }).join("") + "</tr>";
+                    return "<tr>" + r.map(function (c) { return "<td>" + (c || "") + "</td>"; }).join("") + "</tr>";
                 }).join("");
                 return '<div class="table-wrap"><table class="article-table">' + head + "<tbody>" + rows + "</tbody></table></div>" +
-                    (b.caption ? '<p class="table-caption">' + esc(b.caption) + "</p>" : "");
+                    (b.caption ? '<p class="table-caption">' + (b.caption || "") + "</p>" : "");
             }
             if (b.type === "promo") {
                 var p = b.promo || DEFAULT_PROMO;
                 return '<aside class="inline-cta"><span class="ic-cover"><img src="' + esc(p.cover) + '" alt=""></span>' +
-                    "<div><h3>" + esc(p.heading) + "</h3><p>" + (p.body || "") + "</p>" +
-                    '<a class="btn btn-primary" href="' + esc(p.cta_url) + '">' + esc(p.cta_text) + "</a></div></aside>";
+                    "<div><h3>" + (p.heading || "") + "</h3><p>" + (p.body || "") + "</p>" +
+                    '<a class="btn btn-primary" href="' + esc(p.cta_url) + '">' + (p.cta_text || "") + "</a></div></aside>";
             }
             if (b.type === "divider") return '<hr class="article-rule">';
             return "";

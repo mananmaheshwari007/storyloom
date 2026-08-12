@@ -146,14 +146,30 @@ class JournalRenderer
         );
         if (!$items) return '';
 
+        $newline    = !empty($b['newline']);
+        $isNumbered = (($b['list_style'] ?? 'bulleted') === 'numbered');
+        $tag        = $isNumbered ? 'ol' : 'ul';
+        $class      = $isNumbered ? 'article-list is-numbered' : 'article-list';
+
         $out = [];
         foreach ($items as $item) {
             $lead = $this->clean($item['lead'] ?? '');
             $text = $this->clean($item['text'] ?? '');
-            $out[] = '  <li>' . ($lead !== '' ? "<strong>{$lead}</strong> " : '') . $text . '</li>';
+            if ($lead !== '') {
+                $leadMarkup = (str_starts_with(strtolower($lead), '<strong') || str_starts_with(strtolower($lead), '<b'))
+                    ? $lead
+                    : "<strong>{$lead}</strong>";
+                if ($newline) {
+                    $out[] = '  <li>' . $leadMarkup . '<br>' . $text . '</li>';
+                } else {
+                    $out[] = '  <li>' . $leadMarkup . ' ' . $text . '</li>';
+                }
+            } else {
+                $out[] = '  <li>' . $text . '</li>';
+            }
         }
 
-        return "<ul>\n" . implode("\n", $out) . "\n</ul>";
+        return "<{$tag} class=\"{$class}\">\n" . implode("\n", $out) . "\n</{$tag}>";
     }
 
     private function table(array $b): string

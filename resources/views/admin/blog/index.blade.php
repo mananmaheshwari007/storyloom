@@ -145,11 +145,8 @@
                         <tr>
                             <td class="ps-3">
                                 <div class="border rounded bg-white overflow-hidden text-center" style="width: 60px; height: 45px;">
-                                    @if($blog->featured_image)
-                                        <img src="{{ asset($blog->featured_image) }}" alt="Featured" style="max-height: 100%; max-width: 100%; object-fit: cover;">
-                                    @else
-                                        <i class="bi bi-image text-muted fs-4"></i>
-                                    @endif
+                                    @php $cover = $blog->featured_image ?: 'assets/img/spread-bench-dusk.webp'; @endphp
+                                    <img src="{{ (str_starts_with($cover, 'data:') || str_starts_with($cover, 'http')) ? $cover : asset($cover) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                             </td>
                             <td>

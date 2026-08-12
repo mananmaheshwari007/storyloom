@@ -93,7 +93,8 @@
     padding: 10px 12px; font-size: .92rem; background: #fff; color: #111827;
     transition: border-color .15s ease, box-shadow .15s ease;
 }
-.jw-rich { min-height: 76px; line-height: 1.65; font-family: "Libre Caslon Text", Georgia, serif; font-size: .98rem; }
+.jw-rich { min-height: 38px; line-height: 1.5; font-family: "Libre Caslon Text", Georgia, serif; font-size: .98rem; }
+.jw-rich.jw-rich-lg { min-height: 76px; line-height: 1.65; }
 .jw-rich:focus, .jw-input:focus, .jw-cell:focus {
     outline: none; border-color: var(--jw-terra); box-shadow: 0 0 0 3px rgba(181,91,41,.13);
 }
@@ -220,6 +221,10 @@
 .jw-article-body ul li { position: relative; padding-left: 24px; color: rgba(29,42,68,.74); line-height: 1.75; }
 .jw-article-body ul li strong { color: #1D2A44; }
 .jw-article-body ul li::before { content: ""; position: absolute; left: 2px; top: .68em; width: 6px; height: 6px; border-radius: 50%; background: #B55B29; }
+.jw-article-body ol { display: grid; gap: 14px; padding-left: 2px; list-style: none; counter-reset: jw-ol-counter; }
+.jw-article-body ol li { position: relative; padding-left: 28px; color: rgba(29,42,68,.74); line-height: 1.75; counter-increment: jw-ol-counter; }
+.jw-article-body ol li strong { color: #1D2A44; }
+.jw-article-body ol li::before { content: counter(jw-ol-counter) "."; position: absolute; left: 0; top: 0; color: #B55B29; font-weight: 700; }
 .jw-article-body figure { margin: 0; background: #FFFDF8; padding: 10px; border: 1px solid rgba(29,42,68,.16); }
 .jw-article-body figure img { width: 100%; display: block; }
 .jw-article-body figcaption { font-family: "Edu SA Hand", cursive; text-align: center; padding-top: 10px; font-size: .95rem; color: rgba(29,42,68,.74); }

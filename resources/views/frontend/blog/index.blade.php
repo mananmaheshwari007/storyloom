@@ -44,7 +44,8 @@
            data-cat="{{ strtolower($featured->category ?: 'gifts') }}" data-reveal>
           <div class="fp-media">
             <span class="fp-badge">Start here</span>
-            <img src="{{ asset($featured->featured_image ?: 'assets/img/spread-bench-dusk.webp') }}" width="1600" height="900" loading="eager" alt="{{ $featured->title }}">
+            @php $fCover = $featured->featured_image ?: 'assets/img/spread-bench-dusk.webp'; @endphp
+            <img src="{{ (str_starts_with($fCover, 'data:') || str_starts_with($fCover, 'http')) ? $fCover : asset($fCover) }}" width="1600" height="900" loading="eager" alt="{{ $featured->title }}">
           </div>
           <div class="fp-copy">
             <p class="post-meta">
@@ -72,7 +73,8 @@
                data-cat="{{ strtolower($article->category ?: 'gifts') }}"
                data-reveal style="--stagger:{{ $index % 3 }}">
               <span class="pc-media">
-                <img src="{{ asset($article->featured_image ?: 'assets/img/spread-home-morning.webp') }}" width="1100" height="1469" loading="lazy" alt="{{ $article->title }}">
+                @php $aCover = $article->featured_image ?: 'assets/img/spread-home-morning.webp'; @endphp
+                <img src="{{ (str_starts_with($aCover, 'data:') || str_starts_with($aCover, 'http')) ? $aCover : asset($aCover) }}" width="1100" height="1469" loading="lazy" alt="{{ $article->title }}">
               </span>
               <span class="pc-body">
                 <span class="post-meta">
