@@ -26,7 +26,7 @@
                 $defaultPromo = \App\Support\JournalRenderer::defaultPromo();
                 $promoData = array_merge($defaultPromo, (array)($editorPromo ?: []));
                 $showPromo = old('show_promo', $blog->show_promo ?? true);
-                $libraryBooks = \App\Models\LibraryBook::orderBy('id', 'asc')->get();
+                $libraryBooks = \App\Models\LibraryBook::orderBy('order', 'asc')->orderBy('id', 'asc')->get();
 
                 // Automatically fetch cover image of targeted library book if available
                 $promoCover = $promoData['cover'] ?? '';

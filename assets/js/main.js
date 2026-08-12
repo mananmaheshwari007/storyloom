@@ -524,9 +524,19 @@
       if (bookId) {
         var btn = document.querySelector("#open-book-" + bookId) || document.querySelector("[data-open-book='#open-book-" + bookId + "']");
         var section = document.querySelector("#book-" + bookId);
+
+        if (!btn && !isNaN(parseInt(bookId, 10))) {
+          var allBtns = document.querySelectorAll("[id^='open-book-']");
+          var idx = parseInt(bookId, 10) - 1;
+          if (allBtns[idx]) btn = allBtns[idx];
+        }
+
         if (section) {
           section.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (btn) {
+          btn.scrollIntoView({ behavior: "smooth", block: "center" });
         }
+
         if (btn) {
           setTimeout(function () {
             btn.click();

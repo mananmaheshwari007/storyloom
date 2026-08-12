@@ -117,7 +117,26 @@ class Blog extends Model
     /** The sticky sidebar book card, or the house default. */
     public function getSidebarCardAttribute(): array
     {
-        return array_merge(JournalRenderer::defaultSidebar(), (array) ($this->sidebar_promo ?? []));
+        $sidebar = array_merge(JournalRenderer::defaultSidebar(), (array) ($this->sidebar_promo ?? []));
+
+        $bookId = null;
+        if (!empty($sidebar['cta_url'])) {
+            if (preg_match('/book[=_](\d+)/i', $sidebar['cta_url'], $matches)) {
+                $bookId = (int)$matches[1];
+            }
+        }
+        if (!$bookId && !empty($sidebar['library_book_id'])) {
+            $bookId = (int)$sidebar['library_book_id'];
+        }
+
+        if ($bookId) {
+            $book = \App\Models\LibraryBook::find($bookId);
+            if ($book && !empty($book->cover_image)) {
+                $sidebar['cover'] = $book->cover_image;
+            }
+        }
+
+        return $sidebar;
     }
 
     /**

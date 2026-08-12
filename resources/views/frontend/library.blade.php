@@ -97,12 +97,24 @@
               }, $sPages);
               $sPagesJson = json_encode($sFormattedPages, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             @endphp
-            <div class="shelf-card" data-reveal style="--stagger:{{ $sIndex % 4 }}; cursor: default;">
+            <div class="shelf-card" id="book-{{ $sBook->id }}" data-reveal style="--stagger:{{ $sIndex % 4 }}; cursor: pointer;"
+                 data-open-book="#open-book-{{ $sBook->id }}"
+                 title="Click to read {{ strip_tags($sBook->title) }}">
               <span class="sc-bg" style="background-image:url('{{ $sCover }}')" role="img" aria-label="{{ strip_tags($sBook->title) }}"></span>
               <div class="content">
                 <span class="sc-title">{!! $sBook->title !!}</span>
                 <span class="sc-copy">{{ $sBook->synopsis }}</span>
                 <span class="sc-tag">{{ $sBook->relation_tag ?: $sBook->subtitle }}</span>
+                <button class="btn btn-primary btn-sm mt-2" id="open-book-{{ $sBook->id }}"
+                  data-book-title="{{ strip_tags($sBook->title) }}"
+                  data-book-sub="{{ $sBook->subtitle }}"
+                  data-book-cover="{{ $sCover }}"
+                  data-book-back="{{ $sBook->back_image ? asset($sBook->back_image) : $sCover }}"
+                  data-book-pages='{{ $sPagesJson }}'
+                  style="display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 0.8rem; padding: 6px 14px;">
+                  Read book
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px;" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
+                </button>
               </div>
             </div>
           @endforeach
