@@ -343,15 +343,36 @@
             var p = block.promo;
             var note = document.createElement("p");
             note.className = "jw-hint mb-2";
-            note.textContent = "This is the book we promote inside this article. It starts as the house default — change any field to feature a different book.";
+            note.textContent = "This is the book we promote inside this article. It starts as the house default — select a library book or change any field below.";
             body.appendChild(note);
+
+            var booksList = window.libraryBooksData || [];
+            if (booksList.length) {
+                var bkSel = document.createElement("select");
+                bkSel.className = "jw-input mb-2";
+                bkSel.innerHTML = '<option value="">— Pick a library book to promote —</option>' +
+                    booksList.map(function (lb) {
+                        var isSelected = (p.cta_url === "library?book=" + lb.id);
+                        return '<option value="' + lb.id + '" data-cover="' + esc(lb.cover_image) + '"' + (isSelected ? " selected" : "") + '>' +
+                            'Book #' + lb.id + ': ' + esc(lb.title) + '</option>';
+                    }).join("");
+                bkSel.addEventListener("change", function () {
+                    var opt = bkSel.options[bkSel.selectedIndex];
+                    if (opt && opt.value) {
+                        p.cover = opt.getAttribute("data-cover") || p.cover;
+                        p.cta_url = "library?book=" + opt.value;
+                        render();
+                    }
+                });
+                body.appendChild(labelled("Pick Library Book to Promote", bkSel));
+            }
 
             body.appendChild(labelled("Heading", rich(p.heading, "Promo heading", function (v) { p.heading = v; sync(); })));
             body.appendChild(labelled("Body text", rich(p.body, "Why this book fits this article…", function (v) { p.body = v; sync(); }, true)));
             var pr = document.createElement("div");
             pr.className = "jw-row two mt-2";
             pr.appendChild(labelled("Book cover image", inputUpload(p.cover, "assets/img/book1/cover.webp", function (v) { p.cover = v; sync(); })));
-            pr.appendChild(labelled("Button link", input(p.cta_url, "library.html", function (v) { p.cta_url = v; sync(); })));
+            pr.appendChild(labelled("Button link", input(p.cta_url, "library?book=1", function (v) { p.cta_url = v; sync(); })));
             body.appendChild(pr);
             body.appendChild(labelled("Button text", rich(p.cta_text, "Read a real book", function (v) { p.cta_text = v; sync(); })));
 
@@ -511,11 +532,27 @@
             }
             if (b.type === "promo") {
                 var p = b.promo || DEFAULT_PROMO;
-                var resolvedCover = resolveUrl(p.cover || "assets/img/spread-home-morning.webp");
-                var resolvedCta = resolveUrl(p.cta_url || "begin.html");
-                return '<aside class="inline-cta"><span class="ic-cover"><img src="' + esc(resolvedCover) + '" alt=""></span>' +
+                var coverPath = p.cover;
+                var ctaPath   = p.cta_url || "library?book=1";
+
+                // Auto-match library book cover if link points to library?book=X
+                if (ctaPath && window.libraryBooksData) {
+                    var m = ctaPath.match(/book[=_](\d+)/i);
+                    if (m) {
+                        var targetId = parseInt(m[1], 10);
+                        var foundBk = window.libraryBooksData.find(function (lb) { return lb.id === targetId; });
+                        if (foundBk && foundBk.cover_image) {
+                            coverPath = foundBk.cover_image;
+                        }
+                    }
+                }
+
+                var resolvedCover = resolveUrl(coverPath || "assets/img/book1/cover.webp");
+                var resolvedCta   = resolveUrl(ctaPath);
+                var ctaBtnText    = (p.cta_text || "").trim() || "Read a real book";
+                return '<aside class="inline-cta"><a class="ic-cover" href="' + esc(resolvedCta) + '" style="display:block;"><img src="' + esc(resolvedCover) + '" alt=""></a>' +
                     "<div><h3>" + (p.heading || "") + "</h3><p>" + (p.body || "") + "</p>" +
-                    '<a class="btn btn-primary" href="' + esc(resolvedCta) + '">' + (p.cta_text || "") + "</a></div></aside>";
+                    '<a class="btn btn-primary" href="' + esc(resolvedCta) + '">' + ctaBtnText + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg></a></div></aside>';
             }
             if (b.type === "divider") return '<hr class="article-rule">';
             return "";
@@ -662,7 +699,7 @@
             var img = document.getElementById("sbCoverPreview");
             if (!img) return;
             var v = sb.cover || "";
-            img.src = v ? (/^https?:|^\//.test(v) ? v : "/storyloom/" + v) : "";
+            img.src = v ? resolveUrl(v) : "";
             img.style.visibility = v ? "visible" : "hidden";
         }
 

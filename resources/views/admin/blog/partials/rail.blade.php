@@ -50,6 +50,9 @@
                 <div class="jw-panel-body">
                     <p class="jw-hint mb-2">Select a library book to promote automatically, or customize the fields below.</p>
 
+                    <script>
+                    window.libraryBooksData = @json($libraryBooks);
+                    </script>
                     <label class="jw-label mt-2" for="promoBookSelect">Pick Library Book to Promote</label>
                     <select class="jw-input mb-2" id="promoBookSelect" onchange="
                         var opt = this.options[this.selectedIndex];

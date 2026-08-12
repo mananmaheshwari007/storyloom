@@ -225,17 +225,36 @@ class JournalRenderer
 
         if (isset($p['enabled']) && !$p['enabled']) return '';
 
+        // Auto-fetch targeted LibraryBook cover image if specified
+        $bookId = null;
+        if (!empty($p['cta_url']) && preg_match('/book[=_](\d+)/i', $p['cta_url'], $matches)) {
+            $bookId = (int)$matches[1];
+        }
+        if (!$bookId && !empty($p['library_book_id'])) {
+            $bookId = (int)$p['library_book_id'];
+        }
+
+        if ($bookId) {
+            $book = \App\Models\LibraryBook::find($bookId);
+            if ($book && !empty($book->cover_image)) {
+                $p['cover'] = $book->cover_image;
+            }
+        }
+
         $arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>';
 
         $coverUrl  = $this->resolveUrl($p['cover'] ?? '');
         $ctaUrl    = $this->resolveUrl($p['cta_url'] ?? '');
+        $ctaText   = !empty($p['cta_text']) ? $p['cta_text'] : 'Read a real book';
 
         return '<aside class="inline-cta">' . "\n"
-            . '  <span class="ic-cover"><img src="' . e($coverUrl) . '" alt="' . e($p['heading']) . '" loading="lazy"></span>' . "\n"
+            . '  <a class="ic-cover" href="' . e($ctaUrl) . '" style="display:block;" title="' . e($p['heading']) . '">' . "\n"
+            . '    <img src="' . e($coverUrl) . '" alt="' . e($p['heading']) . '" loading="lazy">' . "\n"
+            . '  </a>' . "\n"
             . '  <div>' . "\n"
             . '    <h3>' . $this->clean($p['heading']) . '</h3>' . "\n"
             . '    <p>' . $this->clean($p['body']) . '</p>' . "\n"
-            . '    <a class="btn btn-primary" href="' . e($ctaUrl) . '">' . e($p['cta_text']) . ' ' . $arrow . '</a>' . "\n"
+            . '    <a class="btn btn-primary" href="' . e($ctaUrl) . '">' . $this->clean($ctaText) . ' ' . $arrow . '</a>' . "\n"
             . '  </div>' . "\n"
             . '</aside>';
     }
