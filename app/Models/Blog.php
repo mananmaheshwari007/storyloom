@@ -85,7 +85,8 @@ class Blog extends Model
     /** The promotional book card for this article, or the house default. */
     public function getPromoCardAttribute(): array
     {
-        $promo = array_merge(JournalRenderer::defaultPromo(), (array) ($this->promo ?? []));
+        $custom = array_filter((array) ($this->promo ?? []), fn ($v) => $v !== null && $v !== '');
+        $promo  = array_merge(JournalRenderer::defaultPromo(), $custom);
 
         // Automatically fetch cover image of the targeted library book if defined
         $bookId = null;
@@ -117,7 +118,8 @@ class Blog extends Model
     /** The sticky sidebar book card, or the house default. */
     public function getSidebarCardAttribute(): array
     {
-        $sidebar = array_merge(JournalRenderer::defaultSidebar(), (array) ($this->sidebar_promo ?? []));
+        $custom  = array_filter((array) ($this->sidebar_promo ?? []), fn ($v) => $v !== null && $v !== '');
+        $sidebar = array_merge(JournalRenderer::defaultSidebar(), $custom);
 
         $bookId = null;
         if (!empty($sidebar['cta_url'])) {
