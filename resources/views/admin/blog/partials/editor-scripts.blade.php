@@ -415,6 +415,18 @@
     });
 
     /* ---------- preview (mirrors the server-side renderer) ---------- */
+
+    /* Same treatment JournalRenderer::linksOpenInNewTab() applies on save, so
+       the preview shows links behaving as they will once published. */
+    function linksNewTab(html) {
+        if (!html || html.indexOf("<a ") === -1) return html;
+        return html.replace(/<a\b([^>]*)>/gi, function (whole, attrs) {
+            if (!/\btarget\s*=/i.test(attrs)) attrs += ' target="_blank"';
+            if (!/\brel\s*=/i.test(attrs)) attrs += ' rel="noopener"';
+            return "<a" + attrs + ">";
+        });
+    }
+
     function previewHTML() {
         return state.map(function (b) {
             if (b.type === "heading")
@@ -454,7 +466,7 @@
             }
             if (b.type === "divider") return '<hr class="article-rule">';
             return "";
-        }).join("\n");
+        }).map(linksNewTab).join("\n");
     }
 
     var tabWrite = document.getElementById("jwTabWrite");
@@ -464,11 +476,58 @@
         document.getElementById("jwPreview").hidden = true;
         tabWrite.classList.add("active"); tabPrev.classList.remove("active");
     });
-    tabPrev.addEventListener("click", function () {
-        var body = document.getElementById("jwPreviewBody");
-        body.innerHTML = state.length
+    /* Build a complete document for the preview iframe, using the live
+       stylesheet and the same wrappers blog/show.blade.php puts around an
+       article. Anything the real page inherits from .article-layout or
+       .article-body is therefore inherited here too. */
+    function previewDocument(width) {
+        var css   = {!! json_encode(asset('assets/css/main.css') . '?v=' . (@filemtime(public_path('assets/css/main.css')) ?: '1')) !!};
+        var fonts = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap";
+        var title = (document.getElementById("titleRich") || {}).innerHTML || "";
+        var body  = state.length
             ? previewHTML()
-            : '<p class="jw-preview-note">Nothing to preview yet — add a block first.</p>';
+            : '<p style="text-align:center;color:#8a9099;padding:40px 0;">Nothing to preview yet — add a block first.</p>';
+
+        return '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+            '<link rel="stylesheet" href="' + fonts + '">' +
+            '<link rel="stylesheet" href="' + css + '">' +
+            '<style>' +
+              'body{margin:0;background:var(--parchment,#F8F4EC);}' +
+              /* The reveal animation is driven by an observer that does not run
+                 in here, so content would sit invisible at opacity 0. */
+              '[data-reveal]{opacity:1 !important;transform:none !important;}' +
+              '.jw-frame-wrap{padding:' + (width === "mobile" ? "18px 16px 40px" : "34px 40px 60px") + ';}' +
+            '</style></head><body><div class="jw-frame-wrap">' +
+            (title ? '<h1 class="jw-frame-title">' + title + '</h1>' : '') +
+            '<div class="article-body">' + body + '</div>' +
+            '</div></body></html>';
+    }
+
+    var previewWidth = "desktop";
+
+    function paintPreview() {
+        var frame = document.getElementById("jwPreviewFrame");
+        if (!frame) return;
+        var doc = frame.contentDocument || frame.contentWindow.document;
+        doc.open();
+        doc.write(previewDocument(previewWidth));
+        doc.close();
+    }
+
+    document.querySelectorAll(".jw-width-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            previewWidth = btn.getAttribute("data-width");
+            document.querySelectorAll(".jw-width-btn").forEach(function (b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            document.getElementById("jwPreviewStage")
+                .classList.toggle("is-mobile", previewWidth === "mobile");
+            paintPreview();
+        });
+    });
+
+    tabPrev.addEventListener("click", function () {
+        paintPreview();
         document.getElementById("jwWrite").hidden = true;
         document.getElementById("jwPreview").hidden = false;
         tabPrev.classList.add("active"); tabWrite.classList.remove("active");
@@ -581,9 +640,30 @@
             sidebarField.value = JSON.stringify(sb);
         });
 
+        /* Library book picker, matching the one on the Article Body Promo panel.
+           It fills the cover and the link and leaves the wording alone, so a
+           book can be swapped without losing copy that has been tuned. */
+        var sbPick = document.getElementById("sbBookSelect");
+        if (sbPick) {
+            // Reflect the book the card already points at, if any.
+            var current = String(sb.cta_url || "").match(/book[=_](\d+)/i);
+            if (current) sbPick.value = current[1];
+
+            sbPick.addEventListener("change", function () {
+                var opt = sbPick.options[sbPick.selectedIndex];
+                if (!opt || !opt.value) return;
+
+                sb.cover = opt.getAttribute("data-cover") || sb.cover;
+                sb.cta_url = "library?book=" + opt.value;
+
+                paintSidebar();
+            });
+        }
+
         var sbReset = document.getElementById("sbReset");
         if (sbReset) sbReset.addEventListener("click", function () {
             sb = Object.assign({}, DEFAULT_SIDEBAR);
+            if (sbPick) sbPick.value = "";
             paintSidebar();
         });
 

@@ -120,6 +120,24 @@ class Blog extends Model
         return array_merge(JournalRenderer::defaultSidebar(), (array) ($this->sidebar_promo ?? []));
     }
 
+    /**
+     * Did the writer place a book card inside the article?
+     *
+     * When they did, the article body already renders it in position and the
+     * view must not append a second one after the text — that duplicate is why
+     * a card placed mid-article appeared to "move to the end".
+     */
+    public function getHasInlinePromoAttribute(): bool
+    {
+        foreach ((array) ($this->blocks ?? []) as $block) {
+            if (($block['type'] ?? '') === 'promo') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** Headline with its <em> accent, falling back to plain text. */
     public function getHeadlineAttribute(): string
     {

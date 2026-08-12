@@ -6,7 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (articleBody && tocNav) {
     var tocUl = tocNav.querySelector("ul");
-    var headings = articleBody.querySelectorAll("h2");
+    // h3 too: a listicle keeps its numbered points at h3, and querying only h2
+    // left the rail showing two entries for an article with ten of them.
+    var headings = articleBody.querySelectorAll("h2, h3");
 
     if (headings.length === 0) {
       tocNav.style.display = "none";
@@ -39,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
 
+        if (h2.tagName === "H3") li.className = "toc-sub";
         li.appendChild(a);
         tocUl.appendChild(li);
         tocLinks.push({ heading: h2, link: a });

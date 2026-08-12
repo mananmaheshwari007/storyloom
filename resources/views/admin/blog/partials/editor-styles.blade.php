@@ -242,6 +242,31 @@
 .jw-article-body .article-rule { border: 0; border-top: 1px solid rgba(29,42,68,.16); }
 .jw-preview-note { text-align: center; color: #8a9099; font-size: .85rem; padding: 40px 0; }
 
+/* ---- Quick Look (iframe preview) ---- */
+.jw-preview-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    padding: 10px 12px; margin-bottom: 12px;
+    background: #fff; border: 1px solid rgba(29,42,68,.1); border-radius: 8px;
+}
+.jw-preview-note-inline { font-size: .8rem; color: #64748b; }
+.jw-preview-widths { display: flex; gap: 6px; }
+.jw-width-btn {
+    border: 1px solid rgba(29,42,68,.14); background: #fff; color: #475569;
+    border-radius: 6px; padding: 5px 12px; font-size: .8rem; cursor: pointer;
+}
+.jw-width-btn.active { background: #1D2A44; border-color: #1D2A44; color: #fff; }
+.jw-preview-stage { display: flex; justify-content: center; }
+#jwPreviewFrame {
+    width: 100%; height: 78vh; min-height: 520px;
+    border: 1px solid rgba(29,42,68,.12); border-radius: 8px; background: #F8F4EC;
+}
+/* 390px is the width the mobile hero and headings are tuned around, so an
+   unintended line break shows up here exactly as it will on a phone. */
+.jw-preview-stage.is-mobile #jwPreviewFrame {
+    width: 390px; max-width: 100%;
+}
+
 /* The title box is a live preview of the headline, so the Em accent has to look
    here exactly as it does on the article — terracotta, not just slanted. <i> is
    covered too, for titles saved before the accent was normalised to <em>. */

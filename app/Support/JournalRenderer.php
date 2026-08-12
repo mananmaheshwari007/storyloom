@@ -66,6 +66,13 @@ class JournalRenderer
                 'quote'     => $this->quote($block),
                 'takeaway'  => $this->takeaway($block),
                 'list'      => $this->list($block),
+                // 'table' and 'promo' were missing from this list, so both fell
+                // through to '' — a table typed in the editor silently vanished
+                // from the published article, and a book card placed mid-article
+                // disappeared from where it was put and only reappeared at the
+                // very end, because the view rendered one there separately.
+                'table'     => $this->table($block),
+                'promo'     => $this->promo($block['promo'] ?? null),
                 'divider'   => '<hr class="article-rule">',
                 default     => '',
             };
@@ -229,19 +236,61 @@ class JournalRenderer
     /** Strip everything except the inline formatting the editor offers. */
     private function clean(string $html): string
     {
-        return trim(strip_tags($html, self::ALLOWED_INLINE));
+        $html = trim(strip_tags($html, self::ALLOWED_INLINE));
+
+        return $this->linksOpenInNewTab($html);
+    }
+
+    /**
+     * Send every link in article copy to a new tab.
+     *
+     * rel="noopener" goes with it: without it the opened page gets a handle on
+     * this one through window.opener. Existing target/rel attributes are left
+     * alone so a deliberate same-tab link stays same-tab.
+     */
+    private function linksOpenInNewTab(string $html): string
+    {
+        if (! str_contains($html, '<a ')) {
+            return $html;
+        }
+
+        return preg_replace_callback('/<a\b([^>]*)>/i', function ($m) {
+            $attrs = $m[1];
+
+            if (! preg_match('/\btarget\s*=/i', $attrs)) {
+                $attrs .= ' target="_blank"';
+            }
+            if (! preg_match('/\brel\s*=/i', $attrs)) {
+                $attrs .= ' rel="noopener"';
+            }
+
+            return '<a' . $attrs . '>';
+        }, $html) ?? $html;
     }
 
     /** Headings collected for the article's table of contents. */
     public function tableOfContents(array $blocks): array
     {
         $toc = [];
+
         foreach ($blocks as $b) {
             if (($b['type'] ?? '') !== 'heading') continue;
+
             $text = trim(strip_tags($b['text'] ?? ''));
-            if ($text === '' || ($b['level'] ?? 'h2') !== 'h2') continue;
-            $toc[] = ['id' => Str::slug($text), 'text' => $text];
+            if ($text === '') continue;
+
+            // H3s are included too: a listicle keeps its points at h3, and
+            // skipping them left the rail showing only two or three entries for
+            // an article with ten numbered items.
+            $level = ($b['level'] ?? 'h2') === 'h3' ? 'h3' : 'h2';
+
+            $toc[] = [
+                'id'    => Str::slug($text),
+                'text'  => $text,
+                'level' => $level,
+            ];
         }
+
         return $toc;
     }
 

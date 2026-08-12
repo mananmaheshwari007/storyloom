@@ -23,6 +23,13 @@
       color: var(--ink-faint);
     }
     .begin-privacy svg { width: 17px; height: 17px; flex: none; margin-top: 2px; color: var(--grove); }
+    /* Smaller than Bootstrap's .small default — these sit under a field and
+       shouldn't compete with the label above them. */
+    .form-grid .error-msg {
+      font-size: 0.78rem;
+      line-height: 1.45;
+      margin-top: 5px !important;
+    }
     .direct-card ul { display: grid; gap: 18px; margin-top: 24px; }
     .direct-card li { display: flex; gap: 14px; align-items: flex-start; }
     .direct-card li svg { width: 20px; height: 20px; flex: none; margin-top: 4px; color: var(--terra); }
@@ -238,13 +245,31 @@
           btnSpinner.style.display = 'none';
 
           if (data.errors) {
+            let firstInvalid = null;
+
             Object.keys(data.errors).forEach(key => {
               const errEl = document.getElementById('err-' + key);
               if (errEl) {
                 errEl.textContent = data.errors[key][0];
                 errEl.style.display = 'block';
               }
+              // Remember the field highest up the form, not simply the first
+              // key the server happened to return.
+              const field = form.querySelector('[name="' + key + '"]');
+              if (field && (!firstInvalid ||
+                  field.compareDocumentPosition(firstInvalid) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+                firstInvalid = field;
+              }
             });
+
+            /* Take the visitor to the problem. Errors sit inline next to fields
+               that can easily be off-screen after a long form, so without this
+               the page just appears not to have done anything. */
+            if (firstInvalid) {
+              firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // Focus after the scroll settles, or the browser jumps again.
+              setTimeout(() => firstInvalid.focus({ preventScroll: true }), 350);
+            }
           } else if (data.success) {
             const successEl = document.getElementById('begin-success');
             successEl.innerHTML = '<strong>' + data.message + '</strong><br>{{ addslashes(setting('begin_success_note', 'We have received your details and will get in touch shortly.')) }}';

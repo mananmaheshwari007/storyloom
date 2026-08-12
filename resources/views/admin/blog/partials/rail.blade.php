@@ -130,6 +130,22 @@
                 <div class="jw-panel-body">
                     <p class="jw-hint mb-2">The sticky book card that follows the reader down the page. Starts as the house default — change anything to feature a different book.</p>
 
+                    {{-- Same picker as the Article Body Promo Book above, so both
+                         cards are changed the same way. Without it there was no
+                         obvious way to swap the sidebar book at all. --}}
+                    <label class="jw-label mt-2" for="sbBookSelect">Pick Library Book to Feature</label>
+                    <select class="jw-input mb-2" id="sbBookSelect">
+                        <option value="">— Keep current / custom —</option>
+                        @foreach($libraryBooks as $lb)
+                            <option value="{{ $lb->id }}"
+                                    data-cover="{{ $lb->cover_image }}"
+                                    data-title="{{ $lb->title }}"
+                                    data-subtitle="{{ $lb->subtitle }}">
+                                Book #{{ $lb->id }}: {{ $lb->title }} ({{ $lb->subtitle }})
+                            </option>
+                        @endforeach
+                    </select>
+
                     <div class="jw-cover-row">
                         <img id="sbCoverPreview" class="jw-cover-thumb" src="" alt="">
                         <div class="jw-cover-fields">

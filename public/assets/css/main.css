@@ -139,6 +139,25 @@ h4 {
   letter-spacing: 0.005em;
   color: var(--ink);
   text-wrap: balance;
+  /* Cormorant Garamond ships old-style figures by default, which sit below the
+     baseline at varying heights — "10 Thoughtful…" and "2026" read as smudges
+     at heading sizes. The face also carries lining figures; use those. */
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+}
+
+/* Same face, same problem, wherever numbers matter outside a heading. */
+.toc a,
+.price-card .price,
+.price-card .was-amount,
+.arc-card-caption,
+.menu-link .no,
+.week,
+.stat .num,
+.post-meta,
+.article-hero .post-meta {
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
 }
 
 h1 {
@@ -4689,11 +4708,48 @@ html:not(.js) .loom-hint,
   color: rgba(28, 34, 43, 0.88);
 }
 
+/* Links in article copy were the same colour as the text around them and had no
+   underline, so a reader had no way to tell one was there. Excludes the buttons
+   and cards inside the body, which have their own treatment. */
+.article-body p a,
+.article-body li a,
+.article-body blockquote a,
+.article-body .takeaway a {
+  color: var(--terra-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(181, 91, 41, 0.4);
+  transition: text-decoration-color var(--dur-quick), color var(--dur-quick);
+}
+
+.article-body p a:hover,
+.article-body li a:hover,
+.article-body blockquote a:hover,
+.article-body .takeaway a:hover {
+  color: var(--terra);
+  text-decoration-color: var(--terra);
+}
+
 .article-body .lead-in {
   font-size: 1.18rem;
   line-height: 1.75;
   color: var(--ink);
   margin-bottom: 24px;
+}
+
+/* The opening paragraph's drop cap. This only ever existed in the editor's
+   preview stylesheet, never here — so the published article showed a lead
+   paragraph that was merely a little larger, which is why the opening and the
+   rest "did not look the same". Matches the About page's treatment. */
+.article-body .lead-in::first-letter {
+  font-family: var(--font-display);
+  float: left;
+  font-size: 3.5em;
+  line-height: 0.82;
+  font-weight: 600;
+  color: var(--terra);
+  padding: 6px 12px 0 0;
 }
 
 .article-body h2 {
@@ -4974,6 +5030,27 @@ html:not(.js) .loom-hint,
 
 .toc a:hover {
   color: var(--terra);
+}
+
+/* Sub-points (h3) sit indented and a shade quieter, so a ten-item listicle
+   reads as a hierarchy rather than twelve equal-weight links. */
+.toc ul li.toc-sub {
+  margin-left: 14px;
+}
+
+.toc ul li.toc-sub a {
+  font-size: 0.94rem;
+  color: var(--ink-faint);
+}
+
+.toc ul li.toc-sub a:hover,
+.toc ul li.toc-sub a.active {
+  color: var(--terra);
+}
+
+/* Tighter than the h2 gap, to group each h2 with the points beneath it. */
+.toc ul li.toc-sub + li.toc-sub {
+  margin-top: -4px;
 }
 
 .toc a.active {

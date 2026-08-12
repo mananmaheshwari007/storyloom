@@ -64,9 +64,27 @@
                 </div>
             </div>
 
+            {{-- Quick Look renders inside an iframe that loads the site's real
+                 stylesheet, rather than the hand-copied approximation this panel
+                 used to carry. That copy drifted from main.css — the drop cap
+                 went missing and heading spacing was too tight — so what the
+                 editor showed was not what got published. --}}
             <div id="jwPreview" hidden>
-                <div class="jw-preview-shell">
-                    <div class="jw-article-body" id="jwPreviewBody"></div>
+                <div class="jw-preview-bar">
+                    <span class="jw-preview-note-inline">
+                        <i class="bi bi-eye"></i> Rendered with the live site stylesheet
+                    </span>
+                    <div class="jw-preview-widths" role="group" aria-label="Preview width">
+                        <button type="button" class="jw-width-btn active" data-width="desktop">
+                            <i class="bi bi-laptop"></i> Desktop
+                        </button>
+                        <button type="button" class="jw-width-btn" data-width="mobile">
+                            <i class="bi bi-phone"></i> Mobile
+                        </button>
+                    </div>
+                </div>
+                <div class="jw-preview-stage" id="jwPreviewStage">
+                    <iframe id="jwPreviewFrame" title="Article preview" sandbox="allow-same-origin"></iframe>
                 </div>
             </div>
         </div>

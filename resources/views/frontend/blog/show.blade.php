@@ -57,7 +57,10 @@
             }
             $targetUrl = str_starts_with($rawCta, 'http') ? $rawCta : url($rawCta);
           @endphp
-          @if(($article->show_promo ?? true) && !empty($promo['heading']))
+          {{-- Skipped when the writer placed a book card inside the article: the
+               body already renders it where they put it, and appending another
+               here is what made the card look like it had moved to the end. --}}
+          @if(($article->show_promo ?? true) && !empty($promo['heading']) && ! $article->has_inline_promo)
             <aside class="inline-cta" data-reveal>
               <a class="ic-cover" href="{{ $targetUrl }}" style="display:block;" title="Read this book">
                 <img src="{{ asset($promo['cover'] ?: 'assets/img/book1/cover.webp') }}" width="900" height="1273" loading="lazy" alt="{{ $promo['heading'] }}" style="cursor:pointer;">
@@ -104,7 +107,11 @@
               <p class="toc-label">{{ $article->toc_label ?: 'On this page' }}</p>
               <ul>
                 @foreach($toc as $item)
-                  <li><a href="#{{ $item['id'] }}">{{ $item['text'] }}</a></li>
+                  {{-- h3 entries are indented as sub-points: a listicle's ten
+                       numbered items shouldn't read as ten top-level sections. --}}
+                  <li @class(['toc-sub' => ($item['level'] ?? 'h2') === 'h3'])>
+                    <a href="#{{ $item['id'] }}">{{ $item['text'] }}</a>
+                  </li>
                 @endforeach
               </ul>
             </nav>
