@@ -4847,6 +4847,103 @@ html:not(.js) .loom-hint,
   color: var(--terra-deep);
 }
 
+/* Article Figure & Images */
+.article-body figure,
+.article-body .article-figure {
+  margin: 32px 0;
+  background: var(--cream-soft, #FFFDF8);
+  padding: 14px;
+  border: 1px solid var(--hairline, rgba(28, 34, 43, 0.12));
+  border-radius: 4px;
+}
+
+.article-body figure img,
+.article-body .article-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+
+.article-body figcaption {
+  font-family: var(--font-hand, "Edu SA Hand", cursive);
+  text-align: center;
+  padding-top: 12px;
+  font-size: 0.98rem;
+  color: var(--ink-soft, rgba(28, 34, 43, 0.74));
+}
+
+/* Article Tables */
+.article-body .table-wrap {
+  overflow-x: auto;
+  margin: 28px 0;
+}
+
+.article-body .article-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.article-body .article-table th,
+.article-body .article-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--hairline, rgba(28, 34, 43, 0.12));
+  text-align: left;
+}
+
+.article-body .article-table th {
+  font-family: var(--font-display, "Cormorant Garamond", serif);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--terra, #B55B29);
+}
+
+.article-body .table-caption {
+  font-size: 0.85rem;
+  color: var(--ink-soft, rgba(28, 34, 43, 0.65));
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Inline Promotional CTA */
+.article-body .inline-cta {
+  margin: 36px 0;
+  padding: 28px;
+  background: var(--cream-soft, #FFFDF8);
+  border: 1px solid rgba(181, 91, 41, 0.35);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.article-body .inline-cta .ic-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--hairline, rgba(28, 34, 43, 0.12));
+  border-radius: 3px;
+}
+
+.article-body .inline-cta h3 {
+  font-family: var(--font-display, "Cormorant Garamond", serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--ink, #1D2A44);
+}
+
+.article-body .inline-cta p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 14px;
+  color: var(--ink-soft, rgba(28, 34, 43, 0.8));
+}
+
 /* Pull Quote */
 .pull-quote {
   font-family: var(--font-display);

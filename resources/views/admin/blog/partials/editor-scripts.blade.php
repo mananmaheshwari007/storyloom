@@ -443,6 +443,17 @@
 
     /* ---------- preview (mirrors the server-side renderer) ---------- */
 
+    function resolveUrl(url) {
+        if (!url) return "";
+        url = url.trim();
+        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:") || url.startsWith("//")) {
+            return url;
+        }
+        var baseUrl = "{{ asset('/') }}";
+        if (url.startsWith("/")) url = url.substring(1);
+        return baseUrl + url;
+    }
+
     /* Same treatment JournalRenderer::linksOpenInNewTab() applies on save, so
        the preview shows links behaving as they will once published. */
     function linksNewTab(html) {
@@ -460,9 +471,12 @@
                 return "<" + (b.level || "h2") + ">" + (b.text || "") + "</" + (b.level || "h2") + ">";
             if (b.type === "paragraph")
                 return '<p' + (b.lead ? ' class="lead-in"' : "") + ">" + (b.text || "") + "</p>";
-            if (b.type === "image")
-                return !b.src ? "" : '<figure><img src="' + esc(b.src) + '" alt="' + esc(b.alt) + '">' +
+            if (b.type === "image") {
+                var resolvedSrc = resolveUrl(b.src);
+                if (!resolvedSrc) return "";
+                return '<figure class="article-figure plate"><img src="' + esc(resolvedSrc) + '" alt="' + esc(b.alt) + '">' +
                     (b.caption ? "<figcaption>" + b.caption + "</figcaption>" : "") + "</figure>";
+            }
             if (b.type === "quote")
                 return '<blockquote class="pull-quote">' + (b.text || "") +
                     (b.cite ? "<cite>" + b.cite + "</cite>" : "") + "</blockquote>";
@@ -497,9 +511,11 @@
             }
             if (b.type === "promo") {
                 var p = b.promo || DEFAULT_PROMO;
-                return '<aside class="inline-cta"><span class="ic-cover"><img src="' + esc(p.cover) + '" alt=""></span>' +
+                var resolvedCover = resolveUrl(p.cover || "assets/img/spread-home-morning.webp");
+                var resolvedCta = resolveUrl(p.cta_url || "begin.html");
+                return '<aside class="inline-cta"><span class="ic-cover"><img src="' + esc(resolvedCover) + '" alt=""></span>' +
                     "<div><h3>" + (p.heading || "") + "</h3><p>" + (p.body || "") + "</p>" +
-                    '<a class="btn btn-primary" href="' + esc(p.cta_url) + '">' + (p.cta_text || "") + "</a></div></aside>";
+                    '<a class="btn btn-primary" href="' + esc(resolvedCta) + '">' + (p.cta_text || "") + "</a></div></aside>";
             }
             if (b.type === "divider") return '<hr class="article-rule">';
             return "";

@@ -102,16 +102,27 @@ class JournalRenderer
         return "<p{$class}>{$text}</p>";
     }
 
+    private function resolveUrl(string $url): string
+    {
+        $url = trim($url);
+        if ($url === '') return '';
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, 'data:') || str_starts_with($url, '//')) {
+            return $url;
+        }
+        return asset(ltrim($url, '/'));
+    }
+
     private function image(array $b): string
     {
         $src = trim($b['src'] ?? '');
         if ($src === '') return '';
+        $srcUrl  = $this->resolveUrl($src);
         $alt     = e($b['alt'] ?? '');
         $caption = $this->clean($b['caption'] ?? '');
         $figcap  = $caption !== '' ? "\n  <figcaption>{$caption}</figcaption>" : '';
 
         return '<figure class="article-figure plate">' . "\n"
-            . '  <img src="' . e($src) . '" alt="' . $alt . '" loading="lazy">'
+            . '  <img src="' . e($srcUrl) . '" alt="' . $alt . '" loading="lazy">'
             . $figcap . "\n" . '</figure>';
     }
 
@@ -216,12 +227,15 @@ class JournalRenderer
 
         $arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>';
 
+        $coverUrl  = $this->resolveUrl($p['cover'] ?? '');
+        $ctaUrl    = $this->resolveUrl($p['cta_url'] ?? '');
+
         return '<aside class="inline-cta">' . "\n"
-            . '  <span class="ic-cover"><img src="' . e($p['cover']) . '" alt="' . e($p['heading']) . '" loading="lazy"></span>' . "\n"
+            . '  <span class="ic-cover"><img src="' . e($coverUrl) . '" alt="' . e($p['heading']) . '" loading="lazy"></span>' . "\n"
             . '  <div>' . "\n"
             . '    <h3>' . $this->clean($p['heading']) . '</h3>' . "\n"
             . '    <p>' . $this->clean($p['body']) . '</p>' . "\n"
-            . '    <a class="btn btn-primary" href="' . e($p['cta_url']) . '">' . e($p['cta_text']) . ' ' . $arrow . '</a>' . "\n"
+            . '    <a class="btn btn-primary" href="' . e($ctaUrl) . '">' . e($p['cta_text']) . ' ' . $arrow . '</a>' . "\n"
             . '  </div>' . "\n"
             . '</aside>';
     }
