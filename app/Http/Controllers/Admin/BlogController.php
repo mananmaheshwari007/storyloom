@@ -187,7 +187,7 @@ class BlogController extends Controller
 
         $date = ($blog && $blog->created_at) ? $blog->created_at : now();
         $data['publish_date_tag'] = 'PUBLISHED ' . strtoupper($date->format('F Y'));
-        $data['content']          = $renderer->render($blocks, $promo);
+        $data['content']          = $renderer->render($blocks, $promo, $data['show_promo']);
 
         // Manual read time wins; blank falls back to the calculated one.
         $manual = $request->input('read_time');
@@ -270,9 +270,9 @@ class BlogController extends Controller
             'read_time'         => $request->input('read_time') ?: $renderer->readTime($blocks),
             'publish_date_tag'  => $request->input('publish_date_tag') ?: null,
             'blocks'            => $blocks,
-            'content'           => $renderer->render($blocks),
-            'promo'             => is_array($promo) ? $promo : null,
             'show_promo'        => $request->boolean('show_promo'),
+            'content'           => $renderer->render($blocks, $promo, $request->boolean('show_promo')),
+            'promo'             => is_array($promo) ? $promo : null,
             'sidebar_promo'     => is_array($sidebar) ? $sidebar : null,
             'show_toc'          => $request->boolean('show_toc'),
             'toc_label'         => $request->input('toc_label'),

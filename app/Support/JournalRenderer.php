@@ -52,7 +52,7 @@ class JournalRenderer
     /** Inline formatting allowed inside text blocks. */
     private const ALLOWED_INLINE = '<strong><b><em><i><a><br><span>';
 
-    public function render(array $blocks, ?array $promo = null): string
+    public function render(array $blocks, ?array $promo = null, bool $showPromo = true): string
     {
         $html = [];
 
@@ -66,13 +66,8 @@ class JournalRenderer
                 'quote'     => $this->quote($block),
                 'takeaway'  => $this->takeaway($block),
                 'list'      => $this->list($block),
-                // 'table' and 'promo' were missing from this list, so both fell
-                // through to '' — a table typed in the editor silently vanished
-                // from the published article, and a book card placed mid-article
-                // disappeared from where it was put and only reappeared at the
-                // very end, because the view rendered one there separately.
                 'table'     => $this->table($block),
-                'promo'     => $this->promo($block['promo'] ?? null),
+                'promo'     => $showPromo ? $this->promo($block['promo'] ?? null) : '',
                 'divider'   => '<hr class="article-rule">',
                 default     => '',
             };
