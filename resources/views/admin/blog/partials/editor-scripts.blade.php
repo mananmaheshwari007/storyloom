@@ -51,11 +51,32 @@
     /* ---------- persist ---------- */
     function sync() {
         blocksField.value = JSON.stringify(state);
-        var p = null;
+
+        var panelHeading = document.getElementById("promoHeading");
+        var panelBody    = document.getElementById("promoBody");
+        var panelCover   = document.getElementById("promoCover");
+        var panelCtaText = document.getElementById("promoCtaText");
+        var panelCtaUrl  = document.getElementById("promoCtaUrl");
+
+        if (panelHeading) promo.heading  = panelHeading.value;
+        if (panelBody)    promo.body     = panelBody.value;
+        if (panelCover)   promo.cover    = panelCover.value;
+        if (panelCtaText) promo.cta_text = panelCtaText.value;
+        if (panelCtaUrl)  promo.cta_url  = panelCtaUrl.value;
+
+        // If an inline promo block exists in state, sync its values
+        var inlinePromo = null;
         for (var i = 0; i < state.length; i++) {
-            if (state[i].type === "promo") { p = state[i].promo; break; }
+            if (state[i].type === "promo") {
+                state[i].promo = Object.assign({}, promo, state[i].promo || {});
+                inlinePromo = state[i].promo;
+                break;
+            }
         }
-        promoField.value = JSON.stringify(p || promo || DEFAULT_PROMO);
+
+        var activePromo = inlinePromo || promo || DEFAULT_PROMO;
+        if (promoField) promoField.value = JSON.stringify(activePromo);
+
         document.getElementById("jwStats").textContent =
             state.length + (state.length === 1 ? " block" : " blocks");
         document.getElementById("jwEmpty").hidden = state.length > 0;
@@ -759,6 +780,50 @@
 
         paintSidebar();
     }
+
+    /* ---------- article body promo panel listeners ---------- */
+    (function () {
+        var pHeading = document.getElementById("promoHeading");
+        var pBody    = document.getElementById("promoBody");
+        var pCover   = document.getElementById("promoCover");
+        var pCtaText = document.getElementById("promoCtaText");
+        var pCtaUrl  = document.getElementById("promoCtaUrl");
+        var pSelect  = document.getElementById("promoBookSelect");
+
+        function updatePromoPanel() {
+            if (pHeading) promo.heading  = pHeading.value;
+            if (pBody)    promo.body     = pBody.value;
+            if (pCover)   promo.cover    = pCover.value;
+            if (pCtaText) promo.cta_text = pCtaText.value;
+            if (pCtaUrl)  promo.cta_url  = pCtaUrl.value;
+
+            var prevImg = document.getElementById("promoCoverPreview");
+            if (prevImg && pCover) {
+                prevImg.src = resolveUrl(pCover.value);
+            }
+
+            sync();
+        }
+
+        [pHeading, pBody, pCover, pCtaText, pCtaUrl].forEach(function (el) {
+            if (el) {
+                el.addEventListener("input", updatePromoPanel);
+                el.addEventListener("change", updatePromoPanel);
+            }
+        });
+
+        if (pSelect) {
+            pSelect.addEventListener("change", function () {
+                var opt = pSelect.options[pSelect.selectedIndex];
+                if (opt && opt.value) {
+                    var cover = opt.getAttribute("data-cover") || "";
+                    if (pCover) pCover.value = cover;
+                    if (pCtaUrl) pCtaUrl.value = "library?book=" + opt.value;
+                    updatePromoPanel();
+                }
+            });
+        }
+    })();
 
     /* ---------- full-article preview ---------- */
     var fullBtn = document.getElementById("jwFullPreview");

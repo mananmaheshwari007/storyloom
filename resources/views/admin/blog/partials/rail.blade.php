@@ -74,27 +74,27 @@
                     </select>
 
                     <label class="jw-label mt-2" for="promoHeading">Heading</label>
-                    <input type="text" class="jw-input" id="promoHeading" name="promo[heading]" value="{{ $promoData['heading'] ?? '' }}">
+                    <input type="text" class="jw-input" id="promoHeading" value="{{ $promoData['heading'] ?? '' }}">
 
                     <label class="jw-label mt-2" for="promoBody">Description Text</label>
-                    <textarea class="jw-input" id="promoBody" name="promo[body]" rows="3">{{ $promoData['body'] ?? '' }}</textarea>
+                    <textarea class="jw-input" id="promoBody" rows="3">{{ $promoData['body'] ?? '' }}</textarea>
 
                     <div class="d-flex align-items-center gap-2 mt-2">
                         <img id="promoCoverPreview" src="{{ asset($promoCover ?: 'assets/img/book1/cover.webp') }}" alt="Cover" style="width:44px; height:62px; object-fit:cover; border-radius:4px; border:1px solid #ccc;">
                         <div class="flex-grow-1">
                             <label class="jw-label mb-1" for="promoCover">Book Cover Image</label>
-                            <input type="text" class="jw-input" id="promoCover" name="promo[cover]" value="{{ $promoCover }}" placeholder="assets/img/book1/cover.webp">
+                            <input type="text" class="jw-input" id="promoCover" value="{{ $promoCover }}" placeholder="assets/img/book1/cover.webp">
                         </div>
                     </div>
 
                     <div class="jw-row two mt-2">
                         <div>
                             <label class="jw-label" for="promoCtaText">Button Text</label>
-                            <input type="text" class="jw-input" id="promoCtaText" name="promo[cta_text]" value="{{ $promoData['cta_text'] ?? 'Read a real book' }}">
+                            <input type="text" class="jw-input" id="promoCtaText" value="{{ $promoData['cta_text'] ?? 'Read a real book' }}">
                         </div>
                         <div>
                             <label class="jw-label" for="promoCtaUrl">Button Link</label>
-                            <input type="text" class="jw-input" id="promoCtaUrl" name="promo[cta_url]" value="{{ $promoData['cta_url'] ?? 'library?book=1' }}">
+                            <input type="text" class="jw-input" id="promoCtaUrl" value="{{ $promoData['cta_url'] ?? 'library?book=1' }}">
                         </div>
                     </div>
                 </div>
