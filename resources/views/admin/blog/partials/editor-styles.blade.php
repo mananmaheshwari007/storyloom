@@ -203,9 +203,9 @@
 }
 .jw-article-body > * + * { margin-top: 1.35em; }
 .jw-article-body p { font-size: 1.05rem; line-height: 1.85; }
-.jw-article-body h2, .jw-article-body h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; line-height: 1.15; }
-.jw-article-body h2 { font-size: 2rem; margin-top: 1.4em; }
-.jw-article-body h3 { font-size: 1.45rem; }
+.jw-article-body h2, .jw-article-body h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; line-height: 1.25; text-wrap: balance; text-wrap: pretty; }
+.jw-article-body h2 { font-size: 1.95rem; margin-top: 1.4em; }
+.jw-article-body h3 { font-size: 1.38rem; margin-top: 1.2em; margin-bottom: 0.5em; letter-spacing: -0.01em; }
 .jw-article-body .lead-in::first-letter { font-family: "Cormorant Garamond", serif; font-size: 3.4em; font-weight: 600; color: #B55B29; float: left; line-height: .82; padding: 6px 12px 0 0; }
 .jw-article-body .pull-quote {
     padding-left: 24px; border-left: 2px solid #B55B29;
