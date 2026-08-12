@@ -36,7 +36,7 @@ class SecurityHeaders
             // GA4 beacons go to google-analytics.com / analytics.google.com;
             // Meta Pixel events post to facebook.com/tr. The noscript fallback
             // <img> is already covered by the https: allowance in img-src.
-            "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net",
+            "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com https://facebook.com https://*.facebook.com https://connect.facebook.net",
             "frame-ancestors 'self'",
             "base-uri 'self'",
             "object-src 'none'",
