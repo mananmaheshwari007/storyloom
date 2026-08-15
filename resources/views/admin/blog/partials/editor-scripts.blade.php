@@ -28,6 +28,12 @@
         table: "Table", promo: "Promotional book", divider: "Divider"
     };
 
+    var ICONS = {
+        paragraph: "text-paragraph", heading: "type-h2", image: "image",
+        quote: "quote", takeaway: "lightbulb", list: "list-ul",
+        table: "table", promo: "bag-check", divider: "hr"
+    };
+
     function blank(type) {
         switch (type) {
             case "heading":   return { type: "heading", level: "h2", text: "" };
@@ -85,7 +91,7 @@
     }
 
     /* ---------- field builders ---------- */
-    function rich(value, placeholder, onInput, isLarge) {
+    function rich(value, placeholder, onInput, isLarge, isSmall) {
         var wrap = document.createElement("div");
 
         var bar = document.createElement("div");
@@ -114,7 +120,7 @@
             });
 
         var ed = document.createElement("div");
-        ed.className = "jw-rich" + (isLarge ? " jw-rich-lg" : "");
+        ed.className = "jw-rich" + (isLarge ? " jw-rich-lg" : "") + (isSmall ? " jw-rich-sm" : "");
         ed.contentEditable = "true";
         ed.setAttribute("data-empty", placeholder || "");
         ed.innerHTML = value || "";
@@ -238,7 +244,7 @@
             styleSel.value = block.list_style || "bulleted";
             styleSel.addEventListener("change", function () {
                 block.list_style = styleSel.value;
-                sync();
+                render();
             });
             optsRow.appendChild(labelled("List Style", styleSel));
 
@@ -256,12 +262,19 @@
             body.appendChild(optsRow);
 
             var host = document.createElement("div");
+            var isNumbered = (block.list_style === "numbered");
             (block.items || []).forEach(function (item, i) {
                 var wrap = document.createElement("div");
                 wrap.className = "jw-item";
+
+                var marker = document.createElement("div");
+                marker.className = "jw-item-bullet" + (isNumbered ? "" : " is-bullet");
+                marker.innerHTML = isNumbered ? (i + 1) : "&bull;";
+                wrap.appendChild(marker);
+
                 var fields = document.createElement("div");
                 fields.className = "jw-item-fields";
-                fields.appendChild(labelled("Title / Lead-in (optional)", rich(item.lead, "Lead-in or question title", function (v) { item.lead = v; sync(); })));
+                fields.appendChild(labelled("Title / Lead-in (optional)", rich(item.lead, "Lead-in or question title", function (v) { item.lead = v; sync(); }, false, true)));
                 fields.appendChild(labelled("Paragraph Copy", rich(item.text, "The rest of this point", function (v) { item.text = v; sync(); })));
                 wrap.appendChild(fields);
                 var del = document.createElement("button");
@@ -423,11 +436,12 @@
 
         state.forEach(function (block, index) {
             var card = document.createElement("div");
-            card.className = "jw-block" + (block.type === "promo" ? " is-promo" : "");
+            card.className = "jw-block jw-block-" + block.type + (block.type === "promo" ? " is-promo" : "");
 
             var head = document.createElement("div");
             head.className = "jw-block-head";
-            head.innerHTML = '<span class="jw-block-kind">' + esc(LABELS[block.type] || block.type) + "</span>";
+            var iconName = ICONS[block.type] || "square";
+            head.innerHTML = '<span class="jw-block-kind"><i class="bi bi-' + iconName + '"></i> ' + esc(LABELS[block.type] || block.type) + "</span>";
 
             var tools = document.createElement("div");
             tools.className = "jw-block-tools";
