@@ -14,9 +14,30 @@
     </nav>
 </div>
 
-<form action="{{ route('admin.blog.update', $blog) }}" method="POST" enctype="multipart/form-data">
+@if(session('conflict_error'))
+    <div class="alert alert-warning border border-warning shadow-sm mb-4" role="alert">
+        <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-exclamation-triangle-fill fs-3 text-warning flex-shrink-0 mt-1"></i>
+            <div>
+                <h5 class="alert-heading fw-bold mb-1" style="color: #92400e;">Simultaneous Edit Collision Warning</h5>
+                <p class="mb-2 text-dark" style="font-size: .92rem;">{{ session('conflict_error') }}</p>
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    <button type="submit" name="force_update" value="1" form="blogEditForm" class="btn btn-warning btn-sm fw-bold">
+                        <i class="bi bi-shield-slash me-1"></i> Force Save & Overwrite
+                    </button>
+                    <a href="{{ route('admin.blog.edit', $blog) }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Discard My Edits & Reload Server Version
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<form id="blogEditForm" action="{{ route('admin.blog.update', $blog) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
     @csrf
     @method('PUT')
+    <input type="hidden" name="lock_version" value="{{ $blog->updated_at ? $blog->updated_at->timestamp : time() }}">
     
     <div class="row g-4">
         <!-- Main Form Column -->
