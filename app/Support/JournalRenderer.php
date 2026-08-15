@@ -82,7 +82,11 @@ class JournalRenderer
         $text  = $this->clean($b['text'] ?? '');
         if ($text === '') return '';
         $level = ($b['level'] ?? 'h2') === 'h3' ? 'h3' : 'h2';
-        $id    = Str::slug(strip_tags($text)) ?: Str::random(6);
+
+        $decoded   = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $decoded   = str_replace(["\xc2\xa0", '&nbsp;', '&nbsp'], ' ', $decoded);
+        $plainText = trim(preg_replace('/\s+/', ' ', strip_tags($decoded)));
+        $id        = Str::slug($plainText) ?: Str::random(6);
 
         return sprintf('<%s id="%s">%s</%s>', $level, $id, $text, $level);
     }
@@ -320,7 +324,11 @@ class JournalRenderer
         foreach ($blocks as $b) {
             if (($b['type'] ?? '') !== 'heading') continue;
 
-            $text = trim(strip_tags($b['text'] ?? ''));
+            $rawText = $b['text'] ?? '';
+            // Decode HTML entities (e.g. &nbsp;, &amp;, &quot;) and convert non-breaking spaces
+            $decoded = html_entity_decode($rawText, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $decoded = str_replace(["\xc2\xa0", '&nbsp;', '&nbsp'], ' ', $decoded);
+            $text    = trim(preg_replace('/\s+/', ' ', strip_tags($decoded)));
             if ($text === '') continue;
 
             // H3s are included too: a listicle keeps its points at h3, and

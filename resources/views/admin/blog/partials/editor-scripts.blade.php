@@ -1048,6 +1048,13 @@
     var tocPreview = document.getElementById("tocPreview");
     var tocEnabled = document.getElementById("tocEnabled");
 
+    function stripTocText(raw) {
+        if (!raw) return "";
+        var tmp = document.createElement("div");
+        tmp.innerHTML = String(raw).replace(/&nbsp;/gi, " ");
+        return (tmp.textContent || tmp.innerText || "").replace(/\s+/g, " ").trim();
+    }
+
     function slugify(s) {
         return String(s).toLowerCase().replace(/<[^>]*>/g, "")
             .replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-");
@@ -1056,8 +1063,7 @@
     function paintToc() {
         if (!tocPreview) return;
         var heads = state.filter(function (b) {
-            return b.type === "heading" && (b.level || "h2") === "h2" &&
-                   String(b.text || "").replace(/<[^>]*>/g, "").trim() !== "";
+            return b.type === "heading" && stripTocText(b.text) !== "";
         });
         tocPreview.innerHTML = "";
         if (!heads.length) {
@@ -1069,7 +1075,7 @@
         }
         heads.forEach(function (h) {
             var li = document.createElement("li");
-            var txt = String(h.text).replace(/<[^>]*>/g, "").trim();
+            var txt = stripTocText(h.text);
             li.textContent = txt;
             li.title = "#" + slugify(txt);
             tocPreview.appendChild(li);
