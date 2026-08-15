@@ -990,21 +990,22 @@
     var titleRich = document.getElementById("titleRich");
     var titleHtmlField = document.getElementById("titleHtmlField");
     var titlePlain = document.getElementById("title");
+    var syncTitle = function () {};
+
     if (titleRich && titleHtmlField && titlePlain) {
-        var syncTitle = function () {
+        syncTitle = function () {
             titleHtmlField.value = titleRich.innerHTML;
             titlePlain.value = titleRich.textContent.trim();
         };
         titleRich.addEventListener("input", syncTitle);
+        titleRich.addEventListener("blur", syncTitle);
+
         titleRich.addEventListener("paste", function (e) {
             e.preventDefault();
             var txt = (e.clipboardData || window.clipboardData).getData("text/plain");
             document.execCommand("insertText", false, txt);
         });
-        /* execCommand("italic") answers with <i> (or a font-style span), but the
-           terracotta accent is styled as `h1 em, h2 em, h3 em` — so an <i> came
-           out italic and stayed ink-black. Fold whatever the browser produced
-           back to <em> before it is synced to the hidden field. */
+
         var accentToEm = function () {
             var last = null;
             var nodes = titleRich.querySelectorAll("i, span[style*='italic']");
@@ -1026,8 +1027,6 @@
                 titleRich.focus();
                 document.execCommand("italic", false, null);
 
-                // Swapping the node drops the selection, so put it back over the
-                // new <em> — otherwise pressing Em twice can't undo itself.
                 var replaced = accentToEm();
                 if (replaced) {
                     var range = document.createRange();
@@ -1041,6 +1040,15 @@
             });
         }
         syncTitle();
+    }
+
+    /* ---------- form submit sync ---------- */
+    var mainBlogForm = document.querySelector("form[action*='admin/blog']");
+    if (mainBlogForm) {
+        mainBlogForm.addEventListener("submit", function () {
+            if (typeof syncTitle === "function") syncTitle();
+            if (typeof sync === "function") sync();
+        });
     }
 
 
