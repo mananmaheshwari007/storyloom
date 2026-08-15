@@ -430,9 +430,74 @@
         return body;
     }
 
+    /* ---------- in-between block inserter ---------- */
+    function createInserter(targetIndex) {
+        var div = document.createElement("div");
+        div.className = "jw-inserter";
+
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "jw-inserter-btn";
+        btn.innerHTML = '<i class="bi bi-plus-lg"></i> Insert block here';
+
+        var menu = document.createElement("div");
+        menu.className = "jw-inserter-menu";
+        menu.hidden = true;
+
+        var types = ["paragraph", "heading", "image", "quote", "takeaway", "list", "table", "promo", "divider"];
+        types.forEach(function (t) {
+            var itemBtn = document.createElement("button");
+            itemBtn.type = "button";
+            itemBtn.className = "jw-inserter-item";
+            var icon = ICONS[t] ? "bi bi-" + ICONS[t] : "bi bi-plus-square";
+            itemBtn.innerHTML = '<i class="' + icon + '"></i> ' + esc(LABELS[t] || t);
+            itemBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                state.splice(targetIndex, 0, blank(t));
+                render();
+                var cards = listEl.querySelectorAll(".jw-block");
+                if (cards[targetIndex]) {
+                    cards[targetIndex].scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            });
+            menu.appendChild(itemBtn);
+        });
+
+        var closeBtn = document.createElement("button");
+        closeBtn.type = "button";
+        closeBtn.className = "jw-inserter-close";
+        closeBtn.title = "Close menu";
+        closeBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+        closeBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            menu.hidden = true;
+            div.classList.remove("is-open");
+        });
+        menu.appendChild(closeBtn);
+
+        btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var isOpening = menu.hidden;
+            listEl.querySelectorAll(".jw-inserter-menu").forEach(function (m) { m.hidden = true; });
+            listEl.querySelectorAll(".jw-inserter").forEach(function (i) { i.classList.remove("is-open"); });
+            if (isOpening) {
+                menu.hidden = false;
+                div.classList.add("is-open");
+            }
+        });
+
+        div.appendChild(btn);
+        div.appendChild(menu);
+        return div;
+    }
+
     /* ---------- render the block list ---------- */
     function render() {
         listEl.innerHTML = "";
+
+        if (state.length > 0) {
+            listEl.appendChild(createInserter(0));
+        }
 
         state.forEach(function (block, index) {
             var card = document.createElement("div");
@@ -457,6 +522,13 @@
                 return b;
             }
 
+            tools.appendChild(tool("plus-lg", "Insert block below", function () {
+                state.splice(index + 1, 0, blank("paragraph"));
+                render();
+                var cards = listEl.querySelectorAll(".jw-block");
+                if (cards[index + 1]) cards[index + 1].scrollIntoView({ behavior: "smooth", block: "center" });
+            }));
+
             tools.appendChild(tool("arrow-up", "Move up", function () {
                 var t = state[index - 1]; state[index - 1] = state[index]; state[index] = t; render();
             }, index === 0));
@@ -480,6 +552,7 @@
             card.appendChild(head);
             card.appendChild(buildBody(block, index));
             listEl.appendChild(card);
+            listEl.appendChild(createInserter(index + 1));
         });
 
         sync();

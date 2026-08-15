@@ -197,6 +197,49 @@
 .jw-add-btn.is-accent { border-color: rgba(181,91,41,.45); color: var(--jw-terra); }
 .jw-add-btn.is-accent:hover { background: var(--jw-terra); border-color: var(--jw-terra); color: #fff; }
 
+/* ---- inserter between blocks ---- */
+.jw-inserter {
+    position: relative; margin: 4px 0; text-align: center; z-index: 5;
+}
+.jw-inserter::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+    background: #e2e8f0; z-index: 1; opacity: .4; transition: opacity .15s ease;
+}
+.jw-inserter:hover::before, .jw-inserter.is-open::before {
+    opacity: 1; background: #cbd5e1;
+}
+.jw-inserter-btn {
+    position: relative; z-index: 2; border: 1px dashed #cbd5e1; background: #fcfcfd;
+    color: #475569; padding: 4px 14px; border-radius: 999px; font-size: .76rem;
+    font-weight: 600; letter-spacing: .02em; cursor: pointer;
+    box-shadow: 0 1px 2px rgba(16,24,40,.03);
+    transition: background .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;
+}
+.jw-inserter-btn:hover, .jw-inserter.is-open .jw-inserter-btn {
+    background: var(--jw-ink); color: #fff; border-color: var(--jw-ink); border-style: solid; transform: scale(1.03);
+}
+.jw-inserter-menu {
+    position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px;
+    padding: 10px 14px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(16,24,40,.1); margin: 6px auto 0; max-width: 680px; animation: jwFadeIn .15s ease-out;
+}
+@keyframes jwFadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.jw-inserter-item {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 11px; border: 1px solid var(--jw-line); background: #f8fafc;
+    border-radius: 7px; font-size: .78rem; font-weight: 600; color: #334155; cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.jw-inserter-item:hover {
+    background: var(--jw-ink); color: #fff; border-color: var(--jw-ink);
+}
+.jw-inserter-close {
+    border: 0; background: #f1f5f9; color: #64748b; border-radius: 50%;
+    width: 26px; height: 26px; display: grid; place-items: center; font-size: .8rem; cursor: pointer;
+    margin-left: 4px; transition: background .15s ease, color .15s ease;
+}
+.jw-inserter-close:hover { background: #e2e8f0; color: #0f172a; }
+
 .jw-empty { text-align: center; padding: 34px 16px; color: #6b7280; background: #fff; border: 1px solid var(--jw-line); border-radius: 10px; }
 .jw-empty i { font-size: 1.9rem; color: #cfd5dd; display: block; margin-bottom: 8px; }
 
