@@ -90,8 +90,8 @@ class BlogController extends Controller
             'toc_label' => 'nullable|string|max:80',
             'title_html' => 'nullable|string|max:500',
             'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'keywords' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:1000',
+            'keywords' => 'nullable|string|max:2000',
             'status' => 'required|in:draft,published',
         ]);
 
@@ -132,8 +132,8 @@ class BlogController extends Controller
             'toc_label' => 'nullable|string|max:80',
             'title_html' => 'nullable|string|max:500',
             'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'keywords' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:1000',
+            'keywords' => 'nullable|string|max:2000',
             'status' => 'required|in:draft,published',
         ]);
 
