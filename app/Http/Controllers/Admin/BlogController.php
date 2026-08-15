@@ -112,11 +112,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return response()
-            ->view('admin.blog.edit', compact('blog'))
-            ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
-            ->header('Pragma', 'no-cache')
-            ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+        return view('admin.blog.edit', compact('blog'));
     }
 
     /**
@@ -139,20 +135,7 @@ class BlogController extends Controller
             'meta_description' => 'nullable|string|max:500',
             'keywords' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',
-            'lock_version' => 'nullable|integer',
-            'force_update' => 'nullable|boolean',
         ]);
-
-        // Optimistic Concurrency Protection: check if someone else updated the blog while this user was editing
-        $submittedLock = (int) $request->input('lock_version');
-        $currentLock   = $blog->updated_at ? $blog->updated_at->timestamp : 0;
-
-        if ($submittedLock > 0 && $currentLock > $submittedLock && !$request->boolean('force_update')) {
-            $lastUpdatedTime = $blog->updated_at->format('h:i:s A \o\n M d, Y');
-            return redirect()->back()
-                ->withInput()
-                ->with('conflict_error', "Simultaneous Edit Warning: This article was updated by another session at {$lastUpdatedTime} while you were editing. Your current edits have been kept in the form below so no work is lost. Please review your content and click 'Force Save & Overwrite' if you wish to apply your version, or reload the page to load their latest version.");
-        }
 
         $data = $this->composeArticle($request, $blog);
 
