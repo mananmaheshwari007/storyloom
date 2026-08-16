@@ -39,7 +39,7 @@
       <section class="container">
         <figure class="article-figure plate" data-reveal>
           <img src="{{ (str_starts_with($coverImage, 'data:') || str_starts_with($coverImage, 'http://') || str_starts_with($coverImage, 'https://')) ? $coverImage : asset($coverImage) }}" width="1600" height="900" alt="{{ $article->title }}" fetchpriority="high">
-          <figcaption>{{ $article->dek ?: ($article->short_description ?: 'the gift they remember is rarely the one that cost the most') }}</figcaption>
+          <figcaption>{{ $article->short_description ?: ($article->dek ?: 'the gift they remember is rarely the one that cost the most') }}</figcaption>
         </figure>
       </section>
     @endif
@@ -159,7 +159,7 @@
               $rReadTime = $rel->read_time 
                 ? (is_numeric($rel->read_time) ? $rel->read_time . ' min read' : $rel->read_time) 
                 : '5 min read';
-              $rExcerpt = $rel->dek ?: ($rel->short_description ?: Str::limit(strip_tags($rel->content), 100));
+              $rExcerpt = $rel->short_description ?: ($rel->dek ?: Str::limit(strip_tags($rel->content), 100));
             @endphp
             <a class="post-card" href="{{ route('blog.show', $rel->slug) }}" data-reveal style="--stagger:{{ $rIndex % 3 }}">
               <span class="pc-media">

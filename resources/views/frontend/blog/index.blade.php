@@ -57,7 +57,7 @@
               </span>
             </p>
             <h2>{!! $featured->headline !!}</h2>
-            <p class="fp-excerpt">{{ $featured->dek ?: ($featured->short_description ?: Str::limit(strip_tags($featured->content), 140)) }}</p>
+            <p class="fp-excerpt">{{ $featured->short_description ?: ($featured->dek ?: Str::limit(strip_tags($featured->content), 140)) }}</p>
             <span class="text-link">Read the guide
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
             </span>
@@ -83,7 +83,7 @@
                   <span class="read-time">{{ is_numeric($article->read_time) ? $article->read_time . ' min read' : ($article->read_time ?: '5 min read') }}</span>
                 </span>
                 <h3>{!! $article->headline !!}</h3>
-                <span class="pc-excerpt">{{ $article->dek ?: ($article->short_description ?: Str::limit(strip_tags($article->content), 110)) }}</span>
+                <span class="pc-excerpt">{{ $article->short_description ?: ($article->dek ?: Str::limit(strip_tags($article->content), 110)) }}</span>
                 <span class="pc-more">Read
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h17m0 0-6-6m6 6-6 6"/></svg>
                 </span>
