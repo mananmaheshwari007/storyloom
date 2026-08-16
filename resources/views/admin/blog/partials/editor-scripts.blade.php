@@ -972,6 +972,7 @@
             var get = function (id) { var e = document.getElementById(id); return e ? e.value : ""; };
             hidden("title", get("title"));
             hidden("title_html", get("titleHtmlField"));
+            hidden("short_description", get("short_description"));
             hidden("dek", get("dek"));
             hidden("category", get("category"));
             hidden("read_time", get("read_time"));

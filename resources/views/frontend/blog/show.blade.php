@@ -17,8 +17,8 @@
         </a>
       </p>
       <h1>{!! $article->headline !!}</h1>
-      @if($article->short_description)
-        <p class="dek">{{ $article->short_description }}</p>
+      @if($article->short_description ?: $article->dek)
+        <p class="dek">{{ $article->short_description ?: $article->dek }}</p>
       @endif
       <p class="post-meta">
         <span class="cat">{{ strtoupper($article->category_label ?: ($article->category ?: ($article->keywords ?: 'GIFT GUIDES'))) }}</span>
