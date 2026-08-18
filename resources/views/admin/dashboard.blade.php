@@ -230,7 +230,7 @@
                                             <span class="badge bg-danger ms-1" style="font-size: 0.65rem;">NEW</span>
                                         @endif
                                     </td>
-                                    <td class="text-muted small">{{ $message->created_at->format('M d, g:i a') }}</td>
+                                    <td class="text-muted small">{{ $message->created_at->format('M d, g:i A') }}</td>
                                     <td class="text-end pe-3">
                                         @if(Route::has('admin.messages.show'))
                                             <a href="{{ route('admin.messages.show', $message) }}" class="btn btn-sm btn-outline-secondary py-1 px-2.5">

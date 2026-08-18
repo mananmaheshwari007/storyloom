@@ -35,7 +35,7 @@
                         <tr>
                             <td class="ps-3 fw-medium text-dark">{{ $sub->id }}</td>
                             <td class="fw-semibold text-dark">{{ $sub->email }}</td>
-                            <td>{{ $sub->created_at->format('M d, Y H:i A') }}</td>
+                            <td>{{ $sub->created_at->format('M d, Y h:i A') }}</td>
                             <td class="text-end pe-3">
                                 <form action="{{ route('admin.newsletter.destroy', $sub) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this subscriber?');">
                                     @csrf

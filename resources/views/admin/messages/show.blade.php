@@ -17,7 +17,7 @@
 <div class="card shadow-sm max-w-4xl">
     <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
         <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-envelope-open me-2 text-primary"></i> {{ $message->subject }}</h5>
-        <span class="text-muted" style="font-size: 0.85rem;">Received: {{ $message->created_at->format('M d, Y H:i A') }}</span>
+        <span class="text-muted" style="font-size: 0.85rem;">Received: {{ $message->created_at->format('M d, Y h:i A') }}</span>
     </div>
     <div class="card-body">
         <div class="row g-4 mb-4">

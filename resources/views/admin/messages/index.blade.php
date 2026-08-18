@@ -39,7 +39,7 @@
                             </td>
                             <td>{{ $msg->subject }}</td>
                             <td class="text-muted">{{ Str::limit($msg->message, 80) }}</td>
-                            <td>{{ $msg->created_at->format('M d, Y H:i') }}</td>
+                            <td>{{ $msg->created_at->format('M d, Y h:i A') }}</td>
                             <td class="text-center">
                                 <span class="badge rounded-pill bg-{{ $msg->is_read ? 'success' : 'danger' }}-subtle text-{{ $msg->is_read ? 'success' : 'danger' }} py-1 px-2">
                                     {{ $msg->is_read ? 'Read' : 'Unread' }}
